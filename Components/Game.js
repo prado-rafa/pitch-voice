@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
+import Timer from './Timer'
 import Ranking from './Ranking'
 
 export default class Game extends React.Component{
@@ -10,6 +11,10 @@ export default class Game extends React.Component{
           <Button
           onPress = {() => this.props.navigation.navigate('Ranking')}
           title = 'Pontuação'
+          />
+          <Button
+          onPress = {() => this.props.navigation.navigate('Timer')}
+          title = 'Jogar'
           />
         </View>
       );
