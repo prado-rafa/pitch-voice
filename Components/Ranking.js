@@ -95,38 +95,6 @@ export default class Ranking extends React.Component{
         currPoints: currPoints
       });
     }
-
-
-  render() {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.welcome}>Ranking</Text>
-            {this.state.rank.map((p, i) => {
-                    return (
-                      <View key={i} style={{display: 'flex', flexDirection: 'row', margin: 10}}>
-                        <View style={{ flex: 1}}>
-                          <PlayersList Text={p.name}/>
-                        </View>
-                        <View style={{ flex: 1}}>
-                          <Score Text={p.points}/>
-                        </View>
-                    </View>                 
-                    );
-            })}
-            <View style={styles.gamebuttons}>
-                <MyButton
-                    onPress = {() => this.props.navigation.navigate('PreGame')}
-                    title = 'Novo Jogo'
-                />
-                <Text>    </Text>
-                <MyButton
-                    onPress = {() => this.props.navigation.navigate('Game')}
-                    title = 'Próxima Partida'
-                />
-            </View>
-        </View>
-    );
-  }
 }
   
 const styles = StyleSheet.create({

@@ -5,6 +5,7 @@ import Rules from './Components/Rules'
 import PreGame from './Components/PreGame'
 import Game from './Components/Game'
 import Ranking from './Components/Ranking'
+import Timer from './Components/Timer'
 
 const IntroStack = createStackNavigator({
   Intro: Intro,
@@ -17,4 +18,5 @@ export default createSwitchNavigator({
   Game: Game,
   Ranking: Ranking,
   PreGame: PreGame,
+  Timer: Timer,
 })
