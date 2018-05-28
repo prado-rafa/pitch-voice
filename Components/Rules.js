@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 
 export default class Rules extends React.Component{
   static navigationOptions = {
@@ -17,6 +17,7 @@ export default class Rules extends React.Component{
     render(){
       return (
         <View style={styles.container}>
+          <ScrollView>
           <View style={styles.border}>
             <Text style={styles.title}>Jogo</Text>
             <View style={styles.line}/>
@@ -35,6 +36,7 @@ Uma palavra aparecerá na tela e o primeiro jogador a soltar o dedo fará com qu
             <View style={styles.line}/>
             <Text style={styles.text}>Numa partida, ou seja, para a palavra da vez, cada jogador só poderá cantar uma vez. Após a votação, se for decidido que o jogador merece ganhar o ponto, ele receberá uma quantidade x de pontos. Essa quantidade será decrescente, o primeiro que ganhar recebe x pontos, o segundo x-1 e assim sucessivamente.</Text>
           </View>
+          </ScrollView>
         </View>
       );
     }
