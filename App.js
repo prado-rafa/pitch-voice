@@ -1,6 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator, createMaterialTopNavigator, createSwitchNavigator } from 'react-navigation'
+import { createStackNavigator, createSwitchNavigator } from 'react-navigation'
 import Intro from './Components/Intro'
 import Rules from './Components/Rules'
 import PreGame from './Components/PreGame'
