@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import Rules from './Rules'
 import PreGame from './PreGame'
 
@@ -42,16 +42,12 @@ const styles = StyleSheet.create({
       margin: 10,
       fontWeight:'600',
       color: '#ffffff',
-     // position: 'absolute',
-     // bottom: 420,
 
       flex:1,
-     // flexDirection: 'column',
       backgroundColor: 'transparent',
       alignItems: 'center',
       justifyContent: 'space-between',
       position:'absolute',
-     // zIndex:1,
       bottom: '45%',
       left: '0%',
       width: '100%',
