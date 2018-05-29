@@ -11,7 +11,9 @@ export default class mainScreen extends React.Component{
     constructor(props){
         super(props);
         this.state = {
+            whoPressButton:0,
             arrayTrueSize:0,
+            stringColor: ['#F35558','#F5D150','#70CF97','#3880E9','#60C4FC','#BA69CF'],
             arrayBoolean:[false,false,false,false,false,false],
             word:'TIMER',
             votes: 0,
@@ -26,6 +28,7 @@ export default class mainScreen extends React.Component{
             seconds: 0,
             isRunningTime: false,
             
+            
         } 
         
         this.VoteDislike = this.VoteDislike.bind(this);
@@ -37,6 +40,9 @@ export default class mainScreen extends React.Component{
         this.CountDownTimerVote = this.CountDownTimerVote.bind(this);
         this.DesistirSing = this.DesistirSing.bind(this);
         this.Zerar = this.Zerar.bind(this);
+        this.Skip = this.Skip.bind(this);
+        this.CountDownTimerLoop = this.CountDownTimerLoop.bind(this);
+        this.Done = this.Done.bind(this);
     }
       
 
@@ -45,6 +51,7 @@ export default class mainScreen extends React.Component{
         arrayBoolean[i] = true;
         let num = this.state.arrayTrueSize+1;
         let st = {
+            whoPressButton:i+1,
             arrayTrueSize:num,
             arrayBoolean:arrayBoolean,
             timeAux:this.state.seconds,
@@ -52,6 +59,7 @@ export default class mainScreen extends React.Component{
             holdFlag:true,
             isRunningTime:false,
             seconds:0,
+            timesUp:false,
         };
         if (this.state.timer!=null) {
             st.timer = clearInterval(this.state.timer);
@@ -161,6 +169,16 @@ export default class mainScreen extends React.Component{
         });
     }
 
+    Done(){
+        this.setState({
+            isRunningTime:false,
+            timer:clearInterval(this.state.timer),
+            timesUp:true,
+            time:this.state.timeToVote,
+            seconds:0,
+        });
+    }
+
     CountDownTimerSing(){
         let timer =  setInterval( () => {this.setState(
             previousState=>{
@@ -181,32 +199,95 @@ export default class mainScreen extends React.Component{
          
     }
 
-    CountDownTimer(){
-                  
+
+    CountDownTimerLoop(){
+        if(this.state.timesUp==true){        
             let timer =  setInterval( () => {this.setState(
                 previousState=>{
                if(this.state.seconds<this.state.time){
-                   return {seconds: this.state.seconds +1,isRunningTime:true,timer:timer};
+                   return {
+                       seconds: this.state.seconds +1,
+                       isRunningTime:true,
+                       timer:timer,
+                       timesUp:true};
                }else{ //lembrar de dar clear no interval   (done)      
                    let timerClear = clearInterval(timer);  
                    return {seconds:0,
                        isRunningTime:false,
                        timer:timerClear,
                        arrayTrueSize:0,
-                       arrayBoolean:[false,false,false,false,false,false],
-                       word:'TIMER',
+                       arrayBoolean:[false,false,false,false,false,false],                       
                        votes: 0,
                        holdFlag: false,
-                       timesUp:false,                    
-                       timeInitial:30,
-                       time:30,
-                       timeToSing:15,
-                       timeToVote:10,
+                       timesUp:false,               
+                       time:this.state.timeInitial,                       
+                       timeAux:0,}
+                    }           
+                })
+            },1000); 
+        }   
+    }
+
+    CountDownTimer(){
+          if(this.state.timesUp==false){        
+            let timer =  setInterval( () => {this.setState(
+                previousState=>{
+               if(this.state.seconds<this.state.time){
+                   return {
+                       seconds: this.state.seconds +1,
+                       isRunningTime:true,
+                       timer:timer,
+                       timesUp:false};
+               }else{ //lembrar de dar clear no interval   (done)      
+                   let timerClear = clearInterval(timer);  
+                   return {seconds:0,
+                       isRunningTime:false,
+                       timer:timerClear,
+                       arrayTrueSize:0,
+                       arrayBoolean:[false,false,false,false,false,false],                       
+                       votes: 0,
+                       holdFlag: false,
+                       timesUp:true,               
+                       time:this.state.timeInitial,                       
                        timeAux:0,}
                     }           
                    })
-                },1000);                           
+                },1000);   
+            }            
             
+        
+    }
+
+    Skip(){
+        
+        if(this.state.timesUp==false){
+        this.setState({
+                    seconds:0,
+                    isRunningTime:false,
+                    timer: clearInterval(this.state.timer),
+                    arrayTrueSize:0,
+                    arrayBoolean:[false,false,false,false,false,false],                       
+                    votes: 0,
+                    holdFlag: false,
+                    timesUp:true,               
+                    time:this.state.timeInitial,                       
+                    timeAux:0,
+        });
+        }else{
+            this.setState({
+                seconds:0,
+                isRunningTime:false,
+                timer: clearInterval(this.state.timer),
+                arrayTrueSize:0,
+                arrayBoolean:[false,false,false,false,false,false],                       
+                votes: 0,
+                holdFlag: false,
+                timesUp:false,               
+                time:this.state.timeInitial,                       
+                timeAux:0,
+                
+        });
+    }
         
     }
  
@@ -238,16 +319,30 @@ export default class mainScreen extends React.Component{
         let boolean6= arrayBoolean[5];
         let arrayTrueSize = this.state.arrayTrueSize;
         let timer = this.state.timer;
+        let skip = this.Skip;
+        let countDownTimerLoop = this.CountDownTimerLoop;
+        let done = this.Done;
+        let whoPressButton = this.state.whoPressButton;
+        let stringColor = this.state.stringColor;
         
+
+
         
         if(holdFlag==false){
-            return(
-                <ScreenStart timer={timer} zerar={this.Zerar} arrayTrueSize={arrayTrueSize} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+            if(timesUp==false){
+                return(                
+                <ScreenStart skip={skip} timer={timer} zerar={this.Zerar} arrayTrueSize={arrayTrueSize} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
             );
+            }else{ //continua a rolar caso o tempo acabe!
+                
+                return(
+                <ScreenStartLoop skip={skip} timer={timer} zerar={this.Zerar} arrayTrueSize={arrayTrueSize} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                );
+            }
         }else{
              if(timesUp==false) {
                 return(
-                    <ScreenSing desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} votes={votes} />
+                    <ScreenSing stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} votes={votes} />
                 );
             } else{
                 return(
@@ -265,15 +360,8 @@ class ScreenVote extends React.Component{
 
     render(){
         return(
-            <View style={styles.wrapper}>
-                
-                <View style={styles.StartTimer}>
-                    <Button color='#23BAA7' title='Iniciar' onPress={()=>{this.props.countDownTimer()}}></Button>
-                </View>
-                <View style={styles.ResetTimer}>   
-                    <Button color='#23BAA7' title='Reset' onPress={()=>{this.props.reset()}}></Button>
-                </View>
-                
+            <View style={styles.wrapperVote}>
+                                               
                 <ButtonTopRenderVote  voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} />
                 <TimerRenderVote countDownTimerVote={this.props.countDownTimerVote} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
                 <ButtonBottomRenderVote  voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} />
@@ -296,6 +384,7 @@ class TimerRenderVote extends React.Component{
         this.props.countDownTimerVote();
     }
 
+    
     render(){
         
         return(
@@ -305,7 +394,7 @@ class TimerRenderVote extends React.Component{
                         size={200}
                         width={15}            
                         fill={this.props.circleProgress}
-                        tintColor="#56CCF2"
+                        tintColor="#297a4c"
                         backgroundColor="#3d5875"
                         />
                     </View>                     
@@ -406,21 +495,75 @@ class ButtonBottomRenderVote extends React.Component{
 
 class ScreenSing extends React.Component{
     
+    WhoIsSinging(index){
+        if(index == 1){
+            return(
+                <View style={styles.MusicIconTopLeft}>
+                        <Feather name='triangle' color='#F35558' size={60} style={{borderColor:'#F35558'}}/>
+                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
+                            <Icon name='music' color='#ffffff' size={20}/>
+                        </View>
+                </View>);
+               
+        }else if(index==2){
+            return(
+                <View style={styles.MusicIconTopCenter}>
+                        <Feather name='triangle' color='#F0CC58' size={60} style={{borderColor:'#F0CC58'}}/>
+                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
+                            <Icon name='music' color='#ffffff' size={20}/>
+                         </View>
+                </View>);
+        }else if(index==3){
+            return(<View style={styles.MusicIconTopRight}>
+                <Feather name='triangle' color='#77CC99' size={60} style={{borderColor:'#77CC99'}}/>
+                <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
+                    <Icon name='music' color='#ffffff' size={20}/>
+                </View>
+        </View>);            
+        }else if(index==4){
+            return(
+                <View style={styles.MusicIconBottomLeft}>
+                        <Feather name='triangle' color='#4278FA' size={60} style={{borderColor:'#4278FA'}}/>
+                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
+                            <Icon name='music' color='#ffffff' size={20}/>
+                        </View>
+                </View>
+            );
+           
+        } else if(index==5){
+            return(
+                <View style={styles.MusicIconBottomCenter}>
+                        <Feather name='triangle' color='#56CCF2' size={60} style={{borderColor:'#56CCF2'}}/>
+                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
+                            <Icon name='music' color='#ffffff' size={20}/>
+                        </View>
+                </View>
+            );
+        } else if(index==6){
+            return(
+                <View style={styles.MusicIconBottomRight}>
+                        <Feather name='triangle' color='#AE6FC6' size={60} style={{borderColor:'#AE6FC6'}}/>
+                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
+                            <Icon name='music' color='#ffffff' size={20}/>
+                        </View>
+                </View>);            
+        }
+    }
+
+
     render(){
         
         return(
             <View style={styles.wrapper}>
+                <View style={styles.StartTimer}>   
+                    <Button color='#23BAA7' title='Done' onPress={()=>{this.props.done()}}></Button>
+                </View>
                 <View style={styles.ResetTimer}>   
                     <Button color='#23BAA7' title='Desistir' onPress={()=>{this.props.desistirSing()}}></Button>
                 </View>
-                <View style={styles.MusicIcon}>
-                    <Feather name='triangle' color='#56CCF2' size={60} style={{borderColor:'#56CCF2'}}/>
-                    <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
-                        <Icon name='music' color='#ffffff' size={20}/>
-                    </View>
-                </View>
+                {this.WhoIsSinging(this.props.whoPressButton)}
                 <ButtonTopRenderSing />
-                <TimerRenderSing countDownTimerSing={this.props.countDownTimerSing} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
+                <TimerRenderSing stringColor={this.props.stringColor} whoPressButton={this.props.whoPressButton} countDownTimerSing={this.props.countDownTimerSing} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
                 <ButtonBottomRenderSing/>
             </View>
         );
@@ -440,8 +583,49 @@ class TimerRenderSing extends React.Component{
         this.props.countDownTimerSing();
     }
 
+    colorTimer(array,index){
+
+        let stringColor = array;
+        let stringColor1 = stringColor[0];
+        let stringColor2 = stringColor[1];
+        let stringColor3 = stringColor[2];
+        let stringColor4 = stringColor[3];
+        let stringColor5 = stringColor[4];
+        let stringColor6 = stringColor[5];
+
+        if(index==1){
+            return(
+                stringColor1
+            );
+        }else if(index==2){
+            return(
+                stringColor2
+           );
+        }else if(index==3){
+            return(
+                stringColor3
+            );
+        }else if(index==4){
+            return(
+                stringColor4
+            );
+        }else if(index==5){
+            return(
+                stringColor5
+            );
+        }else if(index==6){
+            return(
+                stringColor6
+            );
+        }
+
+
+    }
+
     render(){
         
+        
+
         return(
             <View style={styles.container}>
                     <View style={styles.containerTimer}>
@@ -449,7 +633,7 @@ class TimerRenderSing extends React.Component{
                         size={200}
                         width={15}            
                         fill={this.props.circleProgress}
-                        tintColor="#56CCF2"
+                        tintColor= {this.colorTimer(this.props.stringColor,this.props.whoPressButton)}
                         backgroundColor="#3d5875"
                         />
                     </View>                     
@@ -512,12 +696,41 @@ class ButtonBottomRenderSing extends React.Component{
     
 }
 
+class ScreenStartLoop extends React.Component{
+
+    componentWillMount(){        
+        
+        this.props.countDownTimerLoop();
+    }
+    componentWillUnmount(){
+        this.props.reset();
+    }
+    
+
+    render(){
+        return(
+            <View style={styles.wrapper}>
+                <View style={styles.Skip}>
+                    <Button title='Skip' onPress={()=> this.props.skip()} style={styles.welcome}>
+                        <Feather name='refresh-ccw' size={30} color='ffffff'/>
+                    </Button>
+                </View>
+                <ButtonTopRender  boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
+                <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
+                <ButtonBottomRender reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
+            </View>
+        );
+    }
+}
+
+
 class ScreenStart extends React.Component{
 
-    componentDidMount(){        
+    componentWillMount(){        
         
         this.props.countDownTimer();
     }
+    
     componentWillUnmount(){
         this.props.reset();
     }
@@ -525,7 +738,11 @@ class ScreenStart extends React.Component{
     render(){
         return(
             <View style={styles.wrapper}>
-                
+                <View style={styles.Skip}>
+                    <Button title='Skip' onPress={()=> this.props.skip()} style={styles.welcome}>
+                        <Feather name='refresh-ccw' size={30} color='ffffff'/>
+                    </Button>
+                </View>
                 <ButtonTopRender  boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
                 <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
                 <ButtonBottomRender reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
@@ -713,6 +930,14 @@ const styles = StyleSheet.create({
         alignItems:'stretch',
 
     },
+    wrapperVote:{
+        flex:1,       
+        backgroundColor: '#191A1E',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems:'stretch',
+
+    },
     container: {
       backgroundColor: 'transparent',
       alignItems: 'center',
@@ -723,19 +948,32 @@ const styles = StyleSheet.create({
       left: '0%',
       zIndex:0,
     },
-    StartTimer:{
+    Skip:{
       flex:1,
       flexDirection: 'row',
       backgroundColor: 'transparent',
       alignItems: 'center',
       justifyContent: 'space-between',
       position:'absolute',
-      top: '45%',
-      width: '25%',
-      height:'5%',
-      left: '0%',
-      zIndex:1,
+      top: '48.5%',
+      width: '20%',
+      height:'3%',
+      left: '43%',
+      zIndex:2,
     },
+    StartTimer:{
+        flex:1,
+        flexDirection: 'row',
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        position:'absolute',
+        top: '45%',
+        width: '25%',
+        height:'5%',
+        left: '0%',
+        zIndex:1,
+      },
     ResetTimer:{
       flex:1,
       flexDirection: 'row',
@@ -895,8 +1133,8 @@ const styles = StyleSheet.create({
         left:'34%',
 
     },
-    MusicIcon:{
-        flex:1,
+      MusicIconBottomCenter:{ //bottomCenter alterar nome
+      flex:1,
       flexDirection: 'row',
       backgroundColor: 'transparent',
       alignItems: 'center',
@@ -908,6 +1146,73 @@ const styles = StyleSheet.create({
       right: '39%',
       zIndex:0,
       transform: [{ rotate: '180deg'}],
-    }
+    },
+    MusicIconBottomLeft:{
+        flex:1,
+      flexDirection: 'row',
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position:'absolute',
+      bottom: '15%',
+      width: '20%',
+      height:'10%',
+      left: '6%',
+      zIndex:0,
+      transform: [{ rotate: '180deg'}],
+    },
+    MusicIconBottomRight:{
+        flex:1,
+      flexDirection: 'row',
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position:'absolute',
+      bottom: '15%',
+      width: '20%',
+      height:'10%',
+      right: '6%',
+      zIndex:0,
+      transform: [{ rotate: '180deg'}],
+    },
+    MusicIconTopCenter:{
+        flex:1,
+      flexDirection: 'row',
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position:'absolute',
+      top: '15%',
+      width: '20%',
+      height:'10%',
+      right: '39%',
+      zIndex:0,
+    },
+    MusicIconTopLeft:{
+        flex:1,
+      flexDirection: 'row',
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position:'absolute',
+      top: '15%',
+      width: '20%',
+      height:'10%',
+      left: '6%',
+      zIndex:0,
+    },
+    MusicIconTopRight:{
+      flex:1,
+      flexDirection: 'row',
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'center',
+      position:'absolute',
+      top: '15%',
+      width: '20%',
+      height:'10%',
+      right: '6%',
+      zIndex:0,
+    },
     
   });
