@@ -42,8 +42,20 @@ const styles = StyleSheet.create({
       margin: 10,
       fontWeight:'600',
       color: '#ffffff',
-      position: 'absolute',
-      bottom: 420,
+     // position: 'absolute',
+     // bottom: 420,
+
+      flex:1,
+     // flexDirection: 'column',
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      position:'absolute',
+     // zIndex:1,
+      bottom: '45%',
+      left: '0%',
+      width: '100%',
+      height: '30%',
     },
     btnRules: {
       flex: 0,
@@ -53,17 +65,19 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     btnNew: {
-      flex: 0,
-      width: 120,
-      height: 60,
-      position: 'absolute',
-      bottom: 150,
-      alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: '#23BAA7',
       borderColor: '#23BAA7',
       borderRadius: 5,
       borderWidth: 1,
+
+      flex:1,
+      alignItems: 'center',
+      position:'absolute',
+      bottom: '25%',
+      left: '35%',
+      width: '35%',
+      height: '10%',
     }
   });
   
