@@ -20,7 +20,7 @@ export default class PreGame extends React.Component{
 	
 	constructor(props) {
 		super(props);
-		this.state = {textInput : [], redText: true, topScore: 5000, timeSing: 30, showtime: 60, screenHeight: height, 
+		this.state = {textInput : [], redText: true, topScore: 100, timeSing: 30, showtime: 60, screenHeight: height, 
 					text1: "", text2: "", text3: "", text4: "", text5: "", text6: ""
 		};
 	}
@@ -260,7 +260,7 @@ export default class PreGame extends React.Component{
 		
 		<Button 
 		title = "Play!"
-		onPress = {this.play}
+		onPress = {() => this.props.navigation.navigate('Game')}
 		color= '#23BAA7'
 		style = {{alignItems: 'flex-end'}} 
 		/>

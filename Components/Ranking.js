@@ -36,10 +36,12 @@ export default class Ranking extends React.Component{
       super(props) 
         this.state = { 
           rank: [],
+          //recieve Points from Game
           currPoints: 10
-        };
+        }; 
     }
     componentDidMount(){
+      // recieve players from Game
       const people = [
         'Malu',
         'Larícia',
@@ -53,35 +55,7 @@ export default class Ranking extends React.Component{
       })
     }
 
-    
-    orderPlayer = () => {
-      let rank = this.state.rank;
-      rank.sort = (a, b) => {
-          if (a.points > b.points) {
-            console.log("a")
-              return 1;
-          } else if (b.points > a.points) {
-            console.log("b")
-              return -1;
-          } else {
-              if (a.name > b.name) {
-                console.log("c")
-                  return 1;
-              } else if (b.name > a.name) {
-                console.log("d")
-                  return -1;
-              }
-          }
-          console.log("e")
-          return 0;
-      };
-      console.log("ordenados");
-      console.log(rank);
-      this.setState({
-        rank: rank
-      });
-  }
-  
+    //this function is called from Game to give points to a Player.
     winPoints = (nome) => {
       let rank = this.state.rank;
       let currPoints = this.state.currPoints;
@@ -171,6 +145,16 @@ const styles = StyleSheet.create({
     },
     gamebuttons:{
       flexDirection: 'row'
+    }, 
+    playerslist: {
+      color: '#FFFFFF',
+      fontSize:20,
+      textAlign:'left'
+    },
+    score: {
+      color: '#FFFFFF',
+      fontSize:20,
+      textAlign: 'right'
     }
     
   });    
