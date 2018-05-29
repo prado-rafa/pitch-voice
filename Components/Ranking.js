@@ -16,6 +16,21 @@ class MyButton extends React.Component {
   }
 }
 
+class PlayersList extends React.Component {
+  render() {
+    return (
+      <Text style={styles.playerslist}> {this.props.Text} </Text>
+    );
+  }
+}
+class Score extends React.Component {
+  render() {
+    return (
+      <Text style={styles.score}> {this.props.Text} </Text>
+    );
+  }
+}
+
 export default class Ranking extends React.Component{
     constructor(props) {
       super(props) 
@@ -112,29 +127,29 @@ export default class Ranking extends React.Component{
     return (
         <View style={styles.container}>
             <Text style={styles.welcome}>Ranking</Text>
-            <MyButton
-                onPress = {this.orderPlayers}
-                title = 'ordenar'
-            />  
-            <MyButton
-                onPress = {() => this.props.navigation.navigate('PreGame')}
-                title = 'Novo Jogo'
-            />
-            <MyButton
-                onPress = {() => this.props.navigation.navigate('Game')}
-                title = 'Próxima Partida'
-            />
             {this.state.rank.map((p, i) => {
                     return (
-                        <View key={i}>
-                            <Text>{p.name + ': ' + p.points}</Text>
-                            <MyButton
-                                onPress = {() => this.winPoints(p.name)}
-                                title = 'alterar'
-                            />
+                      <View key={i} style={{display: 'flex', flexDirection: 'row', margin: 10}}>
+                        <View style={{ flex: 1}}>
+                          <PlayersList Text={p.name}/>
                         </View>
+                        <View style={{ flex: 1}}>
+                          <Score Text={p.points}/>
+                        </View>
+                    </View>                 
                     );
-                })}
+            })}
+            <View style={styles.gamebuttons}>
+                <MyButton
+                    onPress = {() => this.props.navigation.navigate('PreGame')}
+                    title = 'Novo Jogo'
+                />
+                <Text>    </Text>
+                <MyButton
+                    onPress = {() => this.props.navigation.navigate('Game')}
+                    title = 'Próxima Partida'
+                />
+            </View>
         </View>
     );
   }
@@ -153,6 +168,9 @@ const styles = StyleSheet.create({
       margin: 10,
       fontWeight:'800',
       color: '#23BAA7',
+    },
+    gamebuttons:{
+      flexDirection: 'row'
     }
     
   });    
