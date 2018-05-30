@@ -415,7 +415,6 @@ export default class mainScreen extends React.Component{
         let pontuacaoParcial = this.state.pontuacaoParcial;
         let timesUpVote = this.state.timesUpVote;
         let winOrlose = this.state.winOrlose;
-        let GameOver = this.GameOver;
         let gameIsOver = this.state.gameOver;
 
                         
@@ -452,9 +451,8 @@ export default class mainScreen extends React.Component{
                     
                 }
             }else{
-                return(
-                    <GameOver GameOver={GameOver} arrayTotalScore={arrayTotalScore}/>
-                );
+                alert('acabou o jogo')
+                return(<GameOver acabouMermaoUhuls={this.GameOver} arrayTotalScore={arrayTotalScore}/>);
             }
     }
 }
@@ -474,7 +472,7 @@ class GameOver extends React.Component{
                 <Text style={styles.welcome}>{arrayTotalScore[4]}</Text>  
                 <Text style={styles.welcome}>{arrayTotalScore[5]}</Text>  
 
-                <Button title='Voltar para o jogo' onPress={()=>{this.props.GameOver()}} ></Button>
+                <Button title='Voltar para o jogo' onPress={()=>{this.props.acabouMermaoUhuls()}} ></Button>
 
             </View>
         );
