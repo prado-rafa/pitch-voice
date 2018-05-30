@@ -5,18 +5,29 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import Ranking from './Ranking'
 
 export default class mainScreen extends React.Component{
 
     constructor(props){
         super(props);
         this.state = {
+            gameOver:false,
+            winOrlose: false,
+            timesUpVote:false,
+            pontuacaoParcial:[0,0,0,0,0,0],
+            numPlayers:6,
+            howManyWon: 0,
+            arrayVote: [0,0,0,0,0,0], //pontuação parcial
+            arrayTotalScore: [0,0,0,0,0,0],
+            winner:30,
+            pontuacaoMax: 10,
+            penalidade: 1,
             whoPressButton:0,
             arrayTrueSize:0,
             stringColor: ['#F35558','#F5D150','#70CF97','#3880E9','#60C4FC','#BA69CF'],
             arrayBoolean:[false,false,false,false,false,false],
             word:'TIMER',
-            votes: 0,
             holdFlag: false,
             timesUp:false,
             timer: null,            
@@ -39,19 +50,38 @@ export default class mainScreen extends React.Component{
         this.CountDownTimerSing = this.CountDownTimerSing.bind(this);
         this.CountDownTimerVote = this.CountDownTimerVote.bind(this);
         this.DesistirSing = this.DesistirSing.bind(this);
-        this.Zerar = this.Zerar.bind(this);
         this.Skip = this.Skip.bind(this);
         this.CountDownTimerLoop = this.CountDownTimerLoop.bind(this);
         this.Done = this.Done.bind(this);
+
+        
     }
       
+    BackToStart= (index) =>{
+        let arrayTotalScore = this.state.arrayTotalScore;
+        let winner = this.state.winner;
+
+        if(arrayTotalScore[index]<winner){
+        this.setState({
+            timesUp:false,
+            holdFlag:false,
+            timesUpVote:false,
+            winOrlose:false,
+            arrayVote:[0,0,0,0,0,0],
+        });
+        }else{
+            this.setState({
+                gameOver:true,
+            })
+        }
+    }
 
     StartSing = (i) => {
         let arrayBoolean = this.state.arrayBoolean;
         arrayBoolean[i] = true;
         let num = this.state.arrayTrueSize+1;
         let st = {
-            whoPressButton:i+1,
+            whoPressButton:i,
             arrayTrueSize:num,
             arrayBoolean:arrayBoolean,
             timeAux:this.state.seconds,
@@ -67,18 +97,76 @@ export default class mainScreen extends React.Component{
         this.setState(st);
     }  
 
-    VoteLike(){
-        let votes = this.state.votes+1;
-        this.setState({
-            votes: votes
-        });
+    VoteLike(index){
+        
+        let arrayVote = this.state.arrayVote;
+            arrayVote[index] = 1;
+            this.setState({
+               arrayVote:arrayVote,
+            });
+                
     }
 
-    VoteDislike(){
-        let votes = this.state.votes-1;
-        this.setState({
-            votes:votes
-        });
+    VoteDislike(index){
+        let arrayVote = this.state.arrayVote;
+            arrayVote[index] = -1;
+            this.setState({
+               arrayVote:arrayVote,
+            });
+    }
+
+    computaVotos= () =>{
+        let howManyWon = this.state.howManyWon;
+        let pontuacaoMax = this.state.pontuacaoMax;
+        let penalidade = this.state.penalidade;
+        let votes=0;      
+        let arrayVote = this.state.arrayVote;
+        for(let i in arrayVote){
+             votes += arrayVote[i];
+            }
+        let arrayTotalScore = this.state.arrayTotalScore;
+        let index = this.state.whoPressButton;
+        let pontuacaoAtual = pontuacaoMax-(howManyWon*penalidade);
+        let pontuacaoParcial = this.state.pontuacaoParcial;
+
+        if(votes>0){
+            pontuacaoParcial[index] = pontuacaoAtual;
+            arrayTotalScore[index] = pontuacaoAtual+arrayTotalScore[index];
+
+            this.setState({
+                howManyWon:howManyWon+1,
+                pontuacaoParcial:pontuacaoParcial, 
+                winOrlose:true,
+                arrayTotalScore:arrayTotalScore,
+                arrayVote: [0,0,0,0,0,0],
+            });
+
+        }else if(votes==0){
+            let lucky = (Math.random()*100);
+            if(lucky%2==0){
+                pontuacaoParcial[index] = pontuacaoAtual;
+                arrayTotalScore[index] = pontuacaoAtual+arrayTotalScore[index];
+    
+                this.setState({
+                    howManyWon:howManyWon+1,
+                    pontuacaoParcial:pontuacaoParcial,
+                    winOrlose:true,
+                    arrayTotalScore:arrayTotalScore,
+                    arrayVote: [0,0,0,0,0,0],
+                });
+            }else{
+                this.setState({
+                    winOrlose:false,
+                    arrayVote: [0,0,0,0,0,0],
+                })
+            }
+
+        }else{
+            this.setState({
+                winOrlose:false,
+                arrayVote: [0,0,0,0,0,0],
+            })
+        }
     }
 
    
@@ -105,27 +193,6 @@ export default class mainScreen extends React.Component{
        
     }
 
-    Zerar(){        
-            this.setState({
-                arrayTrueSize:0,
-                arrayBoolean:[false,false,false,false,false,false],
-                word:'TIMER',
-                votes: 0,
-                holdFlag: false,
-                timesUp:false,
-                timer: null,            
-                timeInitial:30,
-                time:30,
-                timeToSing:15,
-                timeToVote:10,
-                timeAux:0,                  
-                seconds: 0,
-                isRunningTime: false,
-            });
-        
-    }
-
-
     CountDownTimerVote(){
         let timer =  setInterval( () => {this.setState(
             previousState=>{
@@ -136,10 +203,11 @@ export default class mainScreen extends React.Component{
                  return {
                      isRunningTime:false,
                      timer:timerClear,
-                     timesUp:false,
+                     timesUp:true,
                      time:this.state.timeInitial,
                      seconds:this.state.timeAux,
-                     holdFlag:false,
+                     holdFlag:true,
+                     timesUpVote:true,
                  }
              }           
             })
@@ -221,7 +289,11 @@ export default class mainScreen extends React.Component{
                        holdFlag: false,
                        timesUp:false,               
                        time:this.state.timeInitial,                       
-                       timeAux:0,}
+                       timeAux:0,
+                       arrayVote:[0,0,0,0,0,0],
+                       pontuacaoParcial:[0,0,0,0,0,0],
+                       howManyWon:0,
+                        }
                     }           
                 })
             },1000); 
@@ -249,7 +321,11 @@ export default class mainScreen extends React.Component{
                        holdFlag: false,
                        timesUp:true,               
                        time:this.state.timeInitial,                       
-                       timeAux:0,}
+                       timeAux:0,
+                       arrayVote:[0,0,0,0,0,0],
+                       pontuacaoParcial:[0,0,0,0,0,0],
+                       howManyWon:0,
+                        }
                     }           
                    })
                 },1000);   
@@ -261,10 +337,10 @@ export default class mainScreen extends React.Component{
     Skip(){
         
         if(this.state.timesUp==false){
+        this.Reset();
         this.setState({
                     seconds:0,
                     isRunningTime:false,
-                    timer: clearInterval(this.state.timer),
                     arrayTrueSize:0,
                     arrayBoolean:[false,false,false,false,false,false],                       
                     votes: 0,
@@ -272,12 +348,15 @@ export default class mainScreen extends React.Component{
                     timesUp:true,               
                     time:this.state.timeInitial,                       
                     timeAux:0,
+                    arrayVote:[0,0,0,0,0,0],
+                    pontuacaoParcial:[0,0,0,0,0,0],
+                    howManyWon:0
         });
         }else{
+            this.Reset();
             this.setState({
                 seconds:0,
                 isRunningTime:false,
-                timer: clearInterval(this.state.timer),
                 arrayTrueSize:0,
                 arrayBoolean:[false,false,false,false,false,false],                       
                 votes: 0,
@@ -285,12 +364,18 @@ export default class mainScreen extends React.Component{
                 timesUp:false,               
                 time:this.state.timeInitial,                       
                 timeAux:0,
+                arrayVote:[0,0,0,0,0,0],
+                pontuacaoParcial:[0,0,0,0,0,0],
+                howManyWon:0
                 
         });
     }
         
     }
  
+    GameOver=()=>{
+        this.props.navigation.navigate('Ranking');
+    }
 
 
     render(){
@@ -324,37 +409,115 @@ export default class mainScreen extends React.Component{
         let done = this.Done;
         let whoPressButton = this.state.whoPressButton;
         let stringColor = this.state.stringColor;
-        
+        let arrayTotalScore = this.state.arrayTotalScore;
+        let penalidade = this.state.penalidade;
+        let arrayVote = this.state.arrayVote;
+        let pontuacaoParcial = this.state.pontuacaoParcial;
+        let timesUpVote = this.state.timesUpVote;
+        let winOrlose = this.state.winOrlose;
+        let GameOver = this.GameOver;
+        let gameIsOver = this.state.gameOver;
 
+                        
+            if(!gameIsOver){     
+                if(holdFlag==false){
+                    if(timesUp==false){
+                        return(                
+                        <ScreenStart skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                    );
+                    }else{ //continua a rolar caso o tempo acabe!
+                        
+                        return(
+                        <ScreenStartLoop skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                        );
+                    }
+                }else{
+                    if(timesUp==false) {
+                        return(
+                            <ScreenSing stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} votes={votes} />
+                        );
+                    } else{
+                        if(timesUpVote==false){
+                        return(
+                            <ScreenVote arrayVote={arrayVote} countDownTimerVote={countDownTimerVote} circleProgress={circleProgress} word={word} votes={votes} voteLike={voteLike} voteDislike={voteDislike}/>
+                        );}else{
+                            return(
+                                <ScreenResults winOrlose={winOrlose} backToStart={this.BackToStart} computaVotos={this.computaVotos} arrayVote={arrayVote} pontuacaoParcial={pontuacaoParcial} whoPressButton={whoPressButton} />
+                            );
+                        }
 
-        
-        if(holdFlag==false){
-            if(timesUp==false){
-                return(                
-                <ScreenStart skip={skip} timer={timer} zerar={this.Zerar} arrayTrueSize={arrayTrueSize} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
-            );
-            }else{ //continua a rolar caso o tempo acabe!
-                
+                    }       
+                    
+                    
+                    
+                }
+            }else{
                 return(
-                <ScreenStartLoop skip={skip} timer={timer} zerar={this.Zerar} arrayTrueSize={arrayTrueSize} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                    <GameOver GameOver={GameOver} arrayTotalScore={arrayTotalScore}/>
                 );
             }
-        }else{
-             if(timesUp==false) {
-                return(
-                    <ScreenSing stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} votes={votes} />
-                );
-            } else{
-                return(
-                    <ScreenVote  countDownTimerVote={countDownTimerVote} circleProgress={circleProgress} word={word} votes={votes} voteLike={voteLike} voteDislike={voteDislike}/>
-                );
-             }       
-            
-            
-            
-        }
     }
 }
+
+class GameOver extends React.Component{
+    render(){
+        let arrayTotalScore = this.props.arrayTotalScore;
+        
+        return(
+            <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#191A1E',flexDirection: 'column',}}>
+                                               
+                <Text style={[styles.welcome,{fontSize:45}]} >Score:</Text>
+                <Text style={styles.welcome}>{arrayTotalScore[0]}</Text>
+                <Text style={styles.welcome}>{arrayTotalScore[1]}</Text>  
+                <Text style={styles.welcome}>{arrayTotalScore[2]}</Text>                 
+                <Text style={styles.welcome}>{arrayTotalScore[3]}</Text>  
+                <Text style={styles.welcome}>{arrayTotalScore[4]}</Text>  
+                <Text style={styles.welcome}>{arrayTotalScore[5]}</Text>  
+
+                <Button title='Voltar para o jogo' onPress={()=>{this.props.GameOver()}} ></Button>
+
+            </View>
+        );
+    }
+}
+
+class ScreenResults extends React.Component{
+
+    constructor(props){
+        super(props);
+        this.state={
+
+        }
+    }
+
+    componentDidMount(){
+        this.props.computaVotos();
+    }
+
+    winOrlose(boolean,pontuacaoParcial,whoPressButton){
+        if(boolean){ return( (<Text style={styles.welcome} >Você ganhou +{pontuacaoParcial[whoPressButton]} pontos! </Text>) );}
+       else{ return( (<Text style={styles.welcome} >Você não pontuou... </Text>) );}
+    }
+    
+
+    render(){
+        let pontuacaoParcial = this.props.pontuacaoParcial;
+        
+        return(
+            <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#191A1E'}}>
+                                               
+                <Text style={[styles.welcome,{fontSize:45}]} >Resultado:</Text>
+                {this.winOrlose(this.props.winOrlose,pontuacaoParcial,this.props.whoPressButton)}                
+                <Button title='Voltar para o jogo' onPress={()=>{this.props.backToStart(this.props.whoPressButton)}} ></Button>
+
+            </View>
+        );
+    }
+
+
+
+}
+
 
 class ScreenVote extends React.Component{
 
@@ -362,9 +525,9 @@ class ScreenVote extends React.Component{
         return(
             <View style={styles.wrapperVote}>
                                                
-                <ButtonTopRenderVote  voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} />
-                <TimerRenderVote countDownTimerVote={this.props.countDownTimerVote} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
-                <ButtonBottomRenderVote  voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} />
+                <ButtonTopRenderVote arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} />
+                <TimerRenderVote countDownTimerVote={this.props.countDownTimerVote} word={this.props.word} circleProgress={this.props.circleProgress}/>                
+                <ButtonBottomRenderVote arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} />
             </View>
         );
     }
@@ -408,38 +571,60 @@ class TimerRenderVote extends React.Component{
 
 }
 class ButtonTopRenderVote extends React.Component{
+
+    iconButton(array, index){
+
+        if(array[index]==0){
+            return(
+            <Entypo name="emoji-neutral" color='#000000' size={40} />
+            );           
+        }else if(array[index]==1){
+            return(
+             <Icon name="smile-o" size={40} color='#000000'/>
+            );
+        }else{
+            return(
+                <Entypo name="emoji-sad" size={40} color='#000000'/>
+            );    
+        }
+
+    }
+
+
+
     render(){
+        let arrayVote = this.props.arrayVote;
         return( 
                    
             <View style={styles.actionButtonsTop}>
                         <View style={styles.rightTop}>   
-                        <ActionButton verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={active => <Icon name="circle" color='#71CE97'/>}>
+                        <ActionButton verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={() => this.iconButton(arrayVote,2)}>
                             
-                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike()}>
+                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike(2)}>
                                 <Icon name="smile-o" size={40} color='#000000'/>
                             </ActionButton.Item>
-                            <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>this.props.voteDislike()}>
+                            <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>this.props.voteDislike(2)}>
                                 <Entypo name="emoji-sad" size={40} color='#000000'/>
                             </ActionButton.Item>
                             
                         </ActionButton>
                     </View>
                     <View style={styles.centerTop}>
-                        <ActionButton  verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={active => <Icon name="circle" color='#F3C853'/>}>
-                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike()}}>
+                        <ActionButton  verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={ () => this.iconButton(arrayVote,1)}>
+                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike(1)}}>
                                 <Icon name="smile-o" size={40} color='#000000'/>
                             </ActionButton.Item>
-                            <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>{this.props.voteDislike()}}>
+                            <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>{this.props.voteDislike(1)}}>
                                 <Entypo name="emoji-sad" size={40} color='#000000'/>
                             </ActionButton.Item>
                         </ActionButton>
                     </View>
                     <View style={styles.leftTop}>
-                        <ActionButton  verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={active => <Icon name="circle" color='#EB5757'/>}>
-                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike()}}>
+                        <ActionButton  verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={(active)=> this.iconButton(arrayVote,0)}>
+                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike(0)}}>
                                 <Icon name="smile-o" size={40} color='#000000'/>
                             </ActionButton.Item>
-                            <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>{this.props.voteDislike()}}>
+                            <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>{this.props.voteDislike(0)}}>
                                 <Entypo name="emoji-sad" size={40} color='#000000'/>
                             </ActionButton.Item>
                         </ActionButton>
@@ -449,40 +634,62 @@ class ButtonTopRenderVote extends React.Component{
     }
 }
 class ButtonBottomRenderVote extends React.Component{
+
+    iconButton(array, index){
+
+        if(array[index]==0){
+            return(
+            <Entypo name="emoji-neutral" color='#000000' size={40} />
+            );           
+        }else if(array[index]==1){
+            return(
+             <Icon name="smile-o" size={40} color='#000000'/>
+            );
+        }else{
+            return(
+            <Entypo name="emoji-sad" size={40} color='#000000'/>
+            );    
+        }
+
+    }
+
+
+
     render(){
+        let arrayVote = this.props.arrayVote;
         return(
             <View style={styles.actionButtonsBottom}>  
                     <View style={styles.rightBottom}>
-                        <ActionButton verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" renderIcon={active => <Icon name="circle" color='#BC6AD9'/>}>
+                        <ActionButton verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" renderIcon={() => this.iconButton(arrayVote,5)}>
                                 
                         
-                                <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike()}>
+                                <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike(5)}>
                                     <Icon name="smile-o" size={40} color='#000000'/>
                                 </ActionButton.Item>
-                                <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)"  onPress={()=>this.props.voteDislike()} >
+                                <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)"  onPress={()=>this.props.voteDislike(5)} >
                                     <Entypo name="emoji-sad" size={40} color='#000000'/>
                                 </ActionButton.Item>                            
                             </ActionButton>
                     </View> 
                     <View style={styles.centerBottom}>  
                     
-                    <ActionButton verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" renderIcon={active => <Icon name="circle" color='#5BCBED'/>}>
+                    <ActionButton verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" renderIcon={ () =>this.iconButton(arrayVote,4)}>
                         
-                        <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike()}>
+                        <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike(4)}>
                             <Icon name="smile-o" size={40} color='#000000'/>
                         </ActionButton.Item>
-                        <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)"  onPress={()=>this.props.voteDislike()} >
+                        <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)"  onPress={()=>this.props.voteDislike(4)} >
                             <Entypo name="emoji-sad" size={40} color='#000000'/>
                         </ActionButton.Item>
                     </ActionButton>
                     </View>
                     <View style={styles.leftBottom}>
-                    <ActionButton verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)"  renderIcon={active => <Icon name="circle" color='#317EF2'/>}>
+                    <ActionButton verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)"  renderIcon={() => this.iconButton(arrayVote,3)}>
                         
-                        <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike()}>
+                        <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike(3)}>
                             <Icon name="smile-o" size={40} color='#000000'/>
                         </ActionButton.Item>
-                        <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>this.props.voteDislike()} >
+                        <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>this.props.voteDislike(3)} >
                             <Entypo name="emoji-sad" size={40} color='#000000'/>
                         </ActionButton.Item>
                     </ActionButton>
@@ -496,7 +703,7 @@ class ButtonBottomRenderVote extends React.Component{
 class ScreenSing extends React.Component{
     
     WhoIsSinging(index){
-        if(index == 1){
+        if(index == 0){
             return(
                 <View style={styles.MusicIconTopLeft}>
                         <Feather name='triangle' color='#F35558' size={60} style={{borderColor:'#F35558'}}/>
@@ -505,7 +712,7 @@ class ScreenSing extends React.Component{
                         </View>
                 </View>);
                
-        }else if(index==2){
+        }else if(index==1){
             return(
                 <View style={styles.MusicIconTopCenter}>
                         <Feather name='triangle' color='#F0CC58' size={60} style={{borderColor:'#F0CC58'}}/>
@@ -513,14 +720,14 @@ class ScreenSing extends React.Component{
                             <Icon name='music' color='#ffffff' size={20}/>
                          </View>
                 </View>);
-        }else if(index==3){
+        }else if(index==2){
             return(<View style={styles.MusicIconTopRight}>
                 <Feather name='triangle' color='#77CC99' size={60} style={{borderColor:'#77CC99'}}/>
                 <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
                     <Icon name='music' color='#ffffff' size={20}/>
                 </View>
         </View>);            
-        }else if(index==4){
+        }else if(index==3){
             return(
                 <View style={styles.MusicIconBottomLeft}>
                         <Feather name='triangle' color='#4278FA' size={60} style={{borderColor:'#4278FA'}}/>
@@ -530,7 +737,7 @@ class ScreenSing extends React.Component{
                 </View>
             );
            
-        } else if(index==5){
+        } else if(index==4){
             return(
                 <View style={styles.MusicIconBottomCenter}>
                         <Feather name='triangle' color='#56CCF2' size={60} style={{borderColor:'#56CCF2'}}/>
@@ -539,7 +746,7 @@ class ScreenSing extends React.Component{
                         </View>
                 </View>
             );
-        } else if(index==6){
+        } else if(index==5){
             return(
                 <View style={styles.MusicIconBottomRight}>
                         <Feather name='triangle' color='#AE6FC6' size={60} style={{borderColor:'#AE6FC6'}}/>
@@ -593,27 +800,27 @@ class TimerRenderSing extends React.Component{
         let stringColor5 = stringColor[4];
         let stringColor6 = stringColor[5];
 
-        if(index==1){
+        if(index==0){
             return(
                 stringColor1
             );
-        }else if(index==2){
+        }else if(index==1){
             return(
                 stringColor2
            );
-        }else if(index==3){
+        }else if(index==2){
             return(
                 stringColor3
             );
-        }else if(index==4){
+        }else if(index==3){
             return(
                 stringColor4
             );
-        }else if(index==5){
+        }else if(index==4){
             return(
                 stringColor5
             );
-        }else if(index==6){
+        }else if(index==5){
             return(
                 stringColor6
             );
@@ -716,7 +923,7 @@ class ScreenStartLoop extends React.Component{
                     </Button>
                 </View>
                 <ButtonTopRender  boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
-                <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
+                <TimerRender  reset={this.props.reset} word={this.props.word} circleProgress={this.props.circleProgress}/>                
                 <ButtonBottomRender reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
             </View>
         );
