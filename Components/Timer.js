@@ -422,12 +422,12 @@ export default class mainScreen extends React.Component{
                 if(holdFlag==false){
                     if(timesUp==false){
                         return(                
-                        <ScreenStart skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                        <ScreenStart stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
                     );
                     }else{ //continua a rolar caso o tempo acabe!
                         
                         return(
-                        <ScreenStartLoop skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                        <ScreenStartLoop stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
                         );
                     }
                 }else{
@@ -913,6 +913,9 @@ class ScreenStartLoop extends React.Component{
     
 
     render(){
+        let arrayTotalScore = this.props.arrayTotalScore;
+        let stringColor = this.props.stringColor;
+
         return(
             <View style={styles.wrapper}>
                 <View style={styles.Skip}>
@@ -920,6 +923,25 @@ class ScreenStartLoop extends React.Component{
                         <Feather name='refresh-ccw' size={30} color='ffffff'/>
                     </Button>
                 </View>
+                <View style={styles.ScoreTopLeft}>
+                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[0]}}>{arrayTotalScore[0]}</Text>
+                </View>
+                <View style={styles.ScoreTopCenter}>
+                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[1]}}>{arrayTotalScore[1]}</Text>
+                </View>
+                <View style={styles.ScoreTopRight}>
+                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[2]}}>{arrayTotalScore[2]}</Text>
+                </View>
+                <View style={styles.ScoreBottomLeft}>
+                    <Text style={{color:stringColor[3]}}>{arrayTotalScore[3]}</Text>
+                </View>
+                <View style={styles.ScoreBottomCenter}>
+                    <Text style={{color:stringColor[4]}}>{arrayTotalScore[4]}</Text>
+                </View>
+                <View style={styles.ScoreBottomRight}>
+                    <Text style={{color:stringColor[5]}}>{arrayTotalScore[5]}</Text>
+                </View> 
+                
                 <ButtonTopRender  boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
                 <TimerRender  reset={this.props.reset} word={this.props.word} circleProgress={this.props.circleProgress}/>                
                 <ButtonBottomRender reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
@@ -941,6 +963,8 @@ class ScreenStart extends React.Component{
     }
 
     render(){
+        let arrayTotalScore = this.props.arrayTotalScore;
+        let stringColor = this.props.stringColor;
         return(
             <View style={styles.wrapper}>
                 <View style={styles.Skip}>
@@ -948,6 +972,24 @@ class ScreenStart extends React.Component{
                         <Feather name='refresh-ccw' size={30} color='ffffff'/>
                     </Button>
                 </View>
+                <View style={styles.ScoreTopLeft}>
+                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[0]}}>{arrayTotalScore[0]}</Text>
+                </View>
+                <View style={styles.ScoreTopCenter}>
+                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[1]}}>{arrayTotalScore[1]}</Text>
+                </View>
+                <View style={styles.ScoreTopRight}>
+                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[2]}}>{arrayTotalScore[2]}</Text>
+                </View>
+                <View style={styles.ScoreBottomLeft}>
+                    <Text style={{color:stringColor[3]}}>{arrayTotalScore[3]}</Text>
+                </View>
+                <View style={styles.ScoreBottomCenter}>
+                    <Text style={{color:stringColor[4]}}>{arrayTotalScore[4]}</Text>
+                </View>
+                <View style={styles.ScoreBottomRight}>
+                    <Text style={{color:stringColor[5]}}>{arrayTotalScore[5]}</Text>
+                </View>                
                 <ButtonTopRender  boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
                 <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
                 <ButtonBottomRender reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
@@ -1153,6 +1195,98 @@ const styles = StyleSheet.create({
       left: '0%',
       zIndex:0,
     },
+    ScoreBottomCenter:{
+        flex:1,
+        position:'absolute',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bottom: '10%',
+        width: '10%',
+        height:'8%',
+        right: '43.9%',
+        paddingBottom:25,
+        zIndex:0,
+        borderRadius:10,
+
+    },ScoreBottomLeft:{
+        flex:1,
+        position:'absolute',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bottom: '10%',
+        width: '10%',
+        height:'8%',
+        left: '11%',
+        paddingBottom:25,
+        zIndex:0,
+        borderRadius:10,
+
+    },ScoreBottomRight:{
+        flex:1,
+        position:'absolute',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bottom: '10%',
+        width: '10%',
+        height:'8%',
+        right: '11%',
+        paddingBottom:25,
+        zIndex:0,
+        borderRadius:10,
+
+    },ScoreTopCenter:{
+        flex:1,
+        position:'absolute',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: '10%',
+        width: '10%',
+        height:'8%',
+        right: '43.9%',
+        paddingTop:25,
+        zIndex:0,
+        borderRadius:10,
+
+    },ScoreTopLeft:{
+        flex:1,
+        position:'absolute',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: '10%',
+        width: '10%',
+        height:'8%',
+        left: '11%',
+        paddingTop:25,
+        zIndex:0,
+        borderRadius:10,
+
+    },ScoreTopRight:{
+        flex:1,
+        position:'absolute',
+        flexDirection: 'column',
+        backgroundColor: 'white',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: '10%',
+        width: '10%',
+        height:'8%',
+        right: '11%',
+        paddingTop:25,
+        zIndex:0,
+        borderRadius:10,
+
+    },
+
     Skip:{
       flex:1,
       flexDirection: 'row',
