@@ -574,15 +574,15 @@ class ButtonTopRenderVote extends React.Component{
 
         if(array[index]==0){
             return(
-            <Entypo name="emoji-neutral" color='#000000' size={40} />
+            <Entypo name="emoji-neutral" color='#000000' size={40} style={{ transform: [{ rotate: '180deg'}]}} />
             );           
         }else if(array[index]==1){
             return(
-             <Icon name="smile-o" size={40} color='#000000'/>
+             <Icon name="smile-o" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}}/>
             );
         }else{
             return(
-                <Entypo name="emoji-sad" size={40} color='#000000'/>
+                <Entypo name="emoji-sad" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}}/>
             );    
         }
 
@@ -598,32 +598,35 @@ class ButtonTopRenderVote extends React.Component{
                         <View style={styles.rightTop}>   
                         <ActionButton verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={() => this.iconButton(arrayVote,2)}>
                             
-                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike(2)}>
-                                <Icon name="smile-o" size={40} color='#000000'/>
-                            </ActionButton.Item>
+                            
                             <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>this.props.voteDislike(2)}>
-                                <Entypo name="emoji-sad" size={40} color='#000000'/>
+                                <Entypo name="emoji-sad" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}}/>
+                            </ActionButton.Item>
+                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>this.props.voteLike(2)}>
+                                <Icon name="smile-o" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}}/>
                             </ActionButton.Item>
                             
                         </ActionButton>
                     </View>
                     <View style={styles.centerTop}>
                         <ActionButton  verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={ () => this.iconButton(arrayVote,1)}>
-                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike(1)}}>
-                                <Icon name="smile-o" size={40} color='#000000'/>
-                            </ActionButton.Item>
+                           
                             <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>{this.props.voteDislike(1)}}>
-                                <Entypo name="emoji-sad" size={40} color='#000000'/>
+                                <Entypo name="emoji-sad" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}}/>
+                            </ActionButton.Item>
+                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike(1)}}>
+                                <Icon name="smile-o" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}}/>
                             </ActionButton.Item>
                         </ActionButton>
                     </View>
                     <View style={styles.leftTop}>
                         <ActionButton  verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={(active)=> this.iconButton(arrayVote,0)}>
-                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike(0)}}>
-                                <Icon name="smile-o" size={40} color='#000000'/>
-                            </ActionButton.Item>
+                            
                             <ActionButton.Item buttonColor="rgba(242, 53, 47, 1)" onPress={()=>{this.props.voteDislike(0)}}>
-                                <Entypo name="emoji-sad" size={40} color='#000000'/>
+                                <Entypo name="emoji-sad" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}}/>
+                            </ActionButton.Item>
+                            <ActionButton.Item buttonColor="rgba(36, 199, 106, 1)" onPress={()=>{this.props.voteLike(0)}}>
+                                <Icon name="smile-o" size={40} color='#000000' style={{ transform: [{ rotate: '180deg'}]}} />
                             </ActionButton.Item>
                         </ActionButton>
                     </View>
