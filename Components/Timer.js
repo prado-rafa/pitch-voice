@@ -24,7 +24,6 @@ export default class mainScreen extends React.Component{
             pontuacaoMax: 10,
             penalidade: 1,
             whoPressButton:0,
-            arrayTrueSize:0,
             stringColor: ['#F35558','#F5D150','#70CF97','#3880E9','#60C4FC','#BA69CF'],
             arrayBoolean:[false,false,false,false,false,false],
             word:'TIMER',
@@ -79,22 +78,36 @@ export default class mainScreen extends React.Component{
     StartSing = (i) => {
         let arrayBoolean = this.state.arrayBoolean;
         arrayBoolean[i] = true;
-        let num = this.state.arrayTrueSize+1;
-        let st = {
-            whoPressButton:i,
-            arrayTrueSize:num,
+        
+        if(this.state.isRunningTime){
+            let timer = clearInterval(this.state.timer);
+            this.setState({
+                whoPressButton:i,            
+                arrayBoolean:arrayBoolean,
+                timeAux:this.state.seconds,
+                time:this.state.timeToSing,
+                holdFlag:true,
+                isRunningTime:false,
+                seconds:0,
+                timesUp:false,
+                timer:timer,
+                isRunningTime:false,
+            });
+        }      
+       else {
+
+        this.setState({
+            whoPressButton:i,            
             arrayBoolean:arrayBoolean,
             timeAux:this.state.seconds,
             time:this.state.timeToSing,
             holdFlag:true,
-            isRunningTime:false,
             seconds:0,
             timesUp:false,
-        };
-        if (this.state.timer!=null) {
-            st.timer = clearInterval(this.state.timer);
+           });
+           
         }
-        this.setState(st);
+        
     }  
 
     VoteLike(index){
@@ -179,11 +192,12 @@ export default class mainScreen extends React.Component{
     }    
 
     Reset(){
-        if(this.state.timer!=null){
+        if(this.state.isRunningTime){
+            let timer = clearInterval(this.state.timer);
         this.setState({
             isRunningTime:false,
             seconds:0,
-            timer: clearInterval(this.state.timer)
+            timer: timer,
         })}else{
             this.setState({
                 isRunningTime:false,
@@ -205,7 +219,8 @@ export default class mainScreen extends React.Component{
                      timer:timerClear,
                      timesUp:true,
                      time:this.state.timeInitial,
-                     seconds:this.state.timeAux,
+                     seconds:this.state.timeAux,                
+                     
                      holdFlag:true,
                      timesUpVote:true,
                  }
@@ -216,11 +231,12 @@ export default class mainScreen extends React.Component{
 
     DesistirSing(){
 
-        if(this.state.timer!=null){
+        if(this.state.isRunningTime){
+            let timer = clearInterval(this.state.timer)
             this.setState({
                 isRunningTime:false,
                 seconds:0,
-                timer: clearInterval(this.state.timer)
+                timer: timer,
             })}else{
                 this.setState({
                     isRunningTime:false,
@@ -238,12 +254,14 @@ export default class mainScreen extends React.Component{
     }
 
     Done(){
+        let timer = clearInterval(this.state.timer)
         this.setState({
             isRunningTime:false,
-            timer:clearInterval(this.state.timer),
+            timer:timer,
             timesUp:true,
-            time:this.state.timeToVote,
             seconds:0,
+            time:this.state.timeToVote,
+            
         });
     }
 
@@ -277,19 +295,18 @@ export default class mainScreen extends React.Component{
                        seconds: this.state.seconds +1,
                        isRunningTime:true,
                        timer:timer,
-                       timesUp:true};
+                       };
                }else{ //lembrar de dar clear no interval   (done)      
                    let timerClear = clearInterval(timer);  
-                   return {seconds:0,
+                   return {
                        isRunningTime:false,
                        timer:timerClear,
-                       arrayTrueSize:0,
+                        seconds:0,                      
                        arrayBoolean:[false,false,false,false,false,false],                       
-                       votes: 0,
+                      
                        holdFlag: false,
                        timesUp:false,               
                        time:this.state.timeInitial,                       
-                       timeAux:0,
                        arrayVote:[0,0,0,0,0,0],
                        pontuacaoParcial:[0,0,0,0,0,0],
                        howManyWon:0,
@@ -308,20 +325,18 @@ export default class mainScreen extends React.Component{
                    return {
                        seconds: this.state.seconds +1,
                        isRunningTime:true,
-                       timer:timer,
-                       timesUp:false};
+                       timer:timer, 
+                   }                     
                }else{ //lembrar de dar clear no interval   (done)      
                    let timerClear = clearInterval(timer);  
-                   return {seconds:0,
+                   return {
+                       seconds:0,
                        isRunningTime:false,
                        timer:timerClear,
-                       arrayTrueSize:0,
                        arrayBoolean:[false,false,false,false,false,false],                       
-                       votes: 0,
                        holdFlag: false,
                        timesUp:true,               
                        time:this.state.timeInitial,                       
-                       timeAux:0,
                        arrayVote:[0,0,0,0,0,0],
                        pontuacaoParcial:[0,0,0,0,0,0],
                        howManyWon:0,
@@ -334,20 +349,17 @@ export default class mainScreen extends React.Component{
         
     }
 
+
     Skip(){
         
+    if(this.state.isRunningTime){    
         if(this.state.timesUp==false){
         this.Reset();
         this.setState({
-                    seconds:0,
-                    isRunningTime:false,
-                    arrayTrueSize:0,
                     arrayBoolean:[false,false,false,false,false,false],                       
-                    votes: 0,
                     holdFlag: false,
                     timesUp:true,               
                     time:this.state.timeInitial,                       
-                    timeAux:0,
                     arrayVote:[0,0,0,0,0,0],
                     pontuacaoParcial:[0,0,0,0,0,0],
                     howManyWon:0
@@ -355,23 +367,19 @@ export default class mainScreen extends React.Component{
         }else{
             this.Reset();
             this.setState({
-                seconds:0,
-                isRunningTime:false,
-                arrayTrueSize:0,
                 arrayBoolean:[false,false,false,false,false,false],                       
-                votes: 0,
                 holdFlag: false,
                 timesUp:false,               
                 time:this.state.timeInitial,                       
-                timeAux:0,
                 arrayVote:[0,0,0,0,0,0],
                 pontuacaoParcial:[0,0,0,0,0,0],
                 howManyWon:0
                 
-        });
+            });
+        }
     }
         
-    }
+}
  
     GameOver=()=>{
         this.props.navigation.navigate('Ranking');
@@ -383,7 +391,6 @@ export default class mainScreen extends React.Component{
         const ratio = 100/this.state.time;
         let circleProgress = this.state.seconds*ratio;
         let word = this.state.word;
-        let votes = this.state.votes;
         let stopTimer = this.StopTimer;
         let voteLike= this.VoteLike;
         let voteDislike = this.VoteDislike;
@@ -402,7 +409,6 @@ export default class mainScreen extends React.Component{
         let boolean4= arrayBoolean[3];
         let boolean5= arrayBoolean[4];
         let boolean6= arrayBoolean[5];
-        let arrayTrueSize = this.state.arrayTrueSize;
         let timer = this.state.timer;
         let skip = this.Skip;
         let countDownTimerLoop = this.CountDownTimerLoop;
@@ -422,23 +428,23 @@ export default class mainScreen extends React.Component{
                 if(holdFlag==false){
                     if(timesUp==false){
                         return(                
-                        <ScreenStart stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                        <ScreenStart stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} />
                     );
                     }else{ //continua a rolar caso o tempo acabe!
                         
                         return(
-                        <ScreenStartLoop stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word} votes={votes} />
+                        <ScreenStartLoop stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word}  />
                         );
                     }
                 }else{
                     if(timesUp==false) {
                         return(
-                            <ScreenSing stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} votes={votes} />
+                            <ScreenSing stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} />
                         );
                     } else{
                         if(timesUpVote==false){
                         return(
-                            <ScreenVote arrayVote={arrayVote} countDownTimerVote={countDownTimerVote} circleProgress={circleProgress} word={word} votes={votes} voteLike={voteLike} voteDislike={voteDislike}/>
+                            <ScreenVote arrayVote={arrayVote} countDownTimerVote={countDownTimerVote} circleProgress={circleProgress} word={word} voteLike={voteLike} voteDislike={voteDislike}/>
                         );}else{
                             return(
                                 <ScreenResults winOrlose={winOrlose} backToStart={this.BackToStart} computaVotos={this.computaVotos} arrayVote={arrayVote} pontuacaoParcial={pontuacaoParcial} whoPressButton={whoPressButton} />
@@ -506,7 +512,7 @@ class ScreenResults extends React.Component{
                                                
                 <Text style={[styles.welcome,{fontSize:45}]} >Resultado:</Text>
                 {this.winOrlose(this.props.winOrlose,pontuacaoParcial,this.props.whoPressButton)}                
-                <Button title='Voltar para o jogo' onPress={()=>{this.props.backToStart(this.props.whoPressButton)}} ></Button>
+                <Button color = '#23BAA7' title='Voltar para o jogo' onPress={()=>{this.props.backToStart(this.props.whoPressButton)}} ></Button>
 
             </View>
         );
@@ -924,7 +930,7 @@ class ScreenStartLoop extends React.Component{
         return(
             <View style={styles.wrapper}>
                 <View style={styles.Skip}>
-                    <Button title='Skip' onPress={()=> this.props.skip()} style={styles.welcome}>
+                    <Button color = '#23BAA7' title='Skip' onPress={()=> this.props.skip()} style={styles.welcome}>
                         <Feather name='refresh-ccw' size={30} color='ffffff'/>
                     </Button>
                 </View>
@@ -973,7 +979,7 @@ class ScreenStart extends React.Component{
         return(
             <View style={styles.wrapper}>
                 <View style={styles.Skip}>
-                    <Button title='Skip' onPress={()=> this.props.skip()} style={styles.welcome}>
+                    <Button color = '#23BAA7' title='Skip' onPress={()=> this.props.skip()} style={styles.welcome}>
                         <Feather name='refresh-ccw' size={30} color='ffffff'/>
                     </Button>
                 </View>
