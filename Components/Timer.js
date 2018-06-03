@@ -5,7 +5,9 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import Ranking from './Ranking'
+import Ranking from './Ranking';
+import WordGiver from './WordGiver.js';
+import dicionarie from './WordGiver.js';
 
 export default class mainScreen extends React.Component{
 
@@ -56,6 +58,13 @@ export default class mainScreen extends React.Component{
         
     }
       
+    componentDidMount(){
+        let word = dicionarie.giveWord();
+        this.setState({
+            word:word,
+        })
+    }
+
     BackToStart= (index) =>{
         let arrayTotalScore = this.state.arrayTotalScore;
         let winner = this.state.winner;
@@ -95,16 +104,6 @@ export default class mainScreen extends React.Component{
             });
         }      
        else {
-
-        this.setState({
-            whoPressButton:i,            
-            arrayBoolean:arrayBoolean,
-            timeAux:this.state.seconds,
-            time:this.state.timeToSing,
-            holdFlag:true,
-            seconds:0,
-            timesUp:false,
-           });
            
         }
         
@@ -200,7 +199,6 @@ export default class mainScreen extends React.Component{
             timer: timer,
         })}else{
             this.setState({
-                isRunningTime:false,
                 seconds:0,             
             })
         }
@@ -235,25 +233,20 @@ export default class mainScreen extends React.Component{
             let timer = clearInterval(this.state.timer)
             this.setState({
                 isRunningTime:false,
-                seconds:0,
-                timer: timer,
-            })}else{
-                this.setState({
-                    isRunningTime:false,
-                    seconds:0,             
-                })
-            }
-        this.setState({
-            isRunningTime:false,            
-            timesUp:false,
-            time:this.state.timeInitial,
-            seconds:this.state.timeAux,
-            holdFlag:false,
+                timer: timer,                        
+                timesUp:false,
+                time:this.state.timeInitial,
+                seconds:this.state.timeAux,
+                holdFlag:false,
 
-        });
+            });
+        }else{
+
+        }
     }
 
     Done(){
+        if(this.state.isRunningTime){
         let timer = clearInterval(this.state.timer)
         this.setState({
             isRunningTime:false,
@@ -263,6 +256,9 @@ export default class mainScreen extends React.Component{
             time:this.state.timeToVote,
             
         });
+        }else{
+
+        }
     }
 
     CountDownTimerSing(){
@@ -282,6 +278,7 @@ export default class mainScreen extends React.Component{
              }           
             })
          },1000);
+        
          
     }
 
@@ -298,12 +295,13 @@ export default class mainScreen extends React.Component{
                        };
                }else{ //lembrar de dar clear no interval   (done)      
                    let timerClear = clearInterval(timer);  
+                   let word = dicionarie.giveWord();
                    return {
                        isRunningTime:false,
                        timer:timerClear,
                         seconds:0,                      
                        arrayBoolean:[false,false,false,false,false,false],                       
-                      
+                      word:word,
                        holdFlag: false,
                        timesUp:false,               
                        time:this.state.timeInitial,                       
@@ -328,8 +326,10 @@ export default class mainScreen extends React.Component{
                        timer:timer, 
                    }                     
                }else{ //lembrar de dar clear no interval   (done)      
-                   let timerClear = clearInterval(timer);  
+                   let timerClear = clearInterval(timer); 
+                   let word = dicionarie.giveWord(); 
                    return {
+                       word:word,
                        seconds:0,
                        isRunningTime:false,
                        timer:timerClear,
@@ -352,10 +352,12 @@ export default class mainScreen extends React.Component{
 
     Skip(){
         
-    if(this.state.isRunningTime){    
+    if(this.state.isRunningTime){ 
+        let word = dicionarie.giveWord();   
         if(this.state.timesUp==false){
         this.Reset();
         this.setState({
+                    word:word,
                     arrayBoolean:[false,false,false,false,false,false],                       
                     holdFlag: false,
                     timesUp:true,               
@@ -367,6 +369,7 @@ export default class mainScreen extends React.Component{
         }else{
             this.Reset();
             this.setState({
+                word:word,
                 arrayBoolean:[false,false,false,false,false,false],                       
                 holdFlag: false,
                 timesUp:false,               
@@ -457,7 +460,6 @@ export default class mainScreen extends React.Component{
                     
                 }
             }else{
-                alert('acabou o jogo')
                 return(<GameOver acabouMermaoUhuls={this.GameOver} arrayTotalScore={arrayTotalScore}/>);
             }
     }
