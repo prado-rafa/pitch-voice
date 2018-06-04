@@ -10,7 +10,9 @@ import Timer from './Components/Timer'
 const IntroStack = createStackNavigator({
   Intro: Intro,
   Rules: Rules,
-  PreGame: PreGame
+  PreGame: PreGame,
+  Game: Game,
+  Ranking: Ranking,
 })
 
 export default createSwitchNavigator({

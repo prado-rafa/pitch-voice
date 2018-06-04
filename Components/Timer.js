@@ -6,11 +6,25 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ranking from './Ranking'
+import PreGame from './PreGame';
 
 export default class mainScreen extends React.Component{
-
+    
     constructor(props){
         super(props);
+
+        /*
+        variaveis vindas da tela PreGame
+        -> textInput: array com o nome dos jogadores
+        -> topScore: pontuação máxima
+        -> timeSing: tempo para cantar
+        -> showtime: tempo do jogo
+         */
+        const { navigation } = this.props;
+        const topScore = navigation.getParam('topScore');
+        const timeSing = navigation.getParam('timeSing');
+        const showtime = navigation.getParam('showtime');
+
         this.state = {
             gameOver:false,
             winOrlose: false,
@@ -20,7 +34,8 @@ export default class mainScreen extends React.Component{
             howManyWon: 0,
             arrayVote: [0,0,0,0,0,0], //pontuação parcial
             arrayTotalScore: [0,0,0,0,0,0],
-            winner:30,
+           /*  winner: 30, */
+            winner: JSON.stringify(topScore),
             pontuacaoMax: 10,
             penalidade: 1,
             whoPressButton:0,
@@ -30,15 +45,15 @@ export default class mainScreen extends React.Component{
             holdFlag: false,
             timesUp:false,
             timer: null,            
-            timeInitial:30,
+            /* timeInitial:30, */
+            timeInitial: JSON.stringify(showtime),
             time:30,
-            timeToSing:15,
+            /* timeToSing:15, */
+            timeToSing: JSON.stringify(timeSing),
             timeToVote:10,
             timeAux:0,                  
             seconds: 0,
             isRunningTime: false,
-            
-            
         } 
         
         this.VoteDislike = this.VoteDislike.bind(this);
@@ -382,7 +397,15 @@ export default class mainScreen extends React.Component{
 }
  
     GameOver=()=>{
-        this.props.navigation.navigate('Ranking');
+        this.props.navigation.navigate('Ranking', {
+            arrayTotalScore: arrayTotalScore,
+            text1: text1,
+            text2: text2,
+            text3: text3,
+            text4: text4,
+            text5: text5,
+            text6: text6,
+        });
     }
 
 

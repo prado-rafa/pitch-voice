@@ -20,8 +20,20 @@ export default class PreGame extends React.Component{
 	
 	constructor(props) {
 		super(props);
-		this.state = {textInput : [], redText: true, topScore: 100, timeSing: 30, showtime: 60, screenHeight: height, 
-					text1: "", text2: "", text3: "", text4: "", text5: "", text6: ""
+		this.state = {
+			textInput : [],
+			players: [],
+			redText: true,
+			topScore: 100, 
+			timeSing: 30, 
+			showtime: 30, 
+			screenHeight: height, 
+			text1: '', 
+			text2: '', 
+			text3: '', 
+			text4: '', 
+			text5: '', 
+			text6: '',
 		};
 	}
 	
@@ -34,19 +46,18 @@ export default class PreGame extends React.Component{
 		
 		let textInput = this.state.textInput;
 		
-		
 		if(key == 0){
 			textInput.push(<TextInput key={key} 
 			style={{height: 40, borderColor: 'red', borderWidth: 4, margin: 10}}
-			onChangeText={(text1) => this.setState({text1})}/>);
+			onChangeText={(text1) => this.setState({text1: text1})}/>);
 		} else if(key == 1){
 			textInput.push(<TextInput key={key} 
 			style={{height: 40, borderColor: 'yellow', borderWidth: 4, margin: 10}}
-			onChangeText={(text2) => this.setState({text2})}/>);
+			onChangeText={(text2) => this.setState({text2: text2})}/>);
 		} else if(key == 2){
 			textInput.push(<TextInput key={key} 
 			style={{height: 40, borderColor: 'green', borderWidth: 4, margin: 10}}
-			onChangeText={(text3) => this.setState({text3})}/>);
+			onChangeText={(text3) => this.setState({text3: text3})}/>);
 		} else if(key == 3){
 			textInput.push(<TextInput key={key} 
 			style={{height: 40, borderColor: 'darkblue', borderWidth: 4, margin: 10}}
@@ -61,8 +72,8 @@ export default class PreGame extends React.Component{
 			onChangeText={(text6) => this.setState({text6})}/>);
 		}		
 
-		this.setState ({textInput });
-	}
+		this.setState ({ textInput: textInput});
+	}	
 	
 	increaseScore = () =>{
 		this.setState({topScore: this.state.topScore + 50})
@@ -260,7 +271,17 @@ export default class PreGame extends React.Component{
 		
 		<Button 
 		title = "Play!"
-		onPress = {() => this.props.navigation.navigate('Game')}
+		onPress = {() => this.props.navigation.navigate('Game', {
+			topScore: this.state.topScore,
+			timeSing: this.state.timeSing,
+			showtime: this.state.showtime,
+			text1: this.state.text1,
+			text2: this.state.text2,
+			text3: this.state.text3,
+			text4: this.state.text4,
+			text5: this.state.text5,
+			text6: this.state.text6,
+		})}
 		color= '#23BAA7'
 		style = {{alignItems: 'flex-end'}} 
 		/>
