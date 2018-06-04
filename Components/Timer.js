@@ -1,18 +1,32 @@
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity,PanResponder} from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import Ranking from './Ranking';
+import Ranking from './Ranking'
 import WordGiver from './WordGiver.js';
 import dicionarie from './WordGiver.js';
 
 export default class mainScreen extends React.Component{
-
+    
     constructor(props){
         super(props);
+
+        /*
+        variaveis vindas da tela PreGame
+        -> textInput: array com o nome dos jogadores
+        -> topScore: pontuação máxima
+        -> timeSing: tempo para cantar
+        -> showtime: tempo do jogo
+         */
+        const { navigation } = this.props;
+        const topScore = navigation.getParam('topScore');
+        const timeSing = navigation.getParam('timeSing');
+        const showtime = navigation.getParam('showtime');
+        
+
         this.state = {
             gameOver:false,
             winOrlose: false,
@@ -22,7 +36,8 @@ export default class mainScreen extends React.Component{
             howManyWon: 0,
             arrayVote: [0,0,0,0,0,0], //pontuação parcial
             arrayTotalScore: [0,0,0,0,0,0],
-            winner:30,
+           /*  winner: 30, */
+            winner: JSON.stringify(topScore),
             pontuacaoMax: 10,
             penalidade: 1,
             whoPressButton:0,
@@ -32,15 +47,15 @@ export default class mainScreen extends React.Component{
             holdFlag: false,
             timesUp:false,
             timer: null,            
-            timeInitial:30,
+            /* timeInitial:30, */
+            timeInitial: JSON.stringify(showtime),
             time:30,
-            timeToSing:15,
+            /* timeToSing:15, */
+            timeToSing: JSON.stringify(timeSing),
             timeToVote:10,
             timeAux:0,                  
             seconds: 0,
             isRunningTime: false,
-            
-            
         } 
         
         this.VoteDislike = this.VoteDislike.bind(this);
@@ -78,9 +93,7 @@ export default class mainScreen extends React.Component{
             arrayVote:[0,0,0,0,0,0],
         });
         }else{
-            this.setState({
-                gameOver:true,
-            })
+            this.GameOver();
         }
     }
 
@@ -385,7 +398,23 @@ export default class mainScreen extends React.Component{
 }
  
     GameOver=()=>{
-        this.props.navigation.navigate('Ranking');
+        const { navigation } = this.props;
+        let arrayTotalScore = this.state.arrayTotalScore;
+        const text1 = navigation.getParam('text1');
+        const text2 = navigation.getParam('text2');
+        const text3 = navigation.getParam('text3');
+        const text4 = navigation.getParam('text4');
+        const text5 = navigation.getParam('text5');
+        const text6 = navigation.getParam('text6');
+        navigation.navigate('Ranking', {
+            arrayTotalScore: arrayTotalScore,
+            text1: text1,
+            text2: text2,
+            text3: text3,
+            text4: text4,
+            text5: text5,
+            text6: text6,
+        });
     }
 
 
@@ -427,7 +456,7 @@ export default class mainScreen extends React.Component{
         let gameIsOver = this.state.gameOver;
 
                         
-            if(!gameIsOver){     
+         
                 if(holdFlag==false){
                     if(timesUp==false){
                         return(                
@@ -459,33 +488,10 @@ export default class mainScreen extends React.Component{
                     
                     
                 }
-            }else{
-                return(<GameOver acabouMermaoUhuls={this.GameOver} arrayTotalScore={arrayTotalScore}/>);
-            }
+            
     }
 }
 
-class GameOver extends React.Component{
-    render(){
-        let arrayTotalScore = this.props.arrayTotalScore;
-        
-        return(
-            <View style={{flex:1,alignItems:'center',justifyContent:'center',backgroundColor:'#191A1E',flexDirection: 'column',}}>
-                                               
-                <Text style={[styles.welcome,{fontSize:45}]} >Score:</Text>
-                <Text style={styles.welcome}>{arrayTotalScore[0]}</Text>
-                <Text style={styles.welcome}>{arrayTotalScore[1]}</Text>  
-                <Text style={styles.welcome}>{arrayTotalScore[2]}</Text>                 
-                <Text style={styles.welcome}>{arrayTotalScore[3]}</Text>  
-                <Text style={styles.welcome}>{arrayTotalScore[4]}</Text>  
-                <Text style={styles.welcome}>{arrayTotalScore[5]}</Text>  
-
-                <Button title='Voltar para o jogo' onPress={()=>{this.props.acabouMermaoUhuls()}} ></Button>
-
-            </View>
-        );
-    }
-}
 
 class ScreenResults extends React.Component{
 

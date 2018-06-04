@@ -18,7 +18,7 @@ export default class Intro extends React.Component{
               <Text style={{color: '#23BAA7', fontSize: 30}}>?</Text>
             </TouchableOpacity> 
           </View>
-          <Text style={styles.welcome}>Pitch Voice</Text>
+          <Text style={styles.welcome2}>Pitch Voice</Text>
           <View style={styles.btnNew}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('PreGame')}>
               <Text style={{color: '#ffffff', fontSize: 20}}>Novo Jogo</Text>
@@ -36,6 +36,22 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
     }, 
+    welcome2: {
+      fontSize: 50,
+      textAlign: 'center',
+      fontWeight:'600',
+      color: '#ffffff',
+
+      flex:1,
+      backgroundColor: 'transparent',
+      alignItems: 'center',
+      justifyContent: 'space-between',
+      position:'absolute',
+      bottom: '45%',
+      left: '0%',
+      width: '100%',
+      height: '30%',
+    },
     welcome: {
       fontSize: 50,
       textAlign: 'center',
@@ -71,7 +87,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       position:'absolute',
       bottom: '25%',
-      left: '35%',
+      left: '33%',
       width: '35%',
       height: '10%',
     }
