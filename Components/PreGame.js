@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Alert, StyleSheet, Text, TextInput, View , Dimensions, ScrollView} from 'react-native';
-import Timer from './Timer'
+import MainScreen from './MainScreen'
 
 const { height } = Dimensions.get('window');
 
@@ -16,7 +16,7 @@ const { height } = Dimensions.get('window');
 */
 
 
-const { height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 
 /*
@@ -295,7 +295,7 @@ export default class PreGame extends React.Component{
 				
 				<Button 
 				title = "Play!"
-				onPress = {() => this.props.navigation.navigate('Timer', {
+				onPress = {() => this.props.navigation.navigate('MainScreen', {
 					topScore: this.state.topScore,
 					timeSing: this.state.timeSing,
 					showtime: this.state.showtime,

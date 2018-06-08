@@ -73,47 +73,6 @@ export default class Ranking extends React.Component {
         });
     }
 
-    //this function is called from Game to give points to a Player.
-    winPoints = (nome) => {
-        let rank = this.state.rank;
-        let currPoints = this.state.currPoints;
-        for (let i in rank) {
-            if (rank[i].name === nome && currPoints >= 0) {
-                rank[i].points += currPoints;
-                currPoints--;
-                break;
-            }
-        }
-        let rank2 = rank;
-        rank2.sort((a, b) => {
-
-            console.log("entrou")
-            if (a.points < b.points) {
-                console.log("a")
-                return 1;
-            } else if (b.points < a.points) {
-                console.log("b")
-                return -1;
-            } else {
-                if (a.name < b.name) {
-                    console.log("c")
-                    return 1;
-                } else if (b.name < a.name) {
-                    console.log("d")
-                    return -1;
-                }
-            }
-            console.log("e")
-            return 0;
-        }
-        );
-        console.log(rank2);
-        this.setState({
-            rank: rank2,
-            currPoints: currPoints
-        });
-    }
-
 
     render() {
         return (
@@ -145,38 +104,6 @@ export default class Ranking extends React.Component {
             </View>
         );
     }
-
-
-  render() {
-    return (
-        <View style={styles.container}>
-            <Text style={styles.welcome}>Ranking</Text>
-            {this.state.rank.map((p, i) => {
-                    return (
-                      <View key={i} style={{display: 'flex', flexDirection: 'row', margin: 10}}>
-                        <View style={{ flex: 1}}>
-                          <PlayersList Text={p.name}/>
-                        </View>
-                        <View style={{ flex: 1}}>
-                          <Score Text={p.points}/>
-                        </View>
-                    </View>                 
-                    );
-            })}
-            <View style={styles.gamebuttons}>
-                <MyButton
-                    onPress = {() => this.props.navigation.navigate('PreGame')}
-                    title = 'Novo Jogo'
-                />
-                <Text>    </Text>
-                <MyButton
-                    onPress = {() => this.props.navigation.navigate('Game')}
-                    title = 'Próxima Partida'
-                />
-            </View>
-        </View>
-    );
-  }
 }
 
 const styles = StyleSheet.create({
