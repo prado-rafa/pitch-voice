@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
 import Rules from './Rules'
 import PreGame from './PreGame'
 
@@ -9,7 +9,11 @@ export default class Intro extends React.Component{
       backgroundColor: '#23BAA7',
     },
   };
-
+  
+  componentDidMount(){
+      StatusBar.setHidden(true);
+  }
+      
   render(){
       return (
         <View style={styles.container}>
