@@ -47,14 +47,16 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             penalidade: 1, // o qto vai subtrair por acerto em cada round
             whoPressButton:0, // variavel pra saber o indice do array certo, diz quem apertou o botão pra cantar.
             stringColor: ['#F35558','#F5D150','#70CF97','#3880E9','#60C4FC','#BA69CF'], //array com as cores 
+            stringRGBAColor: ["rgba(235, 87, 87, 1)","rgba(243, 200, 83, 1)","rgba(113, 206, 151, 1)","rgba(49, 126, 242, 1)",
+                                "rgba(91, 203, 237, 1)","rgba(188, 106, 217, 1)"], //array com as cores em rgba
             arrayBoolean:[false,false,false,false,false,false], //array auxiliar que serve para desabilitar um jogador que ja cantou e serve tbm para mostrar quem vai cantar
             word:'TIMER',  // estado que é palavra do jogo
             holdFlag: false,  // flag para trocar de tela.
             timesUp:false, // flag para trocar de tela.
             timer: null,   // a funcao relogio.
             /* timeInitial:30, */
-            timeInitial: JSON.stringify(showtime), // isso aqui é o tempo que foi definido para os rounds
-            time:30, // variavel tempo que fica com o tempo atual
+            timeInitial: (JSON.stringify(showtime)*2), // isso aqui é o tempo que foi definido para os rounds
+            time:(JSON.stringify(showtime)*2), // variavel tempo que fica com o tempo atual
             /* timeToSing:15, */
             timeToSing: JSON.stringify(timeSing), // tempo definido para uma pessoa poder cantar.
             timeToVote:10, // tempo definido para ocorrer a votação
@@ -103,22 +105,23 @@ export default class MainScreen extends React.Component{ //classe que da tela do
     }
     // função que é chamada qdo alguém aperta o botão pra cantar
     StartSing = (i) => {
-        let arrayBoolean = this.state.arrayBoolean;
-        arrayBoolean[i] = true;
+        
         
         if(this.state.isRunningTime){
+            let arrayBoolean = this.state.arrayBoolean;
+            arrayBoolean[i] = true;
             let timer = clearInterval(this.state.timer);
             this.setState({
                 whoPressButton:i,            
                 arrayBoolean:arrayBoolean,
                 timeAux:this.state.seconds,
                 time:this.state.timeToSing,
-                holdFlag:true, // muda a tela
                 isRunningTime:false,
                 seconds:0,
                 timesUp:false,
                 timer:timer,
                 isRunningTime:false,
+                holdFlag:true, // muda a tela
             });
         }      
        else {
@@ -218,9 +221,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             seconds:0,
             timer: timer,
         })}else{
-            this.setState({
-                seconds:0,             
-            })
+            
         }
        
     }
@@ -251,13 +252,14 @@ export default class MainScreen extends React.Component{ //classe que da tela do
 
         if(this.state.isRunningTime){
             let timer = clearInterval(this.state.timer)
-            this.setState({
-                isRunningTime:false,
+            this.setState({                
                 timer: timer,                        
                 timesUp:false,
                 time:this.state.timeInitial,
                 seconds:this.state.timeAux,
                 holdFlag:false,
+                isRunningTime:false, /*correção de um bug q ao clicar rapidamente logo apos 
+                                    alguem cantar, tinha q esperar 1 segundo pra essa variavel atualizar*/
 
             });
         }else{
@@ -289,6 +291,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
              }else{ //lembrar de dar clear no interval   (done)      
                  let timerClear = clearInterval(timer);  
                  return {
+                     holdFlag:true,
                      isRunningTime:false,
                      timer:timerClear,
                      timesUp:true,
@@ -331,7 +334,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                         }
                     }           
                 })
-            },1000); 
+            },500); 
         }   
     }
  // timer da tela principal
@@ -363,7 +366,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                         }
                     }           
                    })
-                },1000);   
+                },500);   
             }            
             
         
@@ -455,6 +458,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         let done = this.Done;
         let whoPressButton = this.state.whoPressButton;
         let stringColor = this.state.stringColor;
+        let stringRGBAColor = this.state.stringRGBAColor;
         let arrayTotalScore = this.state.arrayTotalScore;
         let penalidade = this.state.penalidade;
         let arrayVote = this.state.arrayVote;
@@ -469,18 +473,18 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 if(holdFlag==false){
                     if(timesUp==false){ 
                         return(  //inicio, tela principal!
-                        <ScreenStart stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} />
+                        <ScreenStart stringRGBAColor={stringRGBAColor} stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} />
                     ); // se o tempo acabar (ou vc der skip) vai tabelar para ScreenStartLoop
                     }else{ 
                         
                         return( // também é a tela principal, porém aqui seria o Loop da tela, para existir varios rounds. (Tive problemas com o relogio para ter só uma tela que entraria em loop, preferi criar outra tela igual)
-                        <ScreenStartLoop stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word}  />
+                        <ScreenStartLoop stringRGBAColor={stringRGBAColor} stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word}  />
                         );// se o tempo acabar (ou vc der skip) vai tabelar para ScreenStart
                     }
                 }else{ // apertaram o botão então vai para a tela de cantar primeiro
                     if(timesUp==false) { //galera esta cantando aqui
                         return(
-                            <ScreenSing stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} />
+                            <ScreenSing stringRGBAColor={stringRGBAColor} stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} />
                         );
                     } else{  // terminou de cantar ou acabou o tempo
                         if(timesUpVote==false){ // hora de votar

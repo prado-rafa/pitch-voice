@@ -5,7 +5,8 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-
+import Progress from 'react-native-progress/Bar'; 
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 export default class ScreenStart extends React.Component{ 
 
@@ -26,36 +27,24 @@ export default class ScreenStart extends React.Component{
     }
 
     render(){
-        let arrayTotalScore = this.props.arrayTotalScore;
-        let stringColor = this.props.stringColor;
         return(
             <View style={styles.wrapper}>
                 <View style={styles.Skip}>
-                    <Button color = '#23BAA7' title='Skip' onPress={()=> this.props.skip()} style={styles.welcome}>
-                        <Feather name='refresh-ccw' size={30} color='ffffff'/>
-                    </Button>
+                    <ActionButton offsetX={0} offsetY={0} 
+                    position='center' size={60} 
+                    buttonColor = 'rgba(196, 196, 196, 1)' 
+                    buttonText='' onPress={()=> this.props.skip()}
+                    renderIcon={ () => <EvilIcons name='refresh' color='#000000' size={50} /> }
+                    >
+                        
+                    </ActionButton>
                 </View>
-                <View style={styles.ScoreTopLeft}>
-                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[0]}}>{arrayTotalScore[0]}</Text>
+                <View style={styles.musicIconCenter}>
+                    <Icon name='music' size={220} color='#686E75'/>               
                 </View>
-                <View style={styles.ScoreTopCenter}>
-                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[1]}}>{arrayTotalScore[1]}</Text>
-                </View>
-                <View style={styles.ScoreTopRight}>
-                    <Text style={{transform: [{ rotate: '180deg'}],color:stringColor[2]}}>{arrayTotalScore[2]}</Text>
-                </View>
-                <View style={styles.ScoreBottomLeft}>
-                    <Text style={{color:stringColor[3]}}>{arrayTotalScore[3]}</Text>
-                </View>
-                <View style={styles.ScoreBottomCenter}>
-                    <Text style={{color:stringColor[4]}}>{arrayTotalScore[4]}</Text>
-                </View>
-                <View style={styles.ScoreBottomRight}>
-                    <Text style={{color:stringColor[5]}}>{arrayTotalScore[5]}</Text>
-                </View>                
-                <ButtonTopRender  boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
+                <ButtonTopRender stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
                 <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
-                <ButtonBottomRender reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
+                <ButtonBottomRender stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
             </View>
         );
     }
@@ -66,18 +55,30 @@ class TimerRender extends React.Component{
         return(
             <View style={styles.container}>
                     <View style={styles.containerTimer}>
-                        <AnimatedCircularProgress
-                        size={200}
-                        width={15}            
-                        fill={this.props.circleProgress}
-                        tintColor="#23BAA7"
-                        backgroundColor="#3d5875"
+                        <Progress 
+                        progress={(this.props.circleProgress)/100}
+                        width={150}
+                        animationType='timing'
+                        borderRadius= {0}
+                        unfilledColor= '#464646' 
+                        color='#FFFFFF'
+                        borderWidth={0}                        
                         />
+                        <Progress style={{transform: [{ rotate: '180deg'}]}}
+                        progress={(this.props.circleProgress)/100}
+                        width={150}
+                        animationType='timing'
+                        borderRadius= {0}
+                        unfilledColor= '#464646' 
+                        color='#FFFFFF'
+                        borderWidth={0}                     
+                        />
+
                     </View>                     
                     <View style={styles.containerText}>
-                        <Text style={styles.rotateText} >{this.props.word}</Text>
-                        <Text style={styles.welcome}>{this.props.word}</Text>
-                    </View>  
+                        <Text style={styles.rotateWord} >{this.props.word}</Text>
+                        <Text style={styles.word}>{this.props.word}</Text>
+                    </View> 
             </View> 
         );
     }
@@ -124,32 +125,53 @@ class ButtonTopRender extends React.Component{
       }
     }
 
+    callForColor = (isActive, rgba) => {
+
+        if(isActive){
+            return "rgba(0, 0, 0, 0.80)"
+        }else{
+            return rgba
+        }
+
+    }
+
+    callForTextColor = (isActive, colorString) =>{
+
+        if(isActive){
+            return {fontWeight:'bold',color:colorString}
+        }else{
+            return {fontWeight:'bold'}
+        }
+    }
 
     render(){
+        let stringRGBAColor = this.props.stringRGBAColor;
+        let stringColor = this.props.stringColor;
+        let arrayTotalScore = this.props.arrayTotalScore;
         let boolean3 = this.props.boolean3;
         let boolean2 = this.props.boolean2;
         let boolean1 = this.props.boolean1;
         return( 
                    
             <View style={styles.actionButtonsTop}>
-                        <View style={styles.rightTop}>   
-                        <ActionButton verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)"
+                        <View style={styles.rightTop} >   
+                        <ActionButton buttonText={''+arrayTotalScore[2]} hideShadow={false}
+                        buttonTextStyle={this.callForTextColor(boolean3,stringColor[2])} offsetX={10} offsetY={10} size={100} verticalOrientation="down" position='right' spacing={5} buttonColor={this.callForColor(boolean3,stringRGBAColor[2])}
                         onPress={()=> this.callForSing(boolean3,this.props.i3) }
-                        renderIcon={ () => this.callForRenderIcon3(boolean3) } >
+                        />
                                                 
-                        </ActionButton>
+                        
                     </View>
                     <View style={styles.centerTop}>
-        <ActionButton verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)"
-                       onPress={()=> this.callForSing(boolean2,this.props.i2) } 
-                       renderIcon={ () => this.callForRenderIcon2(boolean2) } >
-                           
-                        </ActionButton>
+                    <ActionButton  buttonText={''+arrayTotalScore[1]} buttonTextStyle={this.callForTextColor(boolean2,stringColor[1])} offsetY={10} size={100} verticalOrientation="down" position='center' spacing={5} buttonColor={this.callForColor(boolean2,stringRGBAColor[1])}
+                        onPress={()=> this.callForSing(boolean2,this.props.i2) } 
+                    >                           
+                    </ActionButton>
                     </View>
                     <View style={styles.leftTop}>
-                        <ActionButton verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)"
-                         onPress={()=> this.callForSing(boolean1,this.props.i1) }
-                         renderIcon={ () => this.callForRenderIcon1(boolean1) } >
+                        <ActionButton buttonText={''+arrayTotalScore[0]} buttonTextStyle={this.callForTextColor(boolean1,stringColor[0])} offsetX={10} size={100} offsetY={10} verticalOrientation="down" position='left' spacing={5} buttonColor={this.callForColor(boolean1,stringRGBAColor[0])}
+                        onPress={()=> this.callForSing(boolean1,this.props.i1) }
+                        >
                           
                         </ActionButton>
                     </View>
@@ -168,32 +190,31 @@ class ButtonBottomRender extends React.Component{
         }
       }
 
-    callForRenderIcon6 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#BC6AD9'/>);
+      callForColor = (isActive, rgba) => {
+
+        if(isActive){
+            return "rgba(0, 0, 0, 0.80)"
         }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
+            return rgba
+        }
+
     }
 
-    callForRenderIcon5 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#5BCBED'/>);
-        }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
-    }
+    
+    callForTextColor = (isActive, colorString) =>{
 
-    callForRenderIcon4 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#317EF2'/>);
+        if(isActive){
+            return {color:colorString}
         }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
+            return {fontWeight:'normal'}
+        }
     }
 
 
     render(){
+        let stringRGBAColor = this.props.stringRGBAColor;
+        let stringColor = this.props.stringColor;
+        let arrayTotalScore = this.props.arrayTotalScore;
         let boolean6 = this.props.boolean6;
         let boolean5 = this.props.boolean5;
         let boolean4 = this.props.boolean4;
@@ -201,26 +222,27 @@ class ButtonBottomRender extends React.Component{
             <View style={styles.actionButtonsBottom}>  
                     <View style={styles.rightBottom}>
                        
-                        <ActionButton autoInactive={false} action={true} verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" 
-                        onPress={()=> this.callForSing(boolean6,this.props.i6) } 
-                        renderIcon={ () => this.callForRenderIcon6(boolean6) } >                        	
-                        >
-                                                
+                        <ActionButton buttonText={''+arrayTotalScore[5]} offsetX={10} offsetY={10} size={100} autoInactive={false} action={true} verticalOrientation="up" position='right' spacing={5} buttonColor={this.callForColor(boolean6,stringRGBAColor[5])} 
+                       buttonTextStyle={this.callForTextColor(boolean6,stringColor[5])}
+                       onPress={()=> this.callForSing(boolean6,this.props.i6) } 
+                        >                                                                   
                         </ActionButton>
                     </View> 
                     <View style={styles.centerBottom}>  
                     
-                    <ActionButton verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" 
+                    <ActionButton buttonText={''+arrayTotalScore[4]} offsetY={10} size={100} verticalOrientation="up" position='center'spacing={5} buttonColor={this.callForColor(boolean5,stringRGBAColor[4])} 
+                    buttonTextStyle={this.callForTextColor(boolean5,stringColor[4])}
                     onPress={()=> this.callForSing(boolean5,this.props.i5) }                         
-                    renderIcon={ () => this.callForRenderIcon5(boolean5) } >
+                     >
 
 
                     </ActionButton>
                     </View>
                     <View style={styles.leftBottom}>
-                    <ActionButton verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)"
+                    <ActionButton buttonText={''+arrayTotalScore[3]} offsetX={10} offsetY={10}  size={100} verticalOrientation="up" position='left' spacing={5} buttonColor={this.callForColor(boolean4,stringRGBAColor[3])}
+                        buttonTextStyle={this.callForTextColor(boolean4,stringColor[3])}
                         onPress={()=> this.callForSing(boolean4,this.props.i4) } 
-                        renderIcon={ () => this.callForRenderIcon4(boolean4) } >
+                      >
                           
                     </ActionButton>
                     </View>
@@ -229,13 +251,20 @@ class ButtonBottomRender extends React.Component{
     }
 }
 
+
 const styles = StyleSheet.create({
     wrapper:{
         flex:1,       
         backgroundColor: '#4E555D',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems:'stretch',
+        alignItems:'center',
+
+    },
+    musicIconCenter:{
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent:'center',
 
     },
     Skip:{
@@ -245,18 +274,22 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         position:'absolute',
-        top: '48.5%',
-        width: '20%',
-        height:'3%',
-        left: '43%',
+        top: '40%',
+        width: '11%',
+        height:'17%',
+        left: '10%',
         zIndex:2,
       },
-      welcome: {        
-        fontSize: 25,
+      word: {        
+        fontSize: 36,
         textAlign: 'center',
         margin: 10,
         fontWeight:'800',
-        color: '#23BAA7',
+        color: '#FFFFFF',
+        fontFamily: 'Roboto',
+        fontWeight: 'bold',
+
+
         
       },
       container: {
@@ -270,6 +303,7 @@ const styles = StyleSheet.create({
         zIndex:0,
       },
       containerTimer:{
+        flexDirection: 'row',
         alignItems:'center',
         position:'absolute',
         backgroundColor:'transparent',
@@ -280,15 +314,18 @@ const styles = StyleSheet.create({
         position:'absolute',
         zIndex:1,
     },
-    rotateText:{
+    rotateWord:{
         transform: [{ rotate: '180deg'}],
-        fontSize: 25,
-      textAlign: 'center',
-      margin: 10,
-      fontWeight:'800',
-      color: '#23BAA7',
+        fontSize: 36,
+        textAlign: 'center',
+        margin: 10,
+        fontWeight:'800',
+        color: '#FFFFFF',
+        fontFamily: 'Roboto',
+        fontWeight: 'bold',
     },
     actionButtonsTop:{
+
         flex:1,
           flexDirection: 'row',
           backgroundColor: 'transparent',
@@ -346,7 +383,6 @@ const styles = StyleSheet.create({
     },
     centerBottom:{
         flex:1,
-        flexDirection: 'row',
         backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -404,97 +440,8 @@ const styles = StyleSheet.create({
         height: '100%',
         left:'34%',
 
-    },
-      ScoreBottomCenter:{
-        flex:1,
-        position:'absolute',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bottom: '10%',
-        width: '10%',
-        height:'8%',
-        right: '43.9%',
-        paddingBottom:25,
-        zIndex:0,
-        borderRadius:10,
-
-    },ScoreBottomLeft:{
-        flex:1,
-        position:'absolute',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bottom: '10%',
-        width: '10%',
-        height:'8%',
-        left: '11%',
-        paddingBottom:25,
-        zIndex:0,
-        borderRadius:10,
-
-    },ScoreBottomRight:{
-        flex:1,
-        position:'absolute',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        bottom: '10%',
-        width: '10%',
-        height:'8%',
-        right: '11%',
-        paddingBottom:25,
-        zIndex:0,
-        borderRadius:10,
-
-    },ScoreTopCenter:{
-        flex:1,
-        position:'absolute',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        top: '10%',
-        width: '10%',
-        height:'8%',
-        right: '43.9%',
-        paddingTop:25,
-        zIndex:0,
-        borderRadius:10,
-
-    },ScoreTopLeft:{
-        flex:1,
-        position:'absolute',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        top: '10%',
-        width: '10%',
-        height:'8%',
-        left: '11%',
-        paddingTop:25,
-        zIndex:0,
-        borderRadius:10,
-
-    },ScoreTopRight:{
-        flex:1,
-        position:'absolute',
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center',
-        top: '10%',
-        width: '10%',
-        height:'8%',
-        right: '11%',
-        paddingTop:25,
-        zIndex:0,
-        borderRadius:10,
-
-    },
+    },    
 
 });
+
+
