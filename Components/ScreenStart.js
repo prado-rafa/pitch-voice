@@ -34,6 +34,7 @@ export default class ScreenStart extends React.Component{
                     position='center' size={60} 
                     buttonColor = 'rgba(196, 196, 196, 1)' 
                     buttonText='' onPress={()=> this.props.skip()}
+                    useNativeFeedback={false}
                     renderIcon={ () => <EvilIcons name='refresh' color='#000000' size={50} /> }
                     >
                         
@@ -128,7 +129,7 @@ class ButtonTopRender extends React.Component{
     callForColor = (isActive, rgba) => {
 
         if(isActive){
-            return "rgba(0, 0, 0, 0.80)"
+            return "rgba(51, 51, 51, 1)"
         }else{
             return rgba
         }
@@ -157,20 +158,20 @@ class ButtonTopRender extends React.Component{
                         <View style={styles.rightTop} >   
                         <ActionButton buttonText={''+arrayTotalScore[2]} hideShadow={false}
                         buttonTextStyle={this.callForTextColor(boolean3,stringColor[2])} offsetX={10} offsetY={10} size={100} verticalOrientation="down" position='right' spacing={5} buttonColor={this.callForColor(boolean3,stringRGBAColor[2])}
-                        onPress={()=> this.callForSing(boolean3,this.props.i3) }
+                        onPress={()=> this.callForSing(boolean3,this.props.i3) } useNativeFeedback={false}
                         />
                                                 
                         
                     </View>
                     <View style={styles.centerTop}>
                     <ActionButton  buttonText={''+arrayTotalScore[1]} buttonTextStyle={this.callForTextColor(boolean2,stringColor[1])} offsetY={10} size={100} verticalOrientation="down" position='center' spacing={5} buttonColor={this.callForColor(boolean2,stringRGBAColor[1])}
-                        onPress={()=> this.callForSing(boolean2,this.props.i2) } 
+                        onPress={()=> this.callForSing(boolean2,this.props.i2) } useNativeFeedback={false}
                     >                           
                     </ActionButton>
                     </View>
                     <View style={styles.leftTop}>
                         <ActionButton buttonText={''+arrayTotalScore[0]} buttonTextStyle={this.callForTextColor(boolean1,stringColor[0])} offsetX={10} size={100} offsetY={10} verticalOrientation="down" position='left' spacing={5} buttonColor={this.callForColor(boolean1,stringRGBAColor[0])}
-                        onPress={()=> this.callForSing(boolean1,this.props.i1) }
+                        onPress={()=> this.callForSing(boolean1,this.props.i1) } useNativeFeedback={false}
                         >
                           
                         </ActionButton>
@@ -193,7 +194,7 @@ class ButtonBottomRender extends React.Component{
       callForColor = (isActive, rgba) => {
 
         if(isActive){
-            return "rgba(0, 0, 0, 0.80)"
+            return "rgba(51, 51, 51, 1)"
         }else{
             return rgba
         }
@@ -224,7 +225,7 @@ class ButtonBottomRender extends React.Component{
                        
                         <ActionButton buttonText={''+arrayTotalScore[5]} offsetX={10} offsetY={10} size={100} autoInactive={false} action={true} verticalOrientation="up" position='right' spacing={5} buttonColor={this.callForColor(boolean6,stringRGBAColor[5])} 
                        buttonTextStyle={this.callForTextColor(boolean6,stringColor[5])}
-                       onPress={()=> this.callForSing(boolean6,this.props.i6) } 
+                       onPress={()=> this.callForSing(boolean6,this.props.i6) } useNativeFeedback={false}
                         >                                                                   
                         </ActionButton>
                     </View> 
@@ -232,7 +233,7 @@ class ButtonBottomRender extends React.Component{
                     
                     <ActionButton buttonText={''+arrayTotalScore[4]} offsetY={10} size={100} verticalOrientation="up" position='center'spacing={5} buttonColor={this.callForColor(boolean5,stringRGBAColor[4])} 
                     buttonTextStyle={this.callForTextColor(boolean5,stringColor[4])}
-                    onPress={()=> this.callForSing(boolean5,this.props.i5) }                         
+                    onPress={()=> this.callForSing(boolean5,this.props.i5) }   useNativeFeedback={false}                      
                      >
 
 
@@ -241,7 +242,7 @@ class ButtonBottomRender extends React.Component{
                     <View style={styles.leftBottom}>
                     <ActionButton buttonText={''+arrayTotalScore[3]} offsetX={10} offsetY={10}  size={100} verticalOrientation="up" position='left' spacing={5} buttonColor={this.callForColor(boolean4,stringRGBAColor[3])}
                         buttonTextStyle={this.callForTextColor(boolean4,stringColor[3])}
-                        onPress={()=> this.callForSing(boolean4,this.props.i4) } 
+                        onPress={()=> this.callForSing(boolean4,this.props.i4) } useNativeFeedback={false}
                       >
                           
                     </ActionButton>

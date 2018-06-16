@@ -1,12 +1,4 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
-import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Feather from 'react-native-vector-icons/Feather';
-import Ranking from './Ranking';
-import WordGiver from './WordGiver.js';
+import React from 'react';
 import dicionarie from './WordGiver.js';
 import ScreenStart from './ScreenStart';
 import ScreenResults from './ScreenResults';
@@ -39,7 +31,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             pontuacaoParcial:[0,0,0,0,0,0], //array que tem os pontos de cada round de cada jogador, por exemplo: [10,9,0,8,7,0].
             numPlayers:6, // quantidade de jogadores
             howManyWon: 0, // variavel que diz quantos jogadores ja ganharam pontos naquele round
-            arrayVote: [0,0,0,0,0,0], //arrya dos votos
+            arrayVote: [1,1,1,1,1,1], //arrya dos votos
             arrayTotalScore: [0,0,0,0,0,0], // array com pontuação total
            /*  winner: 30, */
             winner: JSON.stringify(topScore), // variavel que diz qtos pontos acaba o jogo
@@ -49,6 +41,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             stringColor: ['#F35558','#F5D150','#70CF97','#3880E9','#60C4FC','#BA69CF'], //array com as cores 
             stringRGBAColor: ["rgba(235, 87, 87, 1)","rgba(243, 200, 83, 1)","rgba(113, 206, 151, 1)","rgba(49, 126, 242, 1)",
                                 "rgba(91, 203, 237, 1)","rgba(188, 106, 217, 1)"], //array com as cores em rgba
+            stringColorOpacity:['#8D565B','#9D8D53','#5B8674','#426697','#51798A','#6F5C82'], //COR DO ICONE DO CENTRO DE musica
             arrayBoolean:[false,false,false,false,false,false], //array auxiliar que serve para desabilitar um jogador que ja cantou e serve tbm para mostrar quem vai cantar
             word:'TIMER',  // estado que é palavra do jogo
             holdFlag: false,  // flag para trocar de tela.
@@ -97,7 +90,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             holdFlag:false,
             timesUpVote:false,
             winOrlose:false,
-            arrayVote:[0,0,0,0,0,0],
+            arrayVote:[1,1,1,1,1,1],
         });
         }else{
             this.GameOver();
@@ -159,6 +152,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         for(let i in arrayVote){ 
              votes += arrayVote[i]; // soma os votos que estão no array
             }
+            votes = votes -1; // -1 pq agora o arrya vote começa com 1,1,1,1,1,1 dessa forma precisa tirar o voto de quem tá cantando, pois ele não vota mais.
         let arrayTotalScore = this.state.arrayTotalScore;
         let index = this.state.whoPressButton;
         let pontuacaoAtual = pontuacaoMax-(howManyWon*penalidade);
@@ -173,7 +167,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 pontuacaoParcial:pontuacaoParcial, 
                 winOrlose:true,
                 arrayTotalScore:arrayTotalScore,
-                arrayVote: [0,0,0,0,0,0],
+                arrayVote: [1,1,1,1,1,1],
             });
 
         }else if(votes==0){ // se for neutro é random! 50% de chance
@@ -187,19 +181,19 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                     pontuacaoParcial:pontuacaoParcial,
                     winOrlose:true,
                     arrayTotalScore:arrayTotalScore,
-                    arrayVote: [0,0,0,0,0,0],
+                    arrayVote: [1,1,1,1,1,1],
                 });
             }else{
                 this.setState({ //perdeu
                     winOrlose:false,
-                    arrayVote: [0,0,0,0,0,0],
+                    arrayVote: [1,1,1,1,1,1],
                 })
             }
 
         }else{ // perdeu 
             this.setState({
                 winOrlose:false,
-                arrayVote: [0,0,0,0,0,0],
+                arrayVote: [1,1,1,1,1,1],
             })
         }
     }
@@ -269,13 +263,15 @@ export default class MainScreen extends React.Component{ //classe que da tela do
  // avança logo para a tela de votação
     Done(){
         if(this.state.isRunningTime){
-        let timer = clearInterval(this.state.timer)
+        let timerClear = clearInterval(this.state.timer)
         this.setState({
             isRunningTime:false,
-            timer:timer,
+            timer:timerClear,
             timesUp:true,
-            seconds:0,
-            time:this.state.timeToVote,
+            time:this.state.timeInitial,
+            seconds:this.state.timeAux,              
+            holdFlag:true, 
+            timesUpVote:true,
             
         });
         }else{
@@ -291,12 +287,14 @@ export default class MainScreen extends React.Component{ //classe que da tela do
              }else{ //lembrar de dar clear no interval   (done)      
                  let timerClear = clearInterval(timer);  
                  return {
-                     holdFlag:true,
-                     isRunningTime:false,
-                     timer:timerClear,
-                     timesUp:true,
-                     time:this.state.timeToVote,
-                     seconds:0,
+                    isRunningTime:false,
+                    timer:timerClear,
+                    timesUp:true,
+                    time:this.state.timeInitial,
+                    seconds:this.state.timeAux,              
+                    
+                    holdFlag:true, 
+                    timesUpVote:true, 
                  }
              }           
             })
@@ -328,7 +326,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                        holdFlag: false,
                        timesUp:false,               
                        time:this.state.timeInitial,                       
-                       arrayVote:[0,0,0,0,0,0],
+                       arrayVote:[1,1,1,1,1,1],
                        pontuacaoParcial:[0,0,0,0,0,0],
                        howManyWon:0,
                         }
@@ -360,7 +358,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                        holdFlag: false, // mantem falso
                        timesUp:true,      // vai para a tela de ScreenStartLoop para poder ficar tabelando entre telas principais (para o jogador parece que só existe 1 tela)        
                        time:this.state.timeInitial,                       
-                       arrayVote:[0,0,0,0,0,0],
+                       arrayVote:[1,1,1,1,1,1],
                        pontuacaoParcial:[0,0,0,0,0,0],
                        howManyWon:0,
                         }
@@ -385,7 +383,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                     holdFlag: false,
                     timesUp:true,               
                     time:this.state.timeInitial,                       
-                    arrayVote:[0,0,0,0,0,0],
+                    arrayVote:[1,1,1,1,1,1],
                     pontuacaoParcial:[0,0,0,0,0,0],
                     howManyWon:0
         });
@@ -397,7 +395,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 holdFlag: false,
                 timesUp:false,               
                 time:this.state.timeInitial,                       
-                arrayVote:[0,0,0,0,0,0],
+                arrayVote:[1,1,1,1,1,1],
                 pontuacaoParcial:[0,0,0,0,0,0],
                 howManyWon:0
                 
@@ -459,13 +457,12 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         let whoPressButton = this.state.whoPressButton;
         let stringColor = this.state.stringColor;
         let stringRGBAColor = this.state.stringRGBAColor;
+        let stringColorOpacity = this.state.stringColorOpacity;
         let arrayTotalScore = this.state.arrayTotalScore;
-        let penalidade = this.state.penalidade;
         let arrayVote = this.state.arrayVote;
         let pontuacaoParcial = this.state.pontuacaoParcial;
         let timesUpVote = this.state.timesUpVote;
         let winOrlose = this.state.winOrlose;
-        let gameIsOver = this.state.gameOver;
 
         //lembrem-se se passar os parametros que quiserem como PROPS como está aqui embaixo
                         
@@ -484,7 +481,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 }else{ // apertaram o botão então vai para a tela de cantar primeiro
                     if(timesUp==false) { //galera esta cantando aqui
                         return(
-                            <ScreenSing stringRGBAColor={stringRGBAColor} stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} />
+                            <ScreenSing arrayVote={arrayVote} voteLike={voteLike} voteDislike={voteDislike} stringColorOpacity={stringColorOpacity} stringRGBAColor={stringRGBAColor} stringColor={stringColor}  whoPressButton={whoPressButton} done={done} desistirSing={desistirSing} countDownTimerSing={countDownTimerSing} circleProgress={circleProgress}  word={word} />
                         );
                     } else{  // terminou de cantar ou acabou o tempo
                         if(timesUpVote==false){ // hora de votar

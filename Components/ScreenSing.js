@@ -1,83 +1,43 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
 import {AnimatedCircularProgress} from 'react-native-circular-progress';
-import ActionButton from 'react-native-action-button';
+import ActionButton, { ActionButtonItem } from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
+import Progress from 'react-native-progress/Bar'; 
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class ScreenSing extends React.Component{
-    // função pra saber quem está cantando e daí renderizar o ícone indicador de quem está cantando
-    WhoIsSinging(index){
-        if(index == 0){
-            return(
-                <View style={styles.MusicIconTopLeft}>
-                        <Feather name='triangle' color='#F35558' size={60} style={{borderColor:'#F35558'}}/>
-                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
-                            <Icon name='music' color='#ffffff' size={20}/>
-                        </View>
-                </View>);
-               
-        }else if(index==1){
-            return(
-                <View style={styles.MusicIconTopCenter}>
-                        <Feather name='triangle' color='#F0CC58' size={60} style={{borderColor:'#F0CC58'}}/>
-                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
-                            <Icon name='music' color='#ffffff' size={20}/>
-                         </View>
-                </View>);
-        }else if(index==2){
-            return(<View style={styles.MusicIconTopRight}>
-                <Feather name='triangle' color='#77CC99' size={60} style={{borderColor:'#77CC99'}}/>
-                <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
-                    <Icon name='music' color='#ffffff' size={20}/>
-                </View>
-        </View>);            
-        }else if(index==3){
-            return(
-                <View style={styles.MusicIconBottomLeft}>
-                        <Feather name='triangle' color='#4278FA' size={60} style={{borderColor:'#4278FA'}}/>
-                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
-                            <Icon name='music' color='#ffffff' size={20}/>
-                        </View>
-                </View>
-            );
-           
-        } else if(index==4){
-            return(
-                <View style={styles.MusicIconBottomCenter}>
-                        <Feather name='triangle' color='#56CCF2' size={60} style={{borderColor:'#56CCF2'}}/>
-                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
-                            <Icon name='music' color='#ffffff' size={20}/>
-                        </View>
-                </View>
-            );
-        } else if(index==5){
-            return(
-                <View style={styles.MusicIconBottomRight}>
-                        <Feather name='triangle' color='#AE6FC6' size={60} style={{borderColor:'#AE6FC6'}}/>
-                        <View style={{transform: [{ rotate: '180deg'}], alignItems:'center',justifyContent:'center',position:'absolute',paddingBottom:10}}>
-                            <Icon name='music' color='#ffffff' size={20}/>
-                        </View>
-                </View>);            
-        }
-    }
-
-
+   
     render(){
-        
+        let stringColorOpacity = this.props.stringColorOpacity;        
         return(
             <View style={styles.wrapper}>
-                <View style={styles.StartTimer}>   
-                    <Button color='#23BAA7' title='Done' onPress={()=>{this.props.done()}}></Button>
+                <View style={{flex:1, flexDirection:'row', backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'space-between',position:'absolute',top: '40%',width: '11%',height:'17%',zIndex:2, right:'10%'}}>   
+                    <ActionButton offsetX={0} offsetY={0} 
+                    position='center' size={60} 
+                    buttonColor = 'rgba(196, 196, 196, 1)' 
+                    buttonText='' onPress={()=>{this.props.done()}}
+                    useNativeFeedback={false}
+                    renderIcon={ () => <Ionicons name='md-microphone' color='#FFFFFF' size={50} /> }
+                    />
                 </View>
-                <View style={styles.ResetTimer}>   
-                    <Button color='#23BAA7' title='Desistir' onPress={()=>{this.props.desistirSing()}}></Button>
+                <View style={styles.Skip}>   
+                    <ActionButton offsetX={0} offsetY={0} 
+                    position='center' size={60} 
+                    buttonColor = 'rgba(196, 196, 196, 1)' 
+                    buttonText='' onPress={()=>{this.props.desistirSing()}}
+                    useNativeFeedback={false}
+                    renderIcon={ () => <Icon name='flag' color='#FFFFFF' size={50} /> }
+                    />
                 </View>
-                {this.WhoIsSinging(this.props.whoPressButton)}
-                <ButtonTopRenderSing />
+                <View style={styles.musicIconCenter}>
+                    <Icon name='music' size={220} color={stringColorOpacity[this.props.whoPressButton]} />               
+                </View>
+                <ButtonTopRenderSing arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} whoPressButton={this.props.whoPressButton} stringRGBAColor={this.props.stringRGBAColor} />
                 <TimerRenderSing stringColor={this.props.stringColor} whoPressButton={this.props.whoPressButton} countDownTimerSing={this.props.countDownTimerSing} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
-                <ButtonBottomRenderSing/>
+                <ButtonBottomRenderSing arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} whoPressButton={this.props.whoPressButton} stringRGBAColor={this.props.stringRGBAColor} />
             </View>
         );
     }
@@ -142,67 +102,209 @@ class TimerRenderSing extends React.Component{
         return(
             <View style={styles.container}>
                     <View style={styles.containerTimer}>
-                        <AnimatedCircularProgress
-                        size={200}
-                        width={15}            
-                        fill={this.props.circleProgress}
-                        tintColor= {this.colorTimer(this.props.stringColor,this.props.whoPressButton)}
-                        backgroundColor="#3d5875"
+                        <Progress 
+                        progress={(this.props.circleProgress)/100}
+                        width={150}
+                        animationType='timing'
+                        borderRadius= {0}
+                        unfilledColor= {this.colorTimer(this.props.stringColor,this.props.whoPressButton)} 
+                        color='#FFFFFF'
+                        borderWidth={0}                        
+                        />
+                        <Progress style={{transform: [{ rotate: '180deg'}]}}
+                        progress={(this.props.circleProgress)/100}
+                        width={150}
+                        animationType='timing'
+                        borderRadius= {0}
+                        unfilledColor= {this.colorTimer(this.props.stringColor,this.props.whoPressButton)} 
+                        color='#FFFFFF'
+                        borderWidth={0}                     
                         />
                     </View>                     
                     <View style={styles.containerText}>
-                        <Text style={styles.rotateText} >{this.props.word}</Text>
-                        <Text style={styles.welcome}>{this.props.word}</Text>
+                        <Text style={styles.rotateWord} >{this.props.word}</Text>
+                        <Text style={styles.word}>{this.props.word}</Text>
                     </View>  
             </View> 
         );
     }
 }
 class ButtonTopRenderSing extends React.Component{
+
+    changeVote= (arrayVote,index)=>{
+        
+        if((arrayVote[index]<0)){
+            this.props.voteLike(index);
+        }else{
+            this.props.voteDislike(index);
+        }
+    }
+
+    changeButtonIcon=(arrayVote,index)=>{
+        if(arrayVote[index]>=0){
+            return (<Feather name="check" color='#ffffff'size={70} />);
+        }else{
+            return (<Feather name="x" color='#ffffff'size={70} />);
+        }
+    }
+
+    buttonSing0 = (index,arrayVote) =>{
+        
+        if(index==0){
+           return( <View style={styles.leftTop}>
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} /> }  >
+                </ActionButton>
+            </View>
+           );            
+        }else{
+            return(
+            <View style={styles.leftTop}>
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,0) } verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,0)} >
+                </ActionButton>
+            </View>
+            );
+        }
+    }
+
+    buttonSing1 = (index,arrayVote) =>{
+        
+        if(index==1){
+           return(<View style={styles.centerTop}>
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} >             
+                </ActionButton>
+            </View>
+           );
+        }else{
+            return(
+            <View style={styles.centerTop}>
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,1) } verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,1)} >         
+                </ActionButton>
+            </View>
+            );
+        }
+
+    }
+
+
+    buttonSing2=(index,arrayVote)=>{
+
+        if(index==2){
+            return(
+            <View style={styles.rightTop}>   
+                <ActionButton useNativeFeedback={false} offsetX={10} offsetY={10} size={100} verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} >
+                </ActionButton>
+            </View>
+            );
+        }else{
+            return(
+            <View style={styles.rightTop}>   
+                        <ActionButton useNativeFeedback={false} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,2) } size={100} verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,2)} >
+                        </ActionButton>
+            </View>
+            );
+        }
+    }
+
+
     render(){
+        
         return( 
-                   
             <View style={styles.actionButtonsTop}>
-                        <View style={styles.rightTop}>   
-                        <ActionButton verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={active => <Feather name="x" color='#ffffff'/>} useNativeFeedback={false}>
-                        </ActionButton>
-                    </View>
-                    <View style={styles.centerTop}>
-        <ActionButton verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={active => <Feather name="x" color='#ffffff'/>} useNativeFeedback={false}>
-                           
-                        </ActionButton>
-                    </View>
-                    <View style={styles.leftTop}>
-        <ActionButton verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={active => <Feather name="x" color='#ffffff'/>} useNativeFeedback={false}>
-                        </ActionButton>
-                    </View>
+            {this.buttonSing0(this.props.whoPressButton,this.props.arrayVote)}
+            {this.buttonSing1(this.props.whoPressButton,this.props.arrayVote)}
+            {this.buttonSing2(this.props.whoPressButton,this.props.arrayVote)}
             </View>
         );
     }
 
 }
 class ButtonBottomRenderSing extends React.Component{
+    
+    changeVote= (arrayVote,index)=>{
+        
+        if((arrayVote[index]<0)){
+            this.props.voteLike(index);
+        }else{
+            this.props.voteDislike(index);
+        }
+    }
+
+    changeButtonIcon=(arrayVote,index)=>{
+        if(arrayVote[index]>=0){
+            return (<Feather name="check" color='#ffffff'size={70} />);
+        }else{
+            return (<Feather name="x" color='#ffffff'size={70} />);
+        }
+    }
+
+    buttonSing3 = (index,arrayVote) =>{
+
+        if(index==3){
+           return(
+            <View style={styles.leftBottom}>
+                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
+                </ActionButton>
+            </View>
+           );            
+        }else{
+            return(
+            <View style={styles.leftBottom}>
+                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,3) } verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,3)} useNativeFeedback={false}>
+                </ActionButton>
+            </View>
+            );
+        }
+    }
+
+    buttonSing4 = (index,arrayVote) =>{
+        
+        if(index==4){
+           return(
+            <View style={styles.centerBottom}>  
+                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
+                </ActionButton>
+            </View>
+           );
+        }else{
+            return(
+            <View style={styles.centerBottom}>  
+                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,4) } verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,4)} useNativeFeedback={false}>
+                </ActionButton>
+            </View>
+            );
+        }
+
+    }
+
+
+    buttonSing5=(index,arrayVote)=>{
+
+        if(index==5){
+            return(
+                <View style={styles.rightBottom}>
+                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
+                                                   
+                 </ActionButton>
+            </View> 
+            );
+        }else{
+            return(
+                <View style={styles.rightBottom}>
+                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,5) } verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,5)} useNativeFeedback={false}>
+                                                   
+                 </ActionButton>
+            </View> 
+            );
+        }
+    }
 
     render(){
         return(
             <View style={styles.actionButtonsBottom}>  
-                    <View style={styles.rightBottom}>
-                        <ActionButton verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" renderIcon={active => <Feather name="x" color='#ffffff'/>} useNativeFeedback={false}>
-                                                           
-                         </ActionButton>
-                    </View> 
-                    <View style={styles.centerBottom}>  
-                    
-                    <ActionButton verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" renderIcon={active => <Feather name="x" color='#ffffff'/>} useNativeFeedback={false}>
-                                                
-                    </ActionButton>
-                    </View>
-                    <View style={styles.leftBottom}>
-                    <ActionButton verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)" renderIcon={active => <Feather name="x" color='#ffffff'/>} useNativeFeedback={false}>
-                                                
-                    </ActionButton>
-                    </View>
-                </View>
+                {this.buttonSing3(this.props.whoPressButton,this.props.arrayVote)}
+                {this.buttonSing4(this.props.whoPressButton,this.props.arrayVote)}
+                {this.buttonSing5(this.props.whoPressButton,this.props.arrayVote)}
+            </View>
         );
     }
 
@@ -215,44 +317,41 @@ const styles = StyleSheet.create({
         backgroundColor: '#4E555D',
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems:'stretch',
+        alignItems:'center',
 
     },
-    welcome: {        
-        fontSize: 25,
-        textAlign: 'center',
-        margin: 10,
-        fontWeight:'800',
-        color: '#23BAA7',
-        
-      },
-    StartTimer:{
+    musicIconCenter:{
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent:'center',
+
+    },
+    Skip:{
         flex:1,
         flexDirection: 'row',
         backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'space-between',
         position:'absolute',
-        top: '45%',
-        width: '25%',
-        height:'5%',
-        left: '0%',
-        zIndex:1,
+        top: '40%',
+        width: '11%',
+        height:'17%',
+        left: '10%',
+        zIndex:2,
       },
-    ResetTimer:{
-      flex:1,
-      flexDirection: 'row',
-      backgroundColor: 'transparent',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      position:'absolute',
-      top: '45%',
-      width: '25%',
-      height:'5%',
-      right: '0%',
-      zIndex:1,
-    },
-    container: {
+      word: {        
+        fontSize: 36,
+        textAlign: 'center',
+        margin: 10,
+        fontWeight:'800',
+        color: '#FFFFFF',
+        fontFamily: 'Roboto',
+        fontWeight: 'bold',
+
+
+        
+      },
+      container: {
         backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'center',
@@ -262,7 +361,8 @@ const styles = StyleSheet.create({
         left: '0%',
         zIndex:0,
       },
-    containerTimer:{
+      containerTimer:{
+        flexDirection: 'row',
         alignItems:'center',
         position:'absolute',
         backgroundColor:'transparent',
@@ -273,15 +373,18 @@ const styles = StyleSheet.create({
         position:'absolute',
         zIndex:1,
     },
-    rotateText:{
+    rotateWord:{
         transform: [{ rotate: '180deg'}],
-        fontSize: 25,
-      textAlign: 'center',
-      margin: 10,
-      fontWeight:'800',
-      color: '#23BAA7',
+        fontSize: 36,
+        textAlign: 'center',
+        margin: 10,
+        fontWeight:'800',
+        color: '#FFFFFF',
+        fontFamily: 'Roboto',
+        fontWeight: 'bold',
     },
     actionButtonsTop:{
+
         flex:1,
           flexDirection: 'row',
           backgroundColor: 'transparent',
@@ -339,7 +442,6 @@ const styles = StyleSheet.create({
     },
     centerBottom:{
         flex:1,
-        flexDirection: 'row',
         backgroundColor: 'transparent',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -397,86 +499,5 @@ const styles = StyleSheet.create({
         height: '100%',
         left:'34%',
 
-    },
-    MusicIconBottomCenter:{ //bottomCenter alterar nome
-    flex:1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:'absolute',
-    bottom: '15%',
-    width: '20%',
-    height:'10%',
-    right: '39%',
-    zIndex:0,
-    transform: [{ rotate: '180deg'}],
-  },
-  MusicIconBottomLeft:{
-      flex:1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:'absolute',
-    bottom: '15%',
-    width: '20%',
-    height:'10%',
-    left: '6%',
-    zIndex:0,
-    transform: [{ rotate: '180deg'}],
-  },
-  MusicIconBottomRight:{
-      flex:1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:'absolute',
-    bottom: '15%',
-    width: '20%',
-    height:'10%',
-    right: '6%',
-    zIndex:0,
-    transform: [{ rotate: '180deg'}],
-  },
-  MusicIconTopCenter:{
-      flex:1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:'absolute',
-    top: '15%',
-    width: '20%',
-    height:'10%',
-    right: '39%',
-    zIndex:0,
-  },
-  MusicIconTopLeft:{
-      flex:1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:'absolute',
-    top: '15%',
-    width: '20%',
-    height:'10%',
-    left: '6%',
-    zIndex:0,
-  },
-  MusicIconTopRight:{
-    flex:1,
-    flexDirection: 'row',
-    backgroundColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position:'absolute',
-    top: '15%',
-    width: '20%',
-    height:'10%',
-    right: '6%',
-    zIndex:0,
-  },
+    },    
 });
