@@ -15,13 +15,18 @@ export default class ScreenResults extends React.Component{
 
     componentDidMount(){
         this.props.computaVotos();
+        setTimeout( () => {this.props.backToStart(this.props.whoPressButton)} ,3000);  //qdo passar 5s sia de ScreenResults
     }
+
+    componentWillUnmount(){
+        clearTimeout();
+    }
+
     // retorna se a pessoa ganhou ou perdeu
     winOrlose(boolean,votes){
         if(boolean){ 
 
             if(votes==5){
-                alert('entrou em texto'); // 5 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -127,7 +132,6 @@ export default class ScreenResults extends React.Component{
             );
 
         }else if(votes==1){
-            alert('entrou');
             return(
                 <View style={styles.stars}>
                     <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
@@ -211,12 +215,11 @@ export default class ScreenResults extends React.Component{
                 {this.winOrlose(this.props.winOrlose,votes)}
                 </View>
                 {this.stars(votes)}
-                {alert(votes)}
                 <View style={{alignItems:'center', left:'39%', right:'39%', top:'52.5%',bottom:'32%',backgroundColor:'transparent',position:'absolute'}}>
                     <Text style={[styles.resultText,{fontSize:40}]} >+{pontuacaoParcial[whoPressButton]}</Text>
                 </View>
                 <View style={{bottom:'0%', left:'40%',right:'40%',top:'90%',alignItems:'center',position:'absolute',flex:1}} >
-                    <Button title='Retornar' onPress={()=> this.props.backToStart(whoPressButton)} color='#000000'  />
+                  {/* <Button title='Retornar' onPress={()=> this.props.backToStart(whoPressButton)} color='#000000'  /> */}
                 </View>                    
                 
 
