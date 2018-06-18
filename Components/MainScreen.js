@@ -56,6 +56,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             timeAux:0,   // variavel que guarda o tempo pausado, para qdo voltar, saber em qtos segundos estava
             seconds: 0, // variavel q mostra os segundos no momento
             isRunningTime: false, // diz se algum relogio esta rodando ou se esta parado
+            votes: 0,
         } 
         
         this.VoteDislike = this.VoteDislike.bind(this);
@@ -163,6 +164,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             arrayTotalScore[index] = pontuacaoAtual+arrayTotalScore[index];
 
             this.setState({
+                votes:votes,
                 howManyWon:howManyWon+1,
                 pontuacaoParcial:pontuacaoParcial, 
                 winOrlose:true,
@@ -177,6 +179,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 arrayTotalScore[index] = pontuacaoAtual+arrayTotalScore[index];
     
                 this.setState({
+                    votes:votes,
                     howManyWon:howManyWon+1,
                     pontuacaoParcial:pontuacaoParcial,
                     winOrlose:true,
@@ -185,6 +188,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 });
             }else{
                 this.setState({ //perdeu
+                    votes:votes,
                     winOrlose:false,
                     arrayVote: [1,1,1,1,1,1],
                 })
@@ -192,6 +196,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
 
         }else{ // perdeu 
             this.setState({
+                votes:votes,
                 winOrlose:false,
                 arrayVote: [1,1,1,1,1,1],
             })
@@ -463,6 +468,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         let pontuacaoParcial = this.state.pontuacaoParcial;
         let timesUpVote = this.state.timesUpVote;
         let winOrlose = this.state.winOrlose;
+        let votes = this.state.votes;
 
         //lembrem-se se passar os parametros que quiserem como PROPS como está aqui embaixo
                         
@@ -489,7 +495,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                             <ScreenVote arrayVote={arrayVote} countDownTimerVote={countDownTimerVote} circleProgress={circleProgress} word={word} voteLike={voteLike} voteDislike={voteDislike}/>
                         );}else{  // acabou tempo de votação e mostra tela de resultado da votação.
                             return(
-                                <ScreenResults winOrlose={winOrlose} backToStart={this.BackToStart} computaVotos={this.computaVotos} arrayVote={arrayVote} pontuacaoParcial={pontuacaoParcial} whoPressButton={whoPressButton} />
+                                <ScreenResults votes={votes} stringColor={stringColor} winOrlose={winOrlose} backToStart={this.BackToStart} computaVotos={this.computaVotos} arrayVote={arrayVote} pontuacaoParcial={pontuacaoParcial} whoPressButton={whoPressButton} />
                             );
                         }
 
