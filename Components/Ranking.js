@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import PreGame from './PreGame'
+import PreGame from './PreGame';
+import {ScreenOrientation} from 'expo';
 
 
 
@@ -41,6 +42,7 @@ export default class Ranking extends React.Component {
         };
     }
     componentDidMount() {
+        this.changeScreenOrientation();
         // recieve players from Game ou Timer
         const { navigation } = this.props;
         const text1 = navigation.getParam('text1');
@@ -72,6 +74,10 @@ export default class Ranking extends React.Component {
             rank: rank
         });
     }
+
+    changeScreenOrientation() {
+        ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+      }
 
 
     render() {

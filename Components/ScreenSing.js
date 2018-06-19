@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
-import {AnimatedCircularProgress} from 'react-native-circular-progress';
 import ActionButton, { ActionButtonItem } from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';

@@ -1,7 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
-import Rules from './Rules'
-import PreGame from './PreGame'
+import Rules from './Rules';
+import PreGame from './PreGame';
+import {ScreenOrientation} from 'expo';
+
+
 
 export default class Intro extends React.Component{
   static navigationOptions = {
@@ -11,8 +14,15 @@ export default class Intro extends React.Component{
   };
   
   componentDidMount(){
-      StatusBar.setHidden(true);
+      StatusBar.setHidden(true); 
+      this.changeScreenOrientation();
+
   }
+
+  changeScreenOrientation() {
+    ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+  }
+  
       
   render(){
       return (

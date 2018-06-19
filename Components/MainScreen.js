@@ -3,8 +3,8 @@ import dicionarie from './WordGiver.js';
 import ScreenStart from './ScreenStart';
 import ScreenResults from './ScreenResults';
 import ScreenSing from './ScreenSing';
-import ScreenVote from './ScreenVote';
 import ScreenStartLoop from './ScreenStartLoop';
+import {ScreenOrientation} from 'expo';
 
 export default class MainScreen extends React.Component{ //classe que da tela do jogo! todas outras telas do jogo são chamadas aqui!
     
@@ -75,11 +75,16 @@ export default class MainScreen extends React.Component{ //classe que da tela do
     }
       // função que roda qdo a tela principal é chamada, atualiza o nome que vai ser sorteado.
     componentDidMount(){ 
+        this.changeScreenOrientation();
         let word = dicionarie.giveWord();
         this.setState({
             word:word,
         })
     }
+    changeScreenOrientation() {
+        ScreenOrientation.allow(ScreenOrientation.Orientation.LANDSCAPE);
+      }
+
     // função que é chamada qdo você vai para tela de resultados. Aqui você descobre se volta para a ScreenStart ou Se o jogo acabou.
     BackToStart= (index) =>{  
         let arrayTotalScore = this.state.arrayTotalScore;
@@ -492,7 +497,8 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                     } else{  // terminou de cantar ou acabou o tempo
                         if(timesUpVote==false){ // hora de votar
                         return(
-                            <ScreenVote arrayVote={arrayVote} countDownTimerVote={countDownTimerVote} circleProgress={circleProgress} word={word} voteLike={voteLike} voteDislike={voteDislike}/>
+                            <Text>//antes era screenVote
+                            </Text>
                         );}else{  // acabou tempo de votação e mostra tela de resultado da votação.
                             return(
                                 <ScreenResults votes={votes} stringColor={stringColor} winOrlose={winOrlose} backToStart={this.BackToStart} computaVotos={this.computaVotos} arrayVote={arrayVote} pontuacaoParcial={pontuacaoParcial} whoPressButton={whoPressButton} />
