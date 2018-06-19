@@ -34,9 +34,9 @@ export default class ScreenSing extends React.Component{
                 <View style={styles.musicIconCenter}>
                     <Icon name='music' size={220} color={stringColorOpacity[this.props.whoPressButton]} />               
                 </View>
-                <ButtonTopRenderSing arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} whoPressButton={this.props.whoPressButton} stringRGBAColor={this.props.stringRGBAColor} />
+                <ButtonTopRenderSing stringRGBAColor={this.props.stringRGBAColor} arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} whoPressButton={this.props.whoPressButton} stringRGBAColor={this.props.stringRGBAColor} />
                 <TimerRenderSing stringColor={this.props.stringColor} whoPressButton={this.props.whoPressButton} countDownTimerSing={this.props.countDownTimerSing} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
-                <ButtonBottomRenderSing arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} whoPressButton={this.props.whoPressButton} stringRGBAColor={this.props.stringRGBAColor} />
+                <ButtonBottomRenderSing stringRGBAColor={this.props.stringRGBAColor} arrayVote={this.props.arrayVote} voteLike={this.props.voteLike} voteDislike={this.props.voteDislike} whoPressButton={this.props.whoPressButton} stringRGBAColor={this.props.stringRGBAColor} />
             </View>
         );
     }
@@ -151,14 +151,14 @@ class ButtonTopRenderSing extends React.Component{
         
         if(index==0){
            return( <View style={styles.leftTop}>
-                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} /> }  >
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} verticalOrientation="down" position='left' spacing={5} buttonColor={this.props.stringRGBAColor[0]} renderIcon={active => <Icon name="music" color='#ffffff' size={50} /> }  >
                 </ActionButton>
             </View>
            );            
         }else{
             return(
             <View style={styles.leftTop}>
-                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,0) } verticalOrientation="down" position='left' spacing={5} buttonColor="rgba(235, 87, 87, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,0)} >
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,0) } verticalOrientation="down" position='left' spacing={5} buttonColor={this.props.stringRGBAColor[0]} renderIcon={active => this.changeButtonIcon(arrayVote,0)} >
                 </ActionButton>
             </View>
             );
@@ -169,14 +169,14 @@ class ButtonTopRenderSing extends React.Component{
         
         if(index==1){
            return(<View style={styles.centerTop}>
-                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} >             
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} verticalOrientation="down" position='center' spacing={5} buttonColor={this.props.stringRGBAColor[1]} renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} >             
                 </ActionButton>
             </View>
            );
         }else{
             return(
             <View style={styles.centerTop}>
-                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,1) } verticalOrientation="down" position='center' spacing={5} buttonColor="rgba(243, 200, 83, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,1)} >         
+                <ActionButton useNativeFeedback={false} size={100} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,1) } verticalOrientation="down" position='center' spacing={5} buttonColor={this.props.stringRGBAColor[1]} renderIcon={active => this.changeButtonIcon(arrayVote,1)} >         
                 </ActionButton>
             </View>
             );
@@ -190,14 +190,14 @@ class ButtonTopRenderSing extends React.Component{
         if(index==2){
             return(
             <View style={styles.rightTop}>   
-                <ActionButton useNativeFeedback={false} offsetX={10} offsetY={10} size={100} verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} >
+                <ActionButton useNativeFeedback={false} offsetX={10} offsetY={10} size={100} verticalOrientation="down" position='right' spacing={5} buttonColor={this.props.stringRGBAColor[2]} renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} >
                 </ActionButton>
             </View>
             );
         }else{
             return(
             <View style={styles.rightTop}>   
-                        <ActionButton useNativeFeedback={false} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,2) } size={100} verticalOrientation="down" position='right' spacing={5} buttonColor="rgba(113, 206, 151, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,2)} >
+                        <ActionButton useNativeFeedback={false} offsetX={10} offsetY={10} onPress={()=>this.changeVote(arrayVote,2) } size={100} verticalOrientation="down" position='right' spacing={5} buttonColor={this.props.stringRGBAColor[2]} renderIcon={active => this.changeButtonIcon(arrayVote,2)} >
                         </ActionButton>
             </View>
             );
@@ -241,14 +241,14 @@ class ButtonBottomRenderSing extends React.Component{
         if(index==3){
            return(
             <View style={styles.leftBottom}>
-                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
+                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='left' spacing={5} buttonColor={this.props.stringRGBAColor[3]} renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
                 </ActionButton>
             </View>
            );            
         }else{
             return(
             <View style={styles.leftBottom}>
-                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,3) } verticalOrientation="up" position='left' spacing={5} buttonColor="rgba(49, 126, 242, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,3)} useNativeFeedback={false}>
+                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,3) } verticalOrientation="up" position='left' spacing={5} buttonColor={this.props.stringRGBAColor[3]} renderIcon={active => this.changeButtonIcon(arrayVote,3)} useNativeFeedback={false}>
                 </ActionButton>
             </View>
             );
@@ -260,14 +260,14 @@ class ButtonBottomRenderSing extends React.Component{
         if(index==4){
            return(
             <View style={styles.centerBottom}>  
-                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
+                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='center'spacing={5} buttonColor={this.props.stringRGBAColor[4]} renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
                 </ActionButton>
             </View>
            );
         }else{
             return(
             <View style={styles.centerBottom}>  
-                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,4) } verticalOrientation="up" position='center'spacing={5} buttonColor="rgba(91, 203, 237, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,4)} useNativeFeedback={false}>
+                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,4) } verticalOrientation="up" position='center'spacing={5} buttonColor={this.props.stringRGBAColor[4]} renderIcon={active => this.changeButtonIcon(arrayVote,4)} useNativeFeedback={false}>
                 </ActionButton>
             </View>
             );
@@ -281,7 +281,7 @@ class ButtonBottomRenderSing extends React.Component{
         if(index==5){
             return(
                 <View style={styles.rightBottom}>
-                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
+                <ActionButton offsetX={10} offsetY={10} size={100} verticalOrientation="up" position='right' spacing={5} buttonColor={this.props.stringRGBAColor[5]} renderIcon={active => <Icon name="music" color='#ffffff' size={50} />} useNativeFeedback={false}>
                                                    
                  </ActionButton>
             </View> 
@@ -289,7 +289,7 @@ class ButtonBottomRenderSing extends React.Component{
         }else{
             return(
                 <View style={styles.rightBottom}>
-                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,5) } verticalOrientation="up" position='right' spacing={5} buttonColor="rgba(188, 106, 217, 1)" renderIcon={active => this.changeButtonIcon(arrayVote,5)} useNativeFeedback={false}>
+                <ActionButton offsetX={10} offsetY={10} size={100} onPress={()=>this.changeVote(arrayVote,5) } verticalOrientation="up" position='right' spacing={5} buttonColor={this.props.stringRGBAColor[5]} renderIcon={active => this.changeButtonIcon(arrayVote,5)} useNativeFeedback={false}>
                                                    
                  </ActionButton>
             </View> 
