@@ -180,7 +180,28 @@ export default class PreGame extends React.Component{
 	};
 	
 	
-	
+	playFunction = () => {
+		this.props.navigation.navigate('MainScreen', {
+			topScore: this.state.topScore,
+			timeSing: this.state.timeSing,
+			showtime: this.state.showtime,
+			text1: this.state.text1,
+			text2: this.state.text2,
+			text3: this.state.text3,
+			text4: this.state.text4,
+			text5: this.state.text5,
+			text6: this.state.text6,
+		})
+		try {
+			const { soundObject, status } = Expo.Audio.Sound.create(
+			  require('../assets/sounds/Gongo.mp3'),
+			  { shouldPlay: true }
+			);
+			// Your sound is playing!
+		} catch (error) {
+			// An error occurred!
+		}
+	}
 	
     render(){
 		
@@ -295,17 +316,7 @@ export default class PreGame extends React.Component{
 				
 				<Button 
 				title = "Play!"
-				onPress = {() => this.props.navigation.navigate('MainScreen', {
-					topScore: this.state.topScore,
-					timeSing: this.state.timeSing,
-					showtime: this.state.showtime,
-					text1: this.state.text1,
-					text2: this.state.text2,
-					text3: this.state.text3,
-					text4: this.state.text4,
-					text5: this.state.text5,
-					text6: this.state.text6,
-				})}
+				onPress = {() => this.playFunction()}
 				color= '#23BAA7'
 				style = {{alignItems: 'flex-end'}} 
 				/>

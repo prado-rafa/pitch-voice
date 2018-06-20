@@ -130,12 +130,25 @@ class TimerRenderSing extends React.Component{
 }
 class ButtonTopRenderSing extends React.Component{
 
+    reprove = () => {
+        try {
+            const { soundObject5, status5 } = Expo.Audio.Sound.create(
+              require('../assets/sounds/Reprove.mp3'),
+              { shouldPlay: true }
+            );
+            // Your sound is playing!
+        } catch (error) {
+            // An error occurred!
+        }
+    }
+
     changeVote= (arrayVote,index)=>{
         
         if((arrayVote[index]<0)){
             this.props.voteLike(index);
         }else{
             this.props.voteDislike(index);
+            {this.reprove()}
         }
     }
 
@@ -218,6 +231,18 @@ class ButtonTopRenderSing extends React.Component{
 
 }
 class ButtonBottomRenderSing extends React.Component{
+
+    reprove = () => {
+        try {
+            const { soundObject5, status5 } = Expo.Audio.Sound.create(
+              require('../assets/sounds/Reprove.mp3'),
+              { shouldPlay: true }
+            );
+            // Your sound is playing!
+        } catch (error) {
+            // An error occurred!
+        }
+    }
     
     changeVote= (arrayVote,index)=>{
         
@@ -225,6 +250,7 @@ class ButtonBottomRenderSing extends React.Component{
             this.props.voteLike(index);
         }else{
             this.props.voteDislike(index);
+            {this.reprove()}
         }
     }
 
