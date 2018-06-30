@@ -26,7 +26,7 @@ export default class ScreenResults extends React.Component{
     winOrlose(boolean,votes){
         if(boolean){ 
 
-            if(votes==5){
+            if(votes>3){
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -35,7 +35,7 @@ export default class ScreenResults extends React.Component{
                     </Text>
                 ) );
 
-            }else if(votes==3){ //4 estrelas
+            }else if(votes>1){ //4 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -47,7 +47,7 @@ export default class ScreenResults extends React.Component{
                     </Text>
                 ) );           
 
-            }else if(votes==1){ // 3 estrelas
+            }else if(votes>-1){ // 3 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -61,7 +61,7 @@ export default class ScreenResults extends React.Component{
             }
         }
        else{
-           if(votes==-1){ //2 estrelas
+           if(votes>-3){ //2 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -72,7 +72,7 @@ export default class ScreenResults extends React.Component{
                         </Text>
                     </Text>
                 ) );
-           }else if(votes==-3){ //1 estrela
+           }else if(votes>-5){ //1 estrela
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -83,7 +83,7 @@ export default class ScreenResults extends React.Component{
                         </Text>
                     </Text>
                 ) );
-            }else if(votes==-5){ //0 estrela
+            }else if(votes>-7){ //0 estrela
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -99,7 +99,7 @@ export default class ScreenResults extends React.Component{
     }
 
     stars=(votes)=>{
-        if(votes==5){
+        if(votes>3){
             return(
                 <View style={styles.stars}>
                     <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
@@ -115,7 +115,7 @@ export default class ScreenResults extends React.Component{
                 </View>
             );
 
-        }else if(votes==3){
+        }else if(votes>1){
             return(
                 <View style={styles.stars}>
                     <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
@@ -131,7 +131,7 @@ export default class ScreenResults extends React.Component{
                 </View>
             );
 
-        }else if(votes==1){
+        }else if(votes>-1){
             return(
                 <View style={styles.stars}>
                     <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
@@ -147,7 +147,7 @@ export default class ScreenResults extends React.Component{
                 </View>
             );
             
-        }else if(votes==-1){
+        }else if(votes>-3){
             return(
                 <View style={styles.stars}>
                     <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
@@ -163,7 +163,7 @@ export default class ScreenResults extends React.Component{
                 </View>
             );
 
-        }else if(votes==-3){
+        }else if(votes>-5){
             return(
                 <View style={styles.stars}>
                     <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
@@ -179,7 +179,7 @@ export default class ScreenResults extends React.Component{
                 </View>
             );
             
-        }else if(votes==-5){
+        }else if(votes>-7){
             return(
                 <View style={styles.stars}>
                     <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>

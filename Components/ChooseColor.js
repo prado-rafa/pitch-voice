@@ -8,13 +8,6 @@ export default class ChooseColor extends React.Component {
 		title: 'Cor'
 	}
 
-	constructor(props) {
-		super(props);
-		
-		this.state = {
-			
-		}
-	}
 	
 	chooseRed = (redFlag) => {
 		if(redFlag) {

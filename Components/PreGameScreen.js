@@ -1,19 +1,100 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View ,ScrollView, TouchableOpacity, Slider} from 'react-native';
+import {StyleSheet, Text, TextInput, View ,ScrollView, TouchableOpacity, Slider,Alert} from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default class PreGameScreen extends React.Component {
 	
 
+	playGame=(numPlayers,colorsRGBA)=>{
+
+		if(numPlayers<1){
+			Alert.Alert('Para jogar precisa de pelo menos 2 jogadores ;)')
+			return;
+		}
+
+		let stringColorAux = ['','','','','',''];
+		let stringRGBAColorAux = ['','','','','',''];
+		let stringColorOpacityAux = ['','','','','',''];
+
+
+		if(numPlayers==6){ //mapeamento
+			stringColorAux = this.props.colors;
+			stringRGBAColorAux = this.props.colorsRGBA;
+			stringColorOpacityAux = this.props.colorsBackground;
+		}else if(numPlayers==5){ //mapeamento
+			stringColorAux[0] = this.props.colors[0];
+			stringColorAux[1] = this.props.colors[1];
+			stringColorAux[2] = this.props.colors[2];
+			stringColorAux[3] = this.props.colors[3];
+			stringColorAux[5] = this.props.colors[4];
+
+			stringRGBAColorAux[0] = colorsRGBA[0];
+			stringRGBAColorAux[1] = colorsRGBA[1];
+			stringRGBAColorAux[2] = colorsRGBA[2];
+			stringRGBAColorAux[3] = colorsRGBA[3];
+			stringRGBAColorAux[5] = colorsRGBA[4];
+
+			stringColorOpacityAux[0] = this.props.colorsBackground[0];
+			stringColorOpacityAux[1] = this.props.colorsBackground[1];
+			stringColorOpacityAux[2] = this.props.colorsBackground[2];
+			stringColorOpacityAux[3] = this.props.colorsBackground[3];
+			stringColorOpacityAux[5] = this.props.colorsBackground[4];
+		}else if(numPlayers==4){ //mapeamento
+			stringColorAux[0] = this.props.colors[0];
+			stringColorAux[2] = this.props.colors[1];
+			stringColorAux[3] = this.props.colors[2];
+			stringColorAux[5] = this.props.colors[3];
+
+			stringRGBAColorAux[0] = colorsRGBA[0];
+			stringRGBAColorAux[2] = colorsRGBA[1];
+			stringRGBAColorAux[3] = colorsRGBA[2];
+			stringRGBAColorAux[5] = colorsRGBA[3];
+
+			stringColorOpacityAux[0] = this.props.colorsBackground[0];
+			stringColorOpacityAux[2] = this.props.colorsBackground[1];
+			stringColorOpacityAux[3] = this.props.colorsBackground[2];
+			stringColorOpacityAux[5] = this.props.colorsBackground[3];
+		}else if(numPlayers==3){//mapeamento
+			stringColorAux[1] = this.props.colors[0];
+			stringColorAux[3] = this.props.colors[1];
+			stringColorAux[5] = this.props.colors[2];
+
+			stringRGBAColorAux[1] = colorsRGBA[0];
+			stringRGBAColorAux[3] = colorsRGBA[1];
+			stringRGBAColorAux[5] = colorsRGBA[2];
+
+			stringColorOpacityAux[1] = this.props.colorsBackground[0];
+			stringColorOpacityAux[3] = this.props.colorsBackground[1];
+			stringColorOpacityAux[5] = this.props.colorsBackground[2];
+		}else if(numPlayers==2){//mapeamento
+			stringColorAux[1] = this.props.colors[0];
+			stringColorAux[4] = this.props.colors[1];
+
+			stringRGBAColorAux[1] = colorsRGBA[0];
+			stringRGBAColorAux[4] = colorsRGBA[1];
+
+			stringColorOpacityAux[1] = this.props.colorsBackground[0];
+			stringColorOpacityAux[4] = this.props.colorsBackground[1];
+		}
+
+
+
+
+
+		this.props.navigation.navigate('MainScreen', {
+			topScore:this.props.topScore, timeSing:this.props.timeSing, showtime:this.props.showtime, names:this.props.names,numPlayers:this.props.nPlayers,
+			stringColor:stringColorAux,stringRGBAColor:stringRGBAColorAux, stringColorOpacity: stringColorOpacityAux, stringColorSorted: this.props.colors,
+			})
+	}
 
     render(){
        
 		let topScore = this.props.topScore;
 		let timeSing = this.props.timeSing;
 		let showtime = this.props.showtime;
-		
 		let names = this.props.names;
 		let colors = this.props.colors;
+		let colorsRGBA = this.props.colorsRGBA;
 		let currentName = this.props.currentName;
 		let colorChoosed = this.props.colorChoosed;
 
@@ -29,7 +110,7 @@ export default class PreGameScreen extends React.Component {
                     <MaterialIcons size={30} color='white' name='color-lens' />
 				</TouchableOpacity>
 				 
-				<TouchableOpacity style = {styles.circularButton} onPress = { () => this.props.addPlayer(currentName, colorChoosed)}>
+				<TouchableOpacity style = {styles.circularButton} onPress = { () => this.props.addPlayer(currentName, colorChoosed,this.props.colorRGBAChoosed,this.props.colorBackgroundChoosed)}>
 				<Text style = {{marginLeft: 9, marginTop:-8 , color: '#FFF', fontSize: 40, fontWeight: 'bold'}}>+</Text>
 				</TouchableOpacity>
 			
@@ -95,7 +176,7 @@ export default class PreGameScreen extends React.Component {
 						<Slider
 							style={{ width: '100%' }}
 							step={10}
-							minimumValue={50}
+							minimumValue={10}
 							maximumValue={500}
 							value={topScore}
 							onValueChange={val => this.props.SetTopScore(val)}
@@ -104,10 +185,7 @@ export default class PreGameScreen extends React.Component {
 					</View>
 					
 					
-					<TouchableOpacity onPress={()=> this.props.navigation.navigate('MainScreen', {
-					topScore:topScore, timeSing:timeSing, showtime:showtime, Text1: names[0],Text2: names[1],
-					Text3:names[2],Text4:names[3],Text5:[4],Text6:names[5]
-					}) }
+					<TouchableOpacity onPress={()=> this.playGame(this.props.nPlayers,colorsRGBA) }
 					style = {{margin: 40, width: '80%', height: 40, backgroundColor: '#27AE60', borderRadius: 10, justifyContent: 'center'}}>
 					
 					<Text style = {{textAlign: 'center', color: "white",fontWeight:'bold',fontFamily:'Roboto'}}>Vamos Cantar!</Text>
