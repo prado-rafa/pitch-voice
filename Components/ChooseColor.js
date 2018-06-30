@@ -1,8 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, TextInput, View ,ScrollView, TouchableOpacity, Slider, Alert} from 'react-native';
+import {StyleSheet, Text, View ,ScrollView, TouchableOpacity, Alert} from 'react-native';
 
 
-export default class Choose extends React.Component {
+export default class ChooseColor extends React.Component {
 
 	static navigationOptions = {
 		title: 'Cor'
@@ -21,9 +21,7 @@ export default class Choose extends React.Component {
 			Alert.alert("Vermelho já foi selecionado")
 			return;
 		}
-		this.props.navigation.navigate('Pre'); 
-		this.props.navigation.state.params.setData({colorChoosed: "#EB5757", redHasChoosed: true});
-		this.setState({redHasChoosed: true});
+		this.props.SetToRed();
 	}
 	
 	chooseYellow = (yellowFlag) => {
@@ -31,9 +29,7 @@ export default class Choose extends React.Component {
 			Alert.alert("Amarelo já foi selecionado")
 			return;
 		}
-		this.props.navigation.navigate('Pre'); 
-		this.props.navigation.state.params.setData({colorChoosed: "#F2C94C", yellowHasChoosed: true});
-		this.setState({yellowHasChoosed: true});
+		this.props.SetToYellow();
 	}
 	
 	chooseDarkBlue = (darkBlueFlag) => {
@@ -41,9 +37,7 @@ export default class Choose extends React.Component {
 			Alert.alert("Azul escuro já foi selecionado")
 			return;
 		}
-		this.props.navigation.navigate('Pre'); 
-		this.props.navigation.state.params.setData({colorChoosed: "#2F80ED", darkBlueHasChoosed: true});
-		this.setState({darkBlueHasChoosed: true});
+		this.props.SetToDarkBlue();
 	}
 	
 	chooseGreen = (greenFlag) => {
@@ -51,9 +45,7 @@ export default class Choose extends React.Component {
 			Alert.alert("Verde já foi selecionado")
 			return;
 		}
-		this.props.navigation.navigate('Pre'); 
-		this.props.navigation.state.params.setData({colorChoosed: "#6FCF97", greenHasChoosed: true});
-		this.setState({greenHasChoosed: true});
+		this.props.SetToGreen();
 	}
 	
 	choosePurple = (purpleFlag) => {
@@ -61,9 +53,7 @@ export default class Choose extends React.Component {
 			Alert.alert("Roxo já foi selecionado")
 			return;
 		}
-		this.props.navigation.navigate('Pre'); 
-		this.props.navigation.state.params.setData({colorChoosed: "#BB6BD9", purpleHasChoosed: true});
-		this.setState({purpleHasChoosed: true});
+		this.props.SetToPurple();
 	}
 	
 	chooseLightBlue = (lightBlueFlag)=> {
@@ -71,14 +61,9 @@ export default class Choose extends React.Component {
 			Alert.alert("Azul claro já foi selecionado")
 			return;
 		}
-		this.props.navigation.navigate('Pre'); 
-		this.props.navigation.state.params.setData({colorChoosed: "#56CCF2", lightBlueHasChoosed: true});
-		this.setState({lightBlueHasChoosed: true});
+		this.props.SetToLightBlue();
 	}
 	
-	setData = data => {
-		this.setState(data);
-	}
 	
 	show = (bool) => {
 		if(bool){
@@ -90,13 +75,13 @@ export default class Choose extends React.Component {
 	
 	render() {
 		
-		const {navigation} = this.props;
-		const redFlag = navigation.getParam('redHasChoosed', false);
-		const yellowFlag = navigation.getParam('yellowHasChoosed', false);
-		const darkBlueFlag = navigation.getParam('darkBlueHasChoosed', false);
-		const greenFlag = navigation.getParam('greenHasChoosed', false);
-		const purpleFlag = navigation.getParam('purpleHasChoosed', false);
-		const lightBlueFlag = navigation.getParam('lightBlueHasChoosed', false);		
+		
+		let redFlag = this.props.redHasChoosed;
+		let yellowFlag = this.props.yellowHasChoosed;
+		let darkBlueFlag = this.props.darkBlueHasChoosed;
+		let greenFlag = this.props.greenHasChoosed;
+		let purpleFlag = this.props.purpleHasChoosed;
+		let lightBlueFlag = this.props.lightBlueHasChoosed;		
 		
 		return (
 			<ScrollView style = {styles.container}>

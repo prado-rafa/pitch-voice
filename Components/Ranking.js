@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import PreGame from './PreGame';
 import {ScreenOrientation} from 'expo';
 
 

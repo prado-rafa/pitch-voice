@@ -1,7 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
-import Rules from './Rules';
-import PreGame from './PreGame';
 import {ScreenOrientation} from 'expo';
 
 
