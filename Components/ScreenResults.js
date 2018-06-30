@@ -13,20 +13,48 @@ export default class ScreenResults extends React.Component{
         }
     }
 
+    songBad() {
+        try {
+			const { soundObject, status } = Expo.Audio.Sound.create(
+			  require('../assets/sounds/Reprove.mp3'),
+			  { shouldPlay: true }
+			);
+			// Your sound is playing!
+		} catch (error) {
+			// An error occurred!
+		}
+    }
+    
     componentDidMount(){
         this.props.computaVotos();
         setTimeout( () => {this.props.backToStart(this.props.whoPressButton)} ,3000);  //qdo passar 5s sia de ScreenResults
     }
-
+    
     componentWillUnmount(){
         clearTimeout();
     }
 
+    songGood() {
+        try {
+			const { soundObject, status } = Expo.Audio.Sound.create(
+			  require('../assets/sounds/Aplausos.mp3'),
+			  { shouldPlay: true }
+			);
+			// Your sound is playing!
+		} catch (error) {
+			// An error occurred!
+		}
+    }
+    
     // retorna se a pessoa ganhou ou perdeu
     winOrlose(boolean,votes){
+        if (votes < 0 & boolean==false) {
+            {this.songBad()}
+        }
         if(boolean){ 
 
             if(votes==5){
+                {this.songGood()}
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -36,6 +64,7 @@ export default class ScreenResults extends React.Component{
                 ) );
 
             }else if(votes==3){ //4 estrelas
+                {this.songGood()}
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -48,6 +77,7 @@ export default class ScreenResults extends React.Component{
                 ) );           
 
             }else if(votes==1){ // 3 estrelas
+                {this.songGood()}
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -198,7 +228,7 @@ export default class ScreenResults extends React.Component{
         }
     }
     
-    
+
 
 
 
@@ -209,8 +239,8 @@ export default class ScreenResults extends React.Component{
         let votes = this.props.votes;
         let whoPressButton = this.props.whoPressButton;
         return(
-            <View backgroundColor={stringColor[whoPressButton]} style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                                               
+            <View backgroundColor={stringColor[whoPressButton]} style={{flex:1,alignItems:'center',justifyContent:'center'}}>                         
+                
                 <View style={{alignItems:'center',left:'0%',right:'0%',bottom:'65%',top:'15%',backgroundColor:'transparent',position:'absolute'}} >
                 {this.winOrlose(this.props.winOrlose,votes)}
                 </View>
@@ -221,7 +251,7 @@ export default class ScreenResults extends React.Component{
                 <View style={{bottom:'0%', left:'40%',right:'40%',top:'90%',alignItems:'center',position:'absolute',flex:1}} >
                   {/* <Button title='Retornar' onPress={()=> this.props.backToStart(whoPressButton)} color='#000000'  /> */}
                 </View>                    
-                
+
 
             </View>
         );
