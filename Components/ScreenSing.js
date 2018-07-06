@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
         margin: 10,
         fontWeight:'800',
         color: '#FFFFFF',
-        fontFamily: 'Roboto',
+        fontFamily: 'Verdana',
         fontWeight: 'bold',
 
 
@@ -392,7 +392,7 @@ const styles = StyleSheet.create({
         margin: 10,
         fontWeight:'800',
         color: '#FFFFFF',
-        fontFamily: 'Roboto',
+        fontFamily: 'Verdana',
         fontWeight: 'bold',
     },
     actionButtonsTop:{

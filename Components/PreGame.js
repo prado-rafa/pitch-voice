@@ -49,12 +49,12 @@ export default class PreGame extends React.Component {
 	
 	addPlayer = (nome, color,colorRGBA,colorBackground) => {
 		
-		if(color == "#3E444A") {
-			Alert.alert("Selecione uma cor para seu jogador!");
-			return;
-		}
 		if(nome == "") {
 			Alert.alert("Escreva um nome para o jogador!");
+			return;
+		}
+		if(color == "#3E444A") {
+			Alert.alert("Selecione uma cor para seu jogador!");
 			return;
 		}
 		else if(color=="#EB5757"){

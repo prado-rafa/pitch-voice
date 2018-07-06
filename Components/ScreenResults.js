@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
       },
       resultText:{
         fontSize: 50,
-        fontFamily:'Roboto',
+        fontFamily:'Verdana',
         fontWeight:'bold',
         color:'#ffffff',
         textAlign: 'center',

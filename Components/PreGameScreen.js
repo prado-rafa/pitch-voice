@@ -100,7 +100,7 @@ export default class PreGameScreen extends React.Component {
 
         return(
             <ScrollView style = {styles.container}>
-				<Text style  = {{color: '#FFF',fontWeight:'bold',fontFamily:'Roboto',justifyContent:'center',alignContent:'center'}}>Adicione os jogadores e suas cores!</Text>
+				<Text style  = {{color: '#FFF',fontWeight:'bold',fontFamily:'Verdana',justifyContent:'center',alignContent:'center'}}>Adicione os jogadores e suas cores!</Text>
 										
 				<View style = {styles.viewNome}>
 			
@@ -116,7 +116,7 @@ export default class PreGameScreen extends React.Component {
 			
 				</View>
 				
-				<Text style = {{color: '#FFF',fontWeight:'bold',fontFamily:'Roboto'}}>Jogadores:</Text>
+				<Text style = {{color: '#FFF',fontWeight:'bold',fontFamily:'Verdana'}}>Jogadores:</Text>
 				
 				<View style = {styles.viewJogadores}>			
 				
@@ -142,7 +142,7 @@ export default class PreGameScreen extends React.Component {
 				</View>
 				
 				
-					<Text style = {{padding: 10, color: '#FFF',fontWeight:'bold',fontFamily:'Roboto'}} > Tempo para cantar</Text>
+					<Text style = {{padding: 10, color: '#FFF',fontWeight:'bold',fontFamily:'Verdana'}} > Tempo para cantar</Text>
 					
 					<View style = {{padding: 10, borderRadius: 5, backgroundColor: '#3E444A'}}>
 						<Slider
@@ -153,10 +153,10 @@ export default class PreGameScreen extends React.Component {
 							value={timeSing}
 							onValueChange={val => this.props.SetTimeSingopScore(val)}
 						/>
-						<Text style = {{color: '#FFF', textAlign: 'center',fontWeight:'bold',fontFamily:'Roboto'}}>{timeSing} segundos</Text> 
+						<Text style = {{color: '#FFF', textAlign: 'center',fontWeight:'bold',fontFamily:'Verdana'}}>{timeSing} segundos</Text> 
 					</View>
 					
-					<Text style = {{padding: 10, color: '#FFF',fontWeight:'bold',fontFamily:'Roboto'}} > Tempo de Jogo</Text>
+					<Text style = {{padding: 10, color: '#FFF',fontWeight:'bold',fontFamily:'Verdana'}} > Tempo de Jogo</Text>
 					
 					<View style = {{padding: 10, borderRadius: 5, backgroundColor: '#3E444A'}}>
 						<Slider
@@ -167,10 +167,10 @@ export default class PreGameScreen extends React.Component {
 							value={showtime}
 							onValueChange={val => this.props.SetShowTime(val)}
 						/>
-						<Text style = {{color: '#FFF', textAlign: 'center',fontWeight:'bold',fontFamily:'Roboto'}}>{showtime} segundos</Text> 
+						<Text style = {{color: '#FFF', textAlign: 'center',fontWeight:'bold',fontFamily:'Verdana'}}>{showtime} segundos</Text> 
 					</View>
 					
-					<Text style = {{padding: 10, color: '#FFF',fontWeight:'bold',fontFamily:'Roboto'}} > Pontuação Máxima</Text>
+					<Text style = {{padding: 10, color: '#FFF',fontWeight:'bold',fontFamily:'Verdana'}} > Pontuação Máxima</Text>
 					
 					<View style = {{padding: 10, borderRadius: 5, backgroundColor: '#3E444A'}}>
 						<Slider
@@ -188,7 +188,7 @@ export default class PreGameScreen extends React.Component {
 					<TouchableOpacity onPress={()=> this.playGame(this.props.nPlayers,colorsRGBA) }
 					style = {{margin: 40, width: '80%', height: 40, backgroundColor: '#27AE60', borderRadius: 10, justifyContent: 'center'}}>
 					
-					<Text style = {{textAlign: 'center', color: "white",fontWeight:'bold',fontFamily:'Roboto'}}>Vamos Cantar!</Text>
+					<Text style = {{textAlign: 'center', color: "white",fontWeight:'bold',fontFamily:'Verdana'}}>Vamos Cantar!</Text>
 					</TouchableOpacity>
 		
 			</ScrollView>
