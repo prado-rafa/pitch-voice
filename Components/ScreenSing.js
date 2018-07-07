@@ -1,8 +1,7 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity} from 'react-native';
-import ActionButton, { ActionButtonItem } from 'react-native-action-button';
+import React from 'react';
+import { StyleSheet, Text, View} from 'react-native';
+import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Progress from 'react-native-progress/Bar'; 
 import Ionicons from 'react-native-vector-icons/Ionicons';

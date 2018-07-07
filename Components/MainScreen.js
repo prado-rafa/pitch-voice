@@ -34,7 +34,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             pontuacaoParcial:[0,0,0,0,0,0], //array que tem os pontos de cada round de cada jogador, por exemplo: [10,9,0,8,7,0].
             numPlayers:numPlayers, // quantidade de jogadores
             howManyWon: 0, // variavel que diz quantos jogadores ja ganharam pontos naquele round
-            arrayVote: [1,1,1,1,1,1], //arrya dos votos
+            arrayVote: [1,1,1,1,1,1], //array dos votos
             arrayTotalScore: [0,0,0,0,0,0], // array com pontuação total
            /*  winner: 30, */
             winner: JSON.stringify(topScore), // variavel que diz qtos pontos acaba o jogo
