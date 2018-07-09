@@ -7,8 +7,8 @@ export default class PreGameScreen extends React.Component {
 
 	playGame=(numPlayers,colorsRGBA)=>{
 
-		if(numPlayers<1){
-			Alert.Alert('Para jogar precisa de pelo menos 2 jogadores ;)')
+		if(numPlayers<2){
+			Alert.alert('Para jogar precisa de pelo menos 2 jogadores')
 			return;
 		}
 
