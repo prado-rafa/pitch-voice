@@ -356,11 +356,7 @@ const styles = StyleSheet.create({
         margin: 10,
         fontWeight:'800',
         color: '#FFFFFF',
-        fontFamily: 'Verdana',
         fontWeight: 'bold',
-
-
-        
       },
       container: {
         backgroundColor: 'transparent',
@@ -391,7 +387,6 @@ const styles = StyleSheet.create({
         margin: 10,
         fontWeight:'800',
         color: '#FFFFFF',
-        fontFamily: 'Verdana',
         fontWeight: 'bold',
     },
     actionButtonsTop:{

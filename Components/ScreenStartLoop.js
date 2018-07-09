@@ -329,7 +329,6 @@ Skip:{
     margin: 10,
     fontWeight:'800',
     color: '#FFFFFF',
-    fontFamily: 'Verdana',
     fontWeight: 'bold',
 
 
@@ -364,7 +363,6 @@ rotateWord:{
     margin: 10,
     fontWeight:'800',
     color: '#FFFFFF',
-    fontFamily: 'Verdana',
     fontWeight: 'bold',
 },
 actionButtonsTop:{

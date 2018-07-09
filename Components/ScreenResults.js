@@ -249,7 +249,6 @@ const styles = StyleSheet.create({
       },
       resultText:{
         fontSize: 50,
-        fontFamily:'Verdana',
         fontWeight:'bold',
         color:'#ffffff',
         textAlign: 'center',
