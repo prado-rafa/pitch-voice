@@ -171,7 +171,7 @@ export default class PreGame extends React.Component {
 		});
 	}
 
-	SetShowtime=(val)=>{
+	SetShowTime=(val)=>{
 		this.setState({
 			showtime:val
 		});
@@ -193,7 +193,7 @@ export default class PreGame extends React.Component {
 		let SetToDarkBlue = this.SetToDarkBlue;
 		let SetCurrentName = this.SetCurrentName;
 		let SetTopScore = this.SetTopScore;
-		let SetShowtime = this.SetShowtime;
+		let SetShowTime = this.SetShowTime;
 		let SetTimeSing = this.SetTimeSing;
 		let ChangeScreen = this.ChangeScreen;
 		let changeScreen = this.state.changeScreen;
@@ -217,7 +217,7 @@ export default class PreGame extends React.Component {
 		if(!changeScreen){
 			return(
 				<PreGameScreen
-					SetShowtime = {SetShowtime}
+					SetShowTime = {SetShowTime}
 					SetTimeSing = {SetTimeSing}
 					SetCurrentName = {SetCurrentName}
 					SetTopScore = {SetTopScore}

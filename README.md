@@ -9,7 +9,6 @@ npm i --save react-navigation
 npm i react-native-action-button --save
 npm install react-native-vector-icons --save
 npm install react-native-progress --save
-npm install react-native-orientation --save
 npm install --save expo
 npm link
 npm start

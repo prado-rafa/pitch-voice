@@ -151,7 +151,7 @@ export default class PreGameScreen extends React.Component {
 							minimumValue={5}
 							maximumValue={60}
 							value={timeSing}
-							onValueChange={val => this.props.SetTimeSingopScore(val)}
+							onValueChange={value => this.props.SetTimeSing(value)}
 						/>
 						<Text style = {{color: '#FFF', textAlign: 'center',fontWeight:'bold'}}>{timeSing} segundos</Text> 
 					</View>
@@ -165,7 +165,7 @@ export default class PreGameScreen extends React.Component {
 							minimumValue={5}
 							maximumValue={60}
 							value={showtime}
-							onValueChange={val => this.props.SetShowTime(val)}
+							onValueChange={value => this.props.SetShowTime(value)}
 						/>
 						<Text style = {{color: '#FFF', textAlign: 'center',fontWeight:'bold'}}>{showtime} segundos</Text> 
 					</View>
@@ -179,7 +179,7 @@ export default class PreGameScreen extends React.Component {
 							minimumValue={10}
 							maximumValue={500}
 							value={topScore}
-							onValueChange={val => this.props.SetTopScore(val)}
+							onValueChange={value => this.props.SetTopScore(value)}
 						/>
 						<Text style = {{color: '#FFF', textAlign: 'center'}}>{topScore} pontos</Text> 
 					</View>
