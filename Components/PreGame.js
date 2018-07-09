@@ -93,21 +93,62 @@ export default class PreGame extends React.Component {
 
 		
 	}
-	SetColor=(bg, rgba, hexa)=> {
+
+	SetToRed=()=>{
 		this.setState({
-			colorBackgroundChoosed:bg,
-			colorRGBAChoosed:rgba,
-			colorChoosed:hexa,
+			colorBackgroundChoosed:"#8D565B",
+			colorRGBAChoosed:"rgba(235, 87, 87, 1)",
+			colorChoosed:"#EB5757",
 			changeScreen:false,
 		})
 	}
 
+	SetToYellow=()=>{
+		this.setState({
+			colorBackgroundChoosed:"#9D8D53",
+			colorRGBAChoosed:"rgba(243, 200, 83, 1)",
+			colorChoosed:"#F2C94C",
+			changeScreen:false,
+		});
+	}
+
+	SetToDarkBlue=()=>{
+		this.setState({
+			colorBackgroundChoosed:"#426697",
+			colorRGBAChoosed:"rgba(49, 126, 242, 1)",
+			colorChoosed:"#2F80ED",
+			changeScreen:false,
+		});
+	}
+
+	SetToGreen=()=>{
+		this.setState({
+			colorBackgroundChoosed:"#5B8674",
+			colorRGBAChoosed:"rgba(113, 206, 151, 1)",
+			colorChoosed:"#6FCF97",
+			changeScreen:false,
+		});
+	}
+
+	SetToPurple=()=>{
+		this.setState({
+			colorBackgroundChoosed:"#6F5C82",
+			colorRGBAChoosed:"rgba(188, 106, 217, 1)",
+			colorChoosed:"#BB6BD9",
+			changeScreen:false,
+		});
+	}
+
+	SetToLightBlue=()=>{
+		this.setState({
+			colorBackgroundChoosed:"#51798A",
+			colorRGBAChoosed:"rgba(91, 203, 237, 1)",
+			colorChoosed:"#56CCF2",
+			changeScreen:false,
+		});
+	}
 
 	ChangeScreen = () =>{
-		if(this.state.nPlayers < 2) {
-			Alert.Alert('Para jogar precisa de pelo menos 2 jogadores ;)')
-			return;
-		}
 		if(this.state.nPlayers<6){
 			let bool = true;
 			this.setState({
@@ -144,12 +185,12 @@ export default class PreGame extends React.Component {
 	
 	render() {
 
-		let SetToPurple = this.SetColor("#6F5C82","rgba(188, 106, 217, 1)","#BB6BD9");
-		let SetToYellow = this.SetColor("#9D8D53", "rgba(243, 200, 83, 1)", "#F2C94C");
-		let SetToLightBlue = this.SetColor("#51798A","rgba(91, 203, 237, 1)","#56CCF2");
-		let SetToGreen = this.SetColor("#5B8674", "rgba(113, 206, 151, 1)","#6FCF97")
-		let SetToRed = this.SetColor("#8D565B", "rgba(235, 87, 87, 1)", "#EB5757");
-		let SetToDarkBlue = this.SetColor("#426697","rgba(49, 126, 242, 1)", "#2F80ED" );
+		let SetToPurple = this.SetToPurple;
+		let SetToYellow = this.SetToYellow;
+		let SetToLightBlue = this.SetToLightBlue;
+		let SetToGreen = this.SetToGreen;
+		let SetToRed = this.SetToRed;
+		let SetToDarkBlue = this.SetToDarkBlue;
 		let SetCurrentName = this.SetCurrentName;
 		let SetTopScore = this.SetTopScore;
 		let SetShowtime = this.SetShowtime;
@@ -204,8 +245,15 @@ export default class PreGame extends React.Component {
 				/>
 			);
 		}else{
-			return(	
+			return(
+				
 				<ChooseColor
+				SetToPurple = {SetToPurple}
+				SetToYellow = {SetToYellow}
+				SetToLightBlue = {SetToLightBlue}
+				SetToDarkBlue = {SetToDarkBlue}
+				SetToRed = {SetToRed}
+				SetToGreen = {SetToGreen}
 				colorChoosed={colorChoosed}
 				redHasChoosed={redHasChoosed}
 				yellowHasChoosed={yellowHasChoosed}
