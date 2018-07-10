@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, StatusBar, Image } from 'react-native';
 import {ScreenOrientation, Font} from 'expo';
 import FontAwesome  from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-
+//import { logo } from './image'
 
 export default class Intro extends React.Component{
   static navigationOptions = {
@@ -47,7 +47,9 @@ export default class Intro extends React.Component{
               <Text style={{color: '#23BAA7', fontSize: 30}}>?</Text>
             </TouchableOpacity> 
           </View>
-          <Text style={styles.welcome2}>Pitch Voice</Text>
+            <Image style={{width: 250, height: 250}}
+              source={require('./image/logo.png')}
+            />
           <View style={styles.btnNew}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('PreGame')}>
               <Text style={{color: '#ffffff', fontSize: 20}}>Novo Jogo</Text>
@@ -111,14 +113,13 @@ const styles = StyleSheet.create({
       borderColor: '#23BAA7',
       borderRadius: 5,
       borderWidth: 1,
-
       flex:1,
       alignItems: 'center',
       position:'absolute',
-      bottom: '25%',
+      bottom: '10%',
       left: '33%',
       width: '35%',
       height: '10%',
-    }
+      }
   });
   
