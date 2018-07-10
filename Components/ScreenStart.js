@@ -1,11 +1,10 @@
-import React, {Component} from 'react';
-import {StyleSheet,Button,Text,View} from 'react-native';
+import React from 'react';
+import {StyleSheet,Text,View} from 'react-native';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Entypo from 'react-native-vector-icons/Entypo';
-import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome  from '@expo/vector-icons/FontAwesome';
 import Progress from 'react-native-progress/Bar'; 
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import EvilIcons from '@expo/vector-icons/EvilIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default class ScreenStart extends React.Component{ 
 
@@ -28,6 +27,15 @@ export default class ScreenStart extends React.Component{
     render(){
         return(
             <View style={styles.wrapper}>
+                <View style={{flex:1, flexDirection:'row', backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'space-between',position:'absolute',top: '40%',width: '11%',height:'17%',zIndex:2, right:'10%'}}>   
+                        <ActionButton offsetX={0} offsetY={0} 
+                        position='center' size={60} 
+                        buttonColor = 'rgba(196, 196, 196, 1)' 
+                        buttonText='' onPress={()=>{this.props.ExitGame()}}
+                        useNativeFeedback={false}
+                        renderIcon={ () => <MaterialIcons name='exit-to-app' color='#000000' size={35} /> }
+                        />
+                </View>
                 <View style={styles.Skip}>
                     <ActionButton offsetX={0} offsetY={0} 
                     position='center' size={60} 
@@ -40,11 +48,12 @@ export default class ScreenStart extends React.Component{
                     </ActionButton>
                 </View>
                 <View style={styles.musicIconCenter}>
-                    <Icon name='music' size={220} color='#686E75'/>               
+                    <FontAwesome name='music' size={220} color='#686E75'/> 
+                   {/* <Text>{this.props.seconds+"                                     "}</Text>*/ }           
                 </View>
-                <ButtonTopRender stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
+                <ButtonTopRender numPlayers={this.props.numPlayers} stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
                 <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
-                <ButtonBottomRender stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
+                <ButtonBottomRender numPlayers={this.props.numPlayers} stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} reset={this.props.reset} boolean6={this.props.boolean6} boolean5={this.props.boolean5} boolean4={this.props.boolean4} startSing={this.props.startSing} i4={3} i5={4} i6={5}/>
             </View>
         );
     }
@@ -100,30 +109,6 @@ class ButtonTopRender extends React.Component{
           this.props.startSing(index);
         }
       }
-      //função pra mudar o icone (caso a pessoa tenha cantado ou nao)
-      callForRenderIcon3 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#71CE97'/>);
-        }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
-    }
-    //função pra mudar o icone (caso a pessoa tenha cantado ou nao)
-    callForRenderIcon2 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#F2C94D'/>);
-        }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
-    }
-    //função pra mudar o icone (caso a pessoa tenha cantado ou nao)
-    callForRenderIcon1 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#EB5757'/>);
-        }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
-    }
 
     callForColor = (isActive, rgba) => {
 
@@ -144,6 +129,51 @@ class ButtonTopRender extends React.Component{
         }
     }
 
+    howManyPlayers1=(numPlayers,boolean1,arrayTotalScore,stringColor,stringRGBAColor)=>{
+        if((numPlayers==6)||(numPlayers==5)||(numPlayers==4)){
+            return(
+                <View style={styles.leftTop}>
+                    <ActionButton buttonText={''+arrayTotalScore[0]} buttonTextStyle={this.callForTextColor(boolean1,stringColor[0])} offsetX={10} size={100} offsetY={10} verticalOrientation="down" position='left' spacing={5} buttonColor={this.callForColor(boolean1,stringRGBAColor[0])}
+                    onPress={()=> this.callForSing(boolean1,this.props.i1) } useNativeFeedback={false}
+                    >
+                    
+                    </ActionButton>
+                </View>
+            );
+        }
+        return
+    }
+
+    howManyPlayers2=(numPlayers,boolean2,arrayTotalScore,stringColor,stringRGBAColor)=>{
+        if(numPlayers==4){
+           return;
+        } 
+        else{
+            return(
+                <View style={styles.centerTop}>
+                <ActionButton  buttonText={''+arrayTotalScore[1]} buttonTextStyle={this.callForTextColor(boolean2,stringColor[1])} offsetY={10} size={100} verticalOrientation="down" position='center' spacing={5} buttonColor={this.callForColor(boolean2,stringRGBAColor[1])}
+                    onPress={()=> this.callForSing(boolean2,this.props.i2) } useNativeFeedback={false}
+                >                           
+                </ActionButton>
+                </View>
+            );
+        }
+    }
+
+    howManyPlayers3=(numPlayers,boolean3,arrayTotalScore,stringColor,stringRGBAColor)=>{
+        if((numPlayers==6)||(numPlayers==5)||(numPlayers==4)){
+            return(
+                <View style={styles.rightTop} >   
+                    <ActionButton buttonText={''+arrayTotalScore[2]} hideShadow={false}
+                    buttonTextStyle={this.callForTextColor(boolean3,stringColor[2])} offsetX={10} offsetY={10} size={100} verticalOrientation="down" position='right' spacing={5} buttonColor={this.callForColor(boolean3,stringRGBAColor[2])}
+                    onPress={()=> this.callForSing(boolean3,this.props.i3) } useNativeFeedback={false}
+                    />                 
+                </View>
+            );
+        }
+        return;
+    }
+
     render(){
         let stringRGBAColor = this.props.stringRGBAColor;
         let stringColor = this.props.stringColor;
@@ -154,27 +184,10 @@ class ButtonTopRender extends React.Component{
         return( 
                    
             <View style={styles.actionButtonsTop}>
-                        <View style={styles.rightTop} >   
-                        <ActionButton buttonText={''+arrayTotalScore[2]} hideShadow={false}
-                        buttonTextStyle={this.callForTextColor(boolean3,stringColor[2])} offsetX={10} offsetY={10} size={100} verticalOrientation="down" position='right' spacing={5} buttonColor={this.callForColor(boolean3,stringRGBAColor[2])}
-                        onPress={()=> this.callForSing(boolean3,this.props.i3) } useNativeFeedback={false}
-                        />
-                                                
                         
-                    </View>
-                    <View style={styles.centerTop}>
-                    <ActionButton  buttonText={''+arrayTotalScore[1]} buttonTextStyle={this.callForTextColor(boolean2,stringColor[1])} offsetY={10} size={100} verticalOrientation="down" position='center' spacing={5} buttonColor={this.callForColor(boolean2,stringRGBAColor[1])}
-                        onPress={()=> this.callForSing(boolean2,this.props.i2) } useNativeFeedback={false}
-                    >                           
-                    </ActionButton>
-                    </View>
-                    <View style={styles.leftTop}>
-                        <ActionButton buttonText={''+arrayTotalScore[0]} buttonTextStyle={this.callForTextColor(boolean1,stringColor[0])} offsetX={10} size={100} offsetY={10} verticalOrientation="down" position='left' spacing={5} buttonColor={this.callForColor(boolean1,stringRGBAColor[0])}
-                        onPress={()=> this.callForSing(boolean1,this.props.i1) } useNativeFeedback={false}
-                        >
-                          
-                        </ActionButton>
-                    </View>
+                {this.howManyPlayers1(this.props.numPlayers,boolean1,arrayTotalScore,stringColor,stringRGBAColor)}
+                {this.howManyPlayers2(this.props.numPlayers,boolean2,arrayTotalScore,stringColor,stringRGBAColor)}
+                {this.howManyPlayers3(this.props.numPlayers,boolean3,arrayTotalScore,stringColor,stringRGBAColor)}
             </View>
         );
     }
@@ -210,6 +223,54 @@ class ButtonBottomRender extends React.Component{
         }
     }
 
+    howManyPlayers4=(numPlayers,boolean4,arrayTotalScore,stringColor,stringRGBAColor)=>{
+        if(numPlayers==2){
+            return;
+        }else{
+            return(
+                <View style={styles.leftBottom}>
+                    <ActionButton buttonText={''+arrayTotalScore[3]} offsetX={10} offsetY={10}  size={100} verticalOrientation="up" position='left' spacing={5} buttonColor={this.callForColor(boolean4,stringRGBAColor[3])}
+                        buttonTextStyle={this.callForTextColor(boolean4,stringColor[3])}
+                        onPress={()=> this.callForSing(boolean4,this.props.i4) } useNativeFeedback={false}
+                      >
+                          
+                    </ActionButton>
+                </View>
+            );
+        }
+    }
+    howManyPlayers5=(numPlayers,boolean5,arrayTotalScore,stringColor,stringRGBAColor)=>{
+        if((numPlayers==6)||(numPlayers==2)){
+            return(
+                <View style={styles.centerBottom}>  
+                    
+                    <ActionButton buttonText={''+arrayTotalScore[4]} offsetY={10} size={100} verticalOrientation="up" position='center'spacing={5} buttonColor={this.callForColor(boolean5,stringRGBAColor[4])} 
+                    buttonTextStyle={this.callForTextColor(boolean5,stringColor[4])}
+                    onPress={()=> this.callForSing(boolean5,this.props.i5) }   useNativeFeedback={false}                      
+                     >
+
+
+                    </ActionButton>
+                </View>
+            );
+        }
+        return;
+    }
+
+    howManyPlayers6=(numPlayers,boolean6,arrayTotalScore,stringColor,stringRGBAColor)=>{
+        if(numPlayers==2){
+            return;
+        }else{
+            return(
+                <View style={styles.rightBottom}>
+                    <ActionButton buttonText={''+arrayTotalScore[5]} offsetX={10} offsetY={10} size={100} autoInactive={false} action={true} verticalOrientation="up" position='right' spacing={5} buttonColor={this.callForColor(boolean6,stringRGBAColor[5])} 
+                    buttonTextStyle={this.callForTextColor(boolean6,stringColor[5])}
+                    onPress={()=> this.callForSing(boolean6,this.props.i6) } useNativeFeedback={false}>                                                                   
+                    </ActionButton>
+                </View> 
+            );
+        }
+    }
 
     render(){
         let stringRGBAColor = this.props.stringRGBAColor;
@@ -220,33 +281,11 @@ class ButtonBottomRender extends React.Component{
         let boolean4 = this.props.boolean4;
         return(
             <View style={styles.actionButtonsBottom}>  
-                    <View style={styles.rightBottom}>
-                       
-                        <ActionButton buttonText={''+arrayTotalScore[5]} offsetX={10} offsetY={10} size={100} autoInactive={false} action={true} verticalOrientation="up" position='right' spacing={5} buttonColor={this.callForColor(boolean6,stringRGBAColor[5])} 
-                       buttonTextStyle={this.callForTextColor(boolean6,stringColor[5])}
-                       onPress={()=> this.callForSing(boolean6,this.props.i6) } useNativeFeedback={false}
-                        >                                                                   
-                        </ActionButton>
-                    </View> 
-                    <View style={styles.centerBottom}>  
                     
-                    <ActionButton buttonText={''+arrayTotalScore[4]} offsetY={10} size={100} verticalOrientation="up" position='center'spacing={5} buttonColor={this.callForColor(boolean5,stringRGBAColor[4])} 
-                    buttonTextStyle={this.callForTextColor(boolean5,stringColor[4])}
-                    onPress={()=> this.callForSing(boolean5,this.props.i5) }   useNativeFeedback={false}                      
-                     >
-
-
-                    </ActionButton>
-                    </View>
-                    <View style={styles.leftBottom}>
-                    <ActionButton buttonText={''+arrayTotalScore[3]} offsetX={10} offsetY={10}  size={100} verticalOrientation="up" position='left' spacing={5} buttonColor={this.callForColor(boolean4,stringRGBAColor[3])}
-                        buttonTextStyle={this.callForTextColor(boolean4,stringColor[3])}
-                        onPress={()=> this.callForSing(boolean4,this.props.i4) } useNativeFeedback={false}
-                      >
-                          
-                    </ActionButton>
-                    </View>
-                </View>
+                    {this.howManyPlayers4(this.props.numPlayers,boolean4,arrayTotalScore,stringColor,stringRGBAColor)}
+                    {this.howManyPlayers5(this.props.numPlayers,boolean5,arrayTotalScore,stringColor,stringRGBAColor)}
+                    {this.howManyPlayers6(this.props.numPlayers,boolean6,arrayTotalScore,stringColor,stringRGBAColor)}
+            </View>
         );
     }
 }
@@ -286,11 +325,7 @@ const styles = StyleSheet.create({
         margin: 10,
         fontWeight:'800',
         color: '#FFFFFF',
-        fontFamily: 'Roboto',
         fontWeight: 'bold',
-
-
-        
       },
       container: {
         backgroundColor: 'transparent',
@@ -321,7 +356,6 @@ const styles = StyleSheet.create({
         margin: 10,
         fontWeight:'800',
         color: '#FFFFFF',
-        fontFamily: 'Roboto',
         fontWeight: 'bold',
     },
     actionButtonsTop:{

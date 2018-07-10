@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import { StyleSheet, Text, View, Button} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View} from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import FontAwesome  from '@expo/vector-icons/FontAwesome';
 
 
 export default class ScreenResults extends React.Component{
@@ -11,18 +11,6 @@ export default class ScreenResults extends React.Component{
         this.state={
 
         }
-    }
-
-    songBad() {
-        try {
-			const { soundObject, status } = Expo.Audio.Sound.create(
-			  require('../assets/sounds/Reprove.mp3'),
-			  { shouldPlay: true }
-			);
-			// Your sound is playing!
-		} catch (error) {
-			// An error occurred!
-		}
     }
     
     componentDidMount(){
@@ -45,16 +33,26 @@ export default class ScreenResults extends React.Component{
 			// An error occurred!
 		}
     }
+
+    songBad() {
+        try {
+			const { soundObject, status } = Expo.Audio.Sound.create(
+			  require('../assets/sounds/Reprove.mp3'),
+			  { shouldPlay: true }
+			);
+			// Your sound is playing!
+		} catch (error) {
+			// An error occurred!
+		}
+    }
     
     // retorna se a pessoa ganhou ou perdeu
     winOrlose(boolean,votes){
-        if (votes < 0 & boolean==false) {
-            {this.songBad()}
-        }
+        let totalW = ((votes+1)==this.props.numPlayers);
+        let totalL = ((votes-1) == -(this.props.numPlayers));
         if(boolean){ 
-
-            if(votes==5){
-                {this.songGood()}
+            this.songGood();
+            if(totalW){ //5 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -63,8 +61,7 @@ export default class ScreenResults extends React.Component{
                     </Text>
                 ) );
 
-            }else if(votes==3){ //4 estrelas
-                {this.songGood()}
+            }else if(!totalW && !(votes==0)){ //4 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -76,8 +73,7 @@ export default class ScreenResults extends React.Component{
                     </Text>
                 ) );           
 
-            }else if(votes==1){ // 3 estrelas
-                {this.songGood()}
+            }else { // 3 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -91,7 +87,8 @@ export default class ScreenResults extends React.Component{
             }
         }
        else{
-           if(votes==-1){ //2 estrelas
+           this.songBad();
+           if(votes==0){ //2 estrelas
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -102,7 +99,7 @@ export default class ScreenResults extends React.Component{
                         </Text>
                     </Text>
                 ) );
-           }else if(votes==-3){ //1 estrela
+           }else if(!totalL){ //1 estrela
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -113,7 +110,7 @@ export default class ScreenResults extends React.Component{
                         </Text>
                     </Text>
                 ) );
-            }else if(votes==-5){ //0 estrela
+            }else{ //0 estrela
                 return( 
                     (<Text>
                         <Text style={styles.resultText} >
@@ -128,103 +125,107 @@ export default class ScreenResults extends React.Component{
         }
     }
 
-    stars=(votes)=>{
-        if(votes==5){
-            return(
-                <View style={styles.stars}>
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
-                </View>
-            );
+    stars=(boolean, votes)=>{
+        let totalW = ((votes+1)==this.props.numPlayers);
+        let totalL = ((votes-1) == -(this.props.numPlayers));
+        if(boolean){ 
 
-        }else if(votes==3){
-            return(
-                <View style={styles.stars}>
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
-                </View>
-            );
+            if(totalW){ //5 estrelas
+                return(
+                    <View style={styles.stars}>
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
+                    </View>
+                );
 
-        }else if(votes==1){
-            return(
-                <View style={styles.stars}>
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
-                </View>
-            );
-            
-        }else if(votes==-1){
-            return(
-                <View style={styles.stars}>
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
-                </View>
-            );
+            }else if(!totalW && !(votes==0)){ //4 estrelas
+                return(
+                    <View style={styles.stars}>
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
+                    </View>
+                );      
 
-        }else if(votes==-3){
+            }else { // 3 estrelas
+                return(
+                    <View style={styles.stars}>
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
+                        <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
+                            <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
+                    </View>
+                );
+            }
+        }
+       else{
+           if(votes==0){ //2 estrelas
             return(
                 <View style={styles.stars}>
-                    <Icon name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
-                        <Icon name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
+                    <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
+                        <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
+                    <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
+                        <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
+                    <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
+                        <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
+                    <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
+                        <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
+                    <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
+                        <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
                 </View>
             );
-            
-        }else if(votes==-5){
+           }else if(!totalL){ //1 estrela
             return(
                 <View style={styles.stars}>
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
-                    <Icon name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
-                        <Icon name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
+                    <FontAwesome name='star' size={50} color='#F2C94C' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
+                        <FontAwesome name='star' size={65} color='#A07800' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
+                    <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
+                        <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
+                    <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
+                        <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
+                    <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
+                        <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
+                    <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
+                        <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
                 </View>
             );
-
+            }else{ //0 estrela
+                return(
+                    <View style={styles.stars}>
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',left:'2%'}}/>
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',left:'0%'}}/>    
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'25%'}} />
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'23%'}}/> 
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'44%',left:'46%'}} />
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'30%',left:'67%'}} />
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/> 
+                        <FontAwesome name='star' size={50} color='#BDBDBD' style={{flex:1,position:'absolute',bottom:'6%',right:'2%'}} />
+                            <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'0%',right:'0%'}}/> 
+                    </View>
+                );
+           }
         }
     }
     
@@ -238,13 +239,14 @@ export default class ScreenResults extends React.Component{
         let stringColor = this.props.stringColor;
         let votes = this.props.votes;
         let whoPressButton = this.props.whoPressButton;
+        let numPlayers = this.props.numPlayers;
         return(
             <View backgroundColor={stringColor[whoPressButton]} style={{flex:1,alignItems:'center',justifyContent:'center'}}>                         
                 
                 <View style={{alignItems:'center',left:'0%',right:'0%',bottom:'65%',top:'15%',backgroundColor:'transparent',position:'absolute'}} >
                 {this.winOrlose(this.props.winOrlose,votes)}
                 </View>
-                {this.stars(votes)}
+                {this.stars(this.props.winOrlose, votes)}
                 <View style={{alignItems:'center', left:'39%', right:'39%', top:'52.5%',bottom:'32%',backgroundColor:'transparent',position:'absolute'}}>
                     <Text style={[styles.resultText,{fontSize:40}]} >+{pontuacaoParcial[whoPressButton]}</Text>
                 </View>
@@ -272,7 +274,6 @@ const styles = StyleSheet.create({
       },
       resultText:{
         fontSize: 50,
-        fontFamily:'Roboto',
         fontWeight:'bold',
         color:'#ffffff',
         textAlign: 'center',

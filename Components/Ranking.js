@@ -1,6 +1,5 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
-import PreGame from './PreGame';
 import {ScreenOrientation} from 'expo';
 
 
@@ -45,27 +44,14 @@ export default class Ranking extends React.Component {
         this.changeScreenOrientation();
         // recieve players from Game ou Timer
         const { navigation } = this.props;
-        const text1 = navigation.getParam('text1');
-        const text2 = navigation.getParam('text2');
-        const text3 = navigation.getParam('text3');
-        const text4 = navigation.getParam('text4');
-        const text5 = navigation.getParam('text5');
-        const text6 = navigation.getParam('text6');
-
-        const players = [
-            JSON.parse(JSON.stringify(text1)),
-            JSON.parse(JSON.stringify(text2)),
-            JSON.parse(JSON.stringify(text3)),
-            JSON.parse(JSON.stringify(text4)),
-            JSON.parse(JSON.stringify(text5)),
-            JSON.parse(JSON.stringify(text6))
-        ];
+        const names = navigation.getParam('names'); // veio d ojgo
        
-        const arrayTotalScore = navigation.getParam('arrayTotalScore');
-        const totalScore = JSON.parse(JSON.stringify(arrayTotalScore))
+        const arrayTotalScore = navigation.getParam('arrayTotalScore'); //veio do jogo
+        const totalScore = JSON.parse(JSON.stringify(arrayTotalScore));
+        const stringColor = navigation.getParam('stringColor'); //veio do jogo
 
-        let rank = players.map((person, key) => {
-            return { name: person, points: totalScore[key] };
+        let rank = names.map((person, key) => {
+            return { name: person, points: totalScore[key],color: stringColor[key] };
         });
 
         rank = rank.sort((a,b) => a.points>b.points? -1:1);
@@ -99,12 +85,13 @@ export default class Ranking extends React.Component {
                 <View style={styles.gamebuttons}>
                     <MyButton
                         onPress={() => this.props.navigation.navigate('PreGame')}
-                        title='Novo Jogo'
+                        title='Novo Jogo' // qdo volta para novo jogo, tem um problema com o navigator (a 
+                        //barra de cima desaparece porque precisa criar outra stack navigator(uma que fique ligada ao inicio) , acredito eu)
                     />
                     <Text>    </Text>
                     <MyButton
                         onPress={() => this.props.navigation.navigate('Intro')}
-                        title='Voltar pra o Início'
+                        title='Voltar pra o Início' 
                     />
                 </View>
             </View>
