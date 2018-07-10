@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import {ScreenOrientation} from 'expo';
-
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 class MyButton extends React.Component {
@@ -23,6 +23,7 @@ class PlayersList extends React.Component {
         );
     }
 }
+
 class Score extends React.Component {
     render() {
         return (
@@ -35,9 +36,7 @@ export default class Ranking extends React.Component {
     constructor(props) {
         super(props);        
         this.state = {
-            rank: [],
-            //recieve Points from Game
-            currPoints: 10
+            rank: []
         };
     }
     componentDidMount() {
@@ -45,9 +44,7 @@ export default class Ranking extends React.Component {
         // recieve players from Game ou Timer
         const { navigation } = this.props;
         const names = navigation.getParam('names'); // veio d ojgo
-       
-        const arrayTotalScore = navigation.getParam('arrayTotalScore'); //veio do jogo
-        const totalScore = JSON.parse(JSON.stringify(arrayTotalScore));
+        const totalScore = navigation.getParam('arrayTotalScore'); //veio do jogo
         const stringColor = navigation.getParam('stringColor'); //veio do jogo
 
         let rank = names.map((person, key) => {
@@ -70,29 +67,27 @@ export default class Ranking extends React.Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>Ranking</Text>
-                {this.state.rank.map((p, i) => {
-                    return (
-                        <View key={i} style={{ display: 'flex', flexDirection: 'row', margin: 10 }}>
-                            <View style={{ flex: 1 }}>
-                                <PlayersList Text={p.name} />
-                            </View>
-                            <View style={{ flex: 1 }}>
-                                <Score Text={p.points} />
-                            </View>
-                        </View>
-                    );
-                })}
-                <View style={styles.gamebuttons}>
-                    <MyButton
-                        onPress={() => this.props.navigation.navigate('PreGame')}
-                        title='Novo Jogo' // qdo volta para novo jogo, tem um problema com o navigator (a 
-                        //barra de cima desaparece porque precisa criar outra stack navigator(uma que fique ligada ao inicio) , acredito eu)
-                    />
-                    <Text>    </Text>
-                    <MyButton
-                        onPress={() => this.props.navigation.navigate('Intro')}
-                        title='Voltar pra o Início' 
-                    />
+                    <View style = {{padding: 10, borderRadius: 5, backgroundColor: '#3E444A'}}>
+                        {this.state.rank.map((p, i) => {
+                            return (
+                                    <View key={i} style={{ display: 'flex', flexDirection: 'row',margin: 10,  width: '80%'  }}>
+                                        <View style={{padding: 10,borderRadius: 10,width: 10 ,height: 10, backgroundColor: p.color}}>                                           
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <PlayersList Text={p.name} />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <Score Text={p.points} />
+                                        </View>
+                                    </View>
+                            );
+                        })}
+					</View> 
+                    <Text>    </Text>                                          
+                <View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Intro')}  >				
+                        <MaterialIcons size={30} color='white' name='home' />
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -118,13 +113,13 @@ const styles = StyleSheet.create({
     },
     playerslist: {
         color: '#FFFFFF',
-        fontSize: 20,
+        fontSize: 25,
         textAlign: 'left'
     },
     score: {
         color: '#FFFFFF',
-        fontSize: 20,
+        fontSize: 25,
         textAlign: 'right'
     }
 
-});    
+});
