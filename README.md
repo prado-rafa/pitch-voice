@@ -5,6 +5,7 @@ The most recent version of the guide is available [here](https://github.com/reac
 ## Installation and Running
 ```
 npm install
+npm install -g exp   (linha nova)
 npm i --save react-navigation
 npm i react-native-action-button --save
 npm install react-native-vector-icons --save (*ACHO QUE NÃO PRECISA MAIS DESSA LINHA, FAZER TESTE*)
