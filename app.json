@@ -1,7 +1,7 @@
 {
   "expo": {
    "name": "Pitch-Voice",
-   "icon": "./Logo_Provisoria.png",
+   "icon": "./Components/image/logo.png",
    "version": "1.0.1",
    "slug": "pitchVoice",
    "privacy": "unlisted",
