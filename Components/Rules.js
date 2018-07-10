@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
+import EvilIcons from '@expo/vector-icons/EvilIcons';
+import FontAwesome  from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import Feather from '@expo/vector-icons/Feather';
 
 export default class Rules extends React.Component{
   static navigationOptions = {
@@ -29,7 +29,7 @@ export default class Rules extends React.Component{
             <Text style={styles.text}>Quando a partida iniciar, uma palavra aparecerá na tela e o primeiro jogador a clicar no botão com sua cor deverá usar o tempo do timer para cantar um trecho de uma música que contenha essa palavra ou similar.</Text>
             <Text style={styles.text}>Se nenhum jogador souber cantar uma música com a palavra da vez, os jogadores podem escolher clicar no botão<EvilIcons name='refresh' color='#23BAA7' size={25}/>para mudar a palavra.</Text>
             <Text style={styles.text}>Quando o jogador que estiver cantando estiver satisfeito com sua performance e os outros jogadores já tiverem julgado, porém ainda tiver tempo de canto, os jogadores podem escolher clicar no botão <Ionicons name='md-microphone' color='#23BAA7' size={20}/> para passar para o próximo.</Text>
-            <Text style={styles.text}>Se o cantor da vez desistir de cantar poderá clicar no botão <Icon name='flag' color='#23BAA7' size={20}/> para passar a vez para o próximo. É importante saber que numa partida, ou seja, para a palavra da vez, cada jogador só poderá cantar uma vez.</Text>
+            <Text style={styles.text}>Se o cantor da vez desistir de cantar poderá clicar no botão <FontAwesome name='flag' color='#23BAA7' size={20}/> para passar a vez para o próximo. É importante saber que numa partida, ou seja, para a palavra da vez, cada jogador só poderá cantar uma vez.</Text>
           </View>
           <Text/>
           <View style={styles.border}>

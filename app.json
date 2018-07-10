@@ -1,5 +1,16 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+   "name": "Pitch-Voice",
+   "icon": "./Logo_Provisoria.png",
+   "version": "1.0.1",
+   "slug": "pitchVoice",
+   "privacy": "unlisted",
+   "sdkVersion": "27.0.0",
+   "ios": {
+     "bundleIdentifier": "cin.ufpe.br.pitchvoice.jogo"
+   },
+   "android": {
+     "package": "cin.ufpe.br.pitchvoice.jogo"
+   }
   }
 }

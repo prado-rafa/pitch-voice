@@ -1,10 +1,9 @@
 import React from 'react';
 import {StyleSheet,Text,View} from 'react-native';
 import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome  from '@expo/vector-icons/FontAwesome';
 import Progress from 'react-native-progress/Bar'; 
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import EvilIcons from '@expo/vector-icons/EvilIcons';
 
 export default class ScreenStart extends React.Component{ 
 
@@ -39,7 +38,7 @@ export default class ScreenStart extends React.Component{
                     </ActionButton>
                 </View>
                 <View style={styles.musicIconCenter}>
-                    <Icon name='music' size={220} color='#686E75'/>               
+                    <FontAwesome name='music' size={220} color='#686E75'/>               
                 </View>
                 <ButtonTopRender numPlayers={this.props.numPlayers} stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
                 <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                
@@ -99,30 +98,6 @@ class ButtonTopRender extends React.Component{
           this.props.startSing(index);
         }
       }
-      //função pra mudar o icone (caso a pessoa tenha cantado ou nao)
-      callForRenderIcon3 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#71CE97'/>);
-        }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
-    }
-    //função pra mudar o icone (caso a pessoa tenha cantado ou nao)
-    callForRenderIcon2 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#F2C94D'/>);
-        }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
-    }
-    //função pra mudar o icone (caso a pessoa tenha cantado ou nao)
-    callForRenderIcon1 = (isActive) => {
-        if (!isActive) {
-          return (<Icon name="circle" color='#EB5757'/>);
-        }else{
-          return (<Feather name="x" color='#ffffff'/>);
-      }
-    }
 
     callForColor = (isActive, rgba) => {
 

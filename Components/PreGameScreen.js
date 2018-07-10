@@ -1,6 +1,6 @@
 import React from 'react';
 import {StyleSheet, Text, TextInput, View ,ScrollView, TouchableOpacity, Slider,Alert} from 'react-native';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 export default class PreGameScreen extends React.Component {
 	
@@ -107,7 +107,7 @@ export default class PreGameScreen extends React.Component {
 				<TextInput style={styles.input} placeholder = 'Nome do Jogador' placeholderTextColor = "#898785"  onChangeText = {(currentName) => this.props.SetCurrentName(currentName)} value={currentName}/>
 				
 				<TouchableOpacity style = {[styles.buttonContainer,{backgroundColor:colorChoosed}]} onPress = {() => this.props.ChangeScreen()}  >				
-                    <MaterialIcons size={30} color='white' name='color-lens' />
+                   <MaterialIcons size={30} color='white' name='color-lens' />
 				</TouchableOpacity>
 				 
 				<TouchableOpacity style = {styles.circularButton} onPress = { () => this.props.addPlayer(currentName, colorChoosed,this.props.colorRGBAChoosed,this.props.colorBackgroundChoosed)}>

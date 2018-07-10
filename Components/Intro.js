@@ -1,7 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar } from 'react-native';
-import {ScreenOrientation} from 'expo';
-
+import {ScreenOrientation, Font} from 'expo';
+import FontAwesome  from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import EvilIcons from '@expo/vector-icons/EvilIcons';
+import Feather from '@expo/vector-icons/Feather';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 export default class Intro extends React.Component{
@@ -11,6 +15,19 @@ export default class Intro extends React.Component{
     },
   };
   
+  componentWillMount(){
+    this._loadIcons();
+  }
+
+  _loadIcons= async()=>{
+    const icons = this.cacheFonts([FontAwesome.font,Ionicons.font,EvilIcons.font,Feather.font,MaterialIcons.font]);
+    await Promise.all(icons);
+  }
+
+  cacheFonts(fonts) {
+    return fonts.map(font => Font.loadAsync(font))
+  }
+
   componentDidMount(){
       StatusBar.setHidden(true); 
       this.changeScreenOrientation();
