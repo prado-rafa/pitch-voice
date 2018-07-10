@@ -35,7 +35,7 @@ export default class Intro extends React.Component{
   }
 
   changeScreenOrientation() {
-    ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+    ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
   }
   
       

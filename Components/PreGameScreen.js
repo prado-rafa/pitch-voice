@@ -79,8 +79,6 @@ export default class PreGameScreen extends React.Component {
 
 
 
-
-
 		this.props.navigation.navigate('MainScreen', {
 			topScore:this.props.topScore, timeSing:this.props.timeSing, showtime:this.props.showtime, names:this.props.names,numPlayers:this.props.nPlayers,
 			stringColor:stringColorAux,stringRGBAColor:stringRGBAColorAux, stringColorOpacity: stringColorOpacityAux, stringColorSorted: this.props.colors,
