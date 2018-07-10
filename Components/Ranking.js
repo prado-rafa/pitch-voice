@@ -2,9 +2,26 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
 import {ScreenOrientation} from 'expo';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+<<<<<<< HEAD
  
  
  
+=======
+
+
+class MyButton extends React.Component {
+    render() {
+        return (
+            <Button
+                onPress={this.props.onPress}
+                title={this.props.title}
+                color='#23BAA7'
+            />
+        );
+    }
+}
+
+>>>>>>> e602d6470401f54aa6be1a26c3d860f148ab9dd3
 class PlayersList extends React.Component {
     render() {
         return (
@@ -12,7 +29,11 @@ class PlayersList extends React.Component {
         );
     }
 }
+<<<<<<< HEAD
  
+=======
+
+>>>>>>> e602d6470401f54aa6be1a26c3d860f148ab9dd3
 class Score extends React.Component {
     render() {
         return (
@@ -35,10 +56,15 @@ export default class Ranking extends React.Component {
         this.changeScreenOrientation();
         // recieve players from Game ou Timer
         const { navigation } = this.props;
+<<<<<<< HEAD
         const names = navigation.getParam('names');
 
         const arrayTotalScore = navigation.getParam('arrayTotalScore'); //veio do jogo
         const totalScore = JSON.parse(JSON.stringify(arrayTotalScore));
+=======
+        const names = navigation.getParam('names'); // veio d ojgo
+        const totalScore = navigation.getParam('arrayTotalScore'); //veio do jogo
+>>>>>>> e602d6470401f54aa6be1a26c3d860f148ab9dd3
         const stringColor = navigation.getParam('stringColor'); //veio do jogo
  
         let rank = names.map((person, key) => {
@@ -59,6 +85,7 @@ export default class Ranking extends React.Component {
  
     render() {
         return (
+<<<<<<< HEAD
             <View style={{flex:1,flexDirection:'column'}}>
                 <View style={styles.bar}>
                             <Text style={{fontSize:30,color:'#FFFFFF'}}> Ranking </Text>
@@ -89,6 +116,31 @@ export default class Ranking extends React.Component {
                             <MaterialIcons size={30} color='white' name='home' />
                         </TouchableOpacity>
                     </View>
+=======
+            <View style={styles.container}>
+                <Text style={styles.welcome}>Ranking</Text>
+                    <View style = {{padding: 10, borderRadius: 5, backgroundColor: '#3E444A'}}>
+                        {this.state.rank.map((p, i) => {
+                            return (
+                                    <View key={i} style={{ display: 'flex', flexDirection: 'row',margin: 10,  width: '80%'  }}>
+                                        <View style={{padding: 10,borderRadius: 10,width: 10 ,height: 10, backgroundColor: p.color}}>                                           
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <PlayersList Text={p.name} />
+                                        </View>
+                                        <View style={{ flex: 1 }}>
+                                            <Score Text={p.points} />
+                                        </View>
+                                    </View>
+                            );
+                        })}
+					</View> 
+                    <Text>    </Text>                                          
+                <View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Intro')}  >				
+                        <MaterialIcons size={30} color='white' name='home' />
+                    </TouchableOpacity>
+>>>>>>> e602d6470401f54aa6be1a26c3d860f148ab9dd3
                 </View>
             </View>
         );
@@ -132,13 +184,24 @@ const styles = StyleSheet.create({
     },
     playerslist: {
         color: '#FFFFFF',
+<<<<<<< HEAD
         fontSize: 26,
+=======
+        fontSize: 25,
+>>>>>>> e602d6470401f54aa6be1a26c3d860f148ab9dd3
         textAlign: 'left'
     },
     score: {
         color: '#FFFFFF',
+<<<<<<< HEAD
         fontSize: 26,
         textAlign: 'right'
     }
  
+=======
+        fontSize: 25,
+        textAlign: 'right'
+    }
+
+>>>>>>> e602d6470401f54aa6be1a26c3d860f148ab9dd3
 });
