@@ -4,6 +4,7 @@ import ActionButton from 'react-native-action-button';
 import FontAwesome  from '@expo/vector-icons/FontAwesome';
 import Progress from 'react-native-progress/Bar'; 
 import EvilIcons from '@expo/vector-icons/EvilIcons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 
 export default class ScreenStartLoop extends React.Component{
@@ -18,6 +19,15 @@ export default class ScreenStartLoop extends React.Component{
     render(){
     return(
         <View style={styles.wrapper}>
+            <View style={{flex:1, flexDirection:'row', backgroundColor: 'transparent', alignItems: 'center', justifyContent: 'space-between',position:'absolute',top: '40%',width: '11%',height:'17%',zIndex:2, right:'10%'}}>   
+                        <ActionButton offsetX={0} offsetY={0} 
+                        position='center' size={60} 
+                        buttonColor = 'rgba(196, 196, 196, 1)' 
+                        buttonText='' onPress={()=>{this.props.ExitGame()}}
+                        useNativeFeedback={false}
+                        renderIcon={ () => <MaterialIcons name='exit-to-app' color='#000000' size={35} /> }
+                        />
+            </View>
             <View style={styles.Skip}>
                 <ActionButton offsetX={0} offsetY={0} 
                 position='center' size={60} 
@@ -29,7 +39,8 @@ export default class ScreenStartLoop extends React.Component{
                 </ActionButton>
             </View>
             <View style={styles.musicIconCenter}>
-                <FontAwesome name='music' size={220} color='#686E75'/>               
+                <FontAwesome name='music' size={220} color='#686E75'/> 
+                {/*<Text>{this.props.seconds+"                                     "}</Text>*/}               
             </View>
             <ButtonTopRender numPlayers={this.props.numPlayers} stringRGBAColor={this.props.stringRGBAColor} stringColor={this.props.stringColor} arrayTotalScore={this.props.arrayTotalScore} boolean3={this.props.boolean3} boolean2={this.props.boolean2} boolean1={this.props.boolean1} startSing={this.props.startSing} i1={0} i2={1} i3={2} />
             <TimerRender arrayTrueSize={this.props.arrayTrueSize} reset={this.props.reset} countDownTimer={this.props.countDownTimer} word={this.props.word} votes={this.props.votes} circleProgress={this.props.circleProgress}/>                

@@ -5,6 +5,7 @@ import ScreenResults from './ScreenResults';
 import ScreenSing from './ScreenSing';
 import ScreenStartLoop from './ScreenStartLoop';
 import {ScreenOrientation} from 'expo';
+import {Alert} from 'react-native';
 
 export default class MainScreen extends React.Component{ //classe que da tela do jogo! todas outras telas do jogo são chamadas aqui!
     
@@ -37,6 +38,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             arrayVote: [1,1,1,1,1,1], //array dos votos
             arrayTotalScore: [0,0,0,0,0,0], // array com pontuação total
            /*  winner: 30, */
+            howManySinged:0,
             winner: JSON.stringify(topScore), // variavel que diz qtos pontos acaba o jogo
             pontuacaoMax: 10, // qtd max de pontos por round
             penalidade: 1, // o qto vai subtrair por acerto em cada round
@@ -80,14 +82,20 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         let arrayTotalScore = this.state.arrayTotalScore;
         let winner = this.state.winner;
 
+        
         if(arrayTotalScore[index]<winner){
-        this.setState({
-            timesUp:false,
-            holdFlag:false,
-            timesUpVote:false,
-            winOrlose:false,
-            arrayVote:[1,1,1,1,1,1],
-        });
+            if(this.state.howManySinged==this.state.numPlayers){ 
+                this.AllPlayersHaveSinged();
+            }else{
+            this.setState({
+                timesUp:false,
+                holdFlag:false,
+                timesUpVote:false,
+                winOrlose:false,
+                arrayVote:[1,1,1,1,1,1],
+            });
+            
+            }
         }else{
             this.GameOver();
         }
@@ -101,6 +109,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
             arrayBoolean[i] = true;
             let timer = clearInterval(this.state.timer);
             this.setState({
+                howManySinged:this.state.howManySinged + 1,
                 whoPressButton:i,            
                 arrayBoolean:arrayBoolean,
                 timeAux:this.state.seconds,
@@ -118,6 +127,21 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         }
         
     }  
+
+    ExitGame=()=>{
+        if(this.state.isRunningTime){
+            this.StopTimer();
+            Alert.alert(
+                'Sair do Jogo',
+                'Você deseja sair do jogo? É um processo sem volta!',
+                [
+                {text: 'Sim', onPress: () => this.props.navigation.navigate('Intro')},
+                {text: 'Não', onPress: () => this.PlayTimer(), style: 'cancel'},
+                ],
+                { cancelable: false }
+            )
+        }
+    }
 
     //função que é chamada qdo alguém vota positivo!
     VoteLike=(index)=>{
@@ -200,12 +224,26 @@ export default class MainScreen extends React.Component{ //classe que da tela do
 
   //pausa o tempo  
     StopTimer=()=>{
+        if(this.state.isRunningTime){
         let timer = clearInterval(this.state.timer);
         this.setState({
             isRunningTime:false,
             timer:timer
         })
-    }    
+        }
+    }
+
+    PlayTimer=()=>{
+        if(!this.state.isRunningTime){
+            if(!this.state.timesUp){
+                this.CountDownTimer();
+            }else{
+                this.CountDownTimerLoop();
+            }
+        }else{
+            Alert.alert("Error! Reinicie o APP")
+        }
+    }
  // reseta o relogio
     Reset=()=>{
         if(this.state.isRunningTime){
@@ -219,28 +257,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         }
        
     }
-  // função relogio da parte de votação, existe um relogio para cada tela pois as variaveis q eles mudam são diferentes, pois é nessa parte q as flags sao acionadas
-    CountDownTimerVote=()=>{
-        let timer =  setInterval( () => {this.setState(
-            previousState=>{
-             if(this.state.seconds<this.state.time){
-                 return {seconds: this.state.seconds +1,isRunningTime:true,timer:timer};
-             }else{     
-                 let timerClear = clearInterval(timer);  
-                 return {
-                     isRunningTime:false,
-                     timer:timerClear,
-                     timesUp:true,
-                     time:this.state.timeInitial,
-                     seconds:this.state.timeAux,                
-                     
-                     holdFlag:true, 
-                     timesUpVote:true, 
-                 }
-             }           
-            })
-         },1000);
-    }
+
  // volta para a tela principal pois a pessoa desistiu
     DesistirSing=()=>{
 
@@ -256,8 +273,9 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                                     alguem cantar, tinha q esperar 1 segundo pra essa variavel atualizar*/
 
             });
-        }else{
-
+        }
+        if(this.state.howManySinged==this.state.numPlayers){ 
+            this.AllPlayersHaveSinged();
         }
     }
  // avança logo para a tela de votação
@@ -329,6 +347,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                        arrayVote:[1,1,1,1,1,1],
                        pontuacaoParcial:[0,0,0,0,0,0],
                        howManyWon:0,
+                       howManySinged:0,
                         }
                     }           
                 })
@@ -361,6 +380,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                        arrayVote:[1,1,1,1,1,1],
                        pontuacaoParcial:[0,0,0,0,0,0],
                        howManyWon:0,
+                       howManySinged:0,
                         }
                     }           
                    })
@@ -372,7 +392,6 @@ export default class MainScreen extends React.Component{ //classe que da tela do
 
   // pula a musica! isso faz com que tabele entre ScreenStartLoop e ScreenStart, para poder ficar mudando de palavra e resetando as coisas necessárias (como relogio e etc)
     Skip=()=>{
-        
     if(this.state.isRunningTime){ 
         let word = dicionarie.giveWord();   
         if(this.state.timesUp==false){
@@ -385,7 +404,8 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                     time:this.state.timeInitial,                       
                     arrayVote:[1,1,1,1,1,1],
                     pontuacaoParcial:[0,0,0,0,0,0],
-                    howManyWon:0
+                    howManyWon:0,
+                    howManySinged:0,
         });
         }else{
             this.Reset();
@@ -397,13 +417,53 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 time:this.state.timeInitial,                       
                 arrayVote:[1,1,1,1,1,1],
                 pontuacaoParcial:[0,0,0,0,0,0],
-                howManyWon:0
+                howManyWon:0,
+                howManySinged:0,
                 
             });
         }
     }
         
 }
+
+AllPlayersHaveSinged=()=>{ //todos jogadores cantaram (mas time is not running por isos mais uma função)
+
+    let word = dicionarie.giveWord();   
+    if(this.state.timesUp==false){
+        this.Reset();
+        this.setState({
+                    word:word,
+                    arrayBoolean:[false,false,false,false,false,false],                       
+                    holdFlag: false,
+                    timesUp:true,               
+                    time:this.state.timeInitial,                       
+                    arrayVote:[1,1,1,1,1,1],
+                    pontuacaoParcial:[0,0,0,0,0,0],
+                    howManyWon:0,
+                    howManySinged:0,
+                    seconds:0,
+                    time: this.state.timeInitial
+        });
+        }else{
+            this.Reset();
+            this.setState({
+                word:word,
+                arrayBoolean:[false,false,false,false,false,false],                       
+                holdFlag: false,
+                timesUp:false,               
+                time:this.state.timeInitial,                       
+                arrayVote:[1,1,1,1,1,1],
+                pontuacaoParcial:[0,0,0,0,0,0],
+                howManyWon:0,
+                howManySinged:0,
+                seconds:0,
+                time: this.state.timeInitial
+                
+            });
+        }
+}
+
+
    // funçao que acaba o jogo! aqui passa os parametros para a tela de ranking por navegação
     GameOver=()=>{
         const { navigation } = this.props;
@@ -481,6 +541,7 @@ export default class MainScreen extends React.Component{ //classe que da tela do
         let winOrlose = this.state.winOrlose;
         let votes = this.state.votes;
         let numPlayers = this.state.numPlayers;
+        let ExitGame = this.ExitGame;
 
         //lembrem-se se passar os parametros que quiserem como PROPS como está aqui embaixo
                         
@@ -488,12 +549,12 @@ export default class MainScreen extends React.Component{ //classe que da tela do
                 if(holdFlag==false){
                     if(timesUp==false){ 
                         return(  //inicio, tela principal!
-                        <ScreenStart numPlayers={numPlayers} stringRGBAColor={stringRGBAColor} stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} />
+                        <ScreenStart ExitGame={ExitGame} seconds={this.state.seconds} numPlayers={numPlayers} stringRGBAColor={stringRGBAColor} stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimer={countDownTimer} circleProgress={circleProgress} stopTimer={stopTimer} word={word} />
                     ); // se o tempo acabar (ou vc der skip) vai tabelar para ScreenStartLoop
                     }else{ 
                         
                         return( // também é a tela principal, porém aqui seria o Loop da tela, para existir varios rounds. (Tive problemas com o relogio para ter só uma tela que entraria em loop, preferi criar outra tela igual)
-                        <ScreenStartLoop numPlayers={numPlayers} stringRGBAColor={stringRGBAColor} stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word}  />
+                        <ScreenStartLoop ExitGame={ExitGame} seconds={this.state.seconds} numPlayers={numPlayers} stringRGBAColor={stringRGBAColor} stringColor={stringColor} arrayTotalScore={arrayTotalScore} skip={skip} timer={timer} zerar={this.Zerar} boolean6={boolean6} boolean5={boolean5} boolean4={boolean4} boolean3={boolean3} boolean2={boolean2} boolean1={boolean1} startSing={startSing} reset={reset} countDownTimerLoop={countDownTimerLoop} circleProgress={circleProgress} stopTimer={stopTimer} word={word}  />
                         );// se o tempo acabar (ou vc der skip) vai tabelar para ScreenStart
                     }
                 }else{ // apertaram o botão então vai para a tela de cantar primeiro

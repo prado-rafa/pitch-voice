@@ -10,7 +10,7 @@ export default class PreGame extends React.Component {
 	static navigationOptions = {
 		title: 'Pitch-Voice',
 		headerStyle: {
-		  backgroundColor: '#27AE60',
+		  backgroundColor: '#23BAA7',
 		},
 		headerTintColor: '#ffffff',
 		headerTitleStyle: {

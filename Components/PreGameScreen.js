@@ -186,7 +186,7 @@ export default class PreGameScreen extends React.Component {
 					
 					
 					<TouchableOpacity onPress={()=> this.playGame(this.props.nPlayers,colorsRGBA) }
-					style = {{margin: 40, width: '80%', height: 40, backgroundColor: '#27AE60', borderRadius: 10, justifyContent: 'center'}}>
+					style = {{margin: 40, width: '80%', height: 40, backgroundColor: '#23BAA7', borderRadius: 10, justifyContent: 'center'}}>
 					
 					<Text style = {{textAlign: 'center', color: "white",fontWeight:'bold'}}>Vamos Cantar!</Text>
 					</TouchableOpacity>
@@ -248,7 +248,7 @@ const styles = StyleSheet.create( {
 		width: 40,
 		height: 40,
 		borderRadius: 30,
-		backgroundColor: '#27AE60', 
+		backgroundColor: '#23BAA7', 
 		alignSelf: 'center',
 	}
 	
