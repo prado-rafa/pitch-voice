@@ -47,9 +47,11 @@ export default class Intro extends React.Component{
               <Text style={{color: '#23BAA7', fontSize: 30}}>?</Text>
             </TouchableOpacity> 
           </View>
-            <Image style={{width: 250, height: 250}}
+            <View style={{alignItems:'center',justifyContent:'center',flex:1,backgroundColor:'transparent',bottom:'32%',top:'18%',left:'15%',right:'15%',position:'absolute'}}>
+            <Image style={{width: 250, height: 250,position:'relative',alignItems:'center'}}
               source={require('./image/logo.png')}
             />
+            </View>
           <View style={styles.btnNew}>
             <TouchableOpacity onPress={() => this.props.navigation.navigate('PreGame')}>
               <Text style={{color: '#ffffff', fontSize: 20}}>Novo Jogo</Text>
