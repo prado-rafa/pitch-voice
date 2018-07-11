@@ -5,7 +5,7 @@ The most recent version of the guide is available [here](https://github.com/reac
 ## Installation and Running
 ```
 npm install
-npm install -g exp   (linha nova)
+npm install -g exp   (linha nova) (só precisa se for dar Build/Exportar)
 npm i --save react-navigation
 npm i react-native-action-button --save
 npm install react-native-progress --save
