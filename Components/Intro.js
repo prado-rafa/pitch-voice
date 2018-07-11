@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, StatusBar, Image } from 'react-native';
-import {ScreenOrientation, Font} from 'expo';
+import {ScreenOrientation, Font, Asset} from 'expo';
 import FontAwesome  from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
@@ -17,11 +17,17 @@ export default class Intro extends React.Component{
   
   componentWillMount(){
     this._loadIcons();
+    
   }
 
   _loadIcons= async()=>{
+    const imageAssets = this.cacheImages(require('./image/logo.png'));
     const icons = this.cacheFonts([FontAwesome.font,Ionicons.font,EvilIcons.font,Feather.font,MaterialIcons.font]);
-    await Promise.all(icons);
+    await Promise.all([icons,imageAssets]);
+  }
+
+  cacheImages(images) {
+        return Asset.fromModule(images).downloadAsync();
   }
 
   cacheFonts(fonts) {
