@@ -21,6 +21,21 @@ export default class ScreenResults extends React.Component{
     componentWillUnmount(){
         clearTimeout();
     }
+
+    songGood = (bool) => {
+        if(bool) {
+            try {
+                const { soundObject3, status3 } = Expo.Audio.Sound.create(
+                    require('../assets/sounds/Aplausos.mp3'),
+                    { shouldPlay: true }
+                );
+                // Your sound is playing!
+            } catch (error) {
+                // An error occurred!
+            }
+        }
+    }
+
     // retorna se a pessoa ganhou ou perdeu
     winOrlose(boolean,votes, numPlayers){
        /* alert("Votos: "+votes+". Jogadores: "+numPlayers)*/
@@ -30,6 +45,7 @@ export default class ScreenResults extends React.Component{
                     if(votes==5){
                         return( 
                             (<Text>
+                                {this.songGood(boolean)}
                                 <Text style={styles.resultText} >
                                     Arrasou!!!!!
                                 </Text>
@@ -39,6 +55,7 @@ export default class ScreenResults extends React.Component{
                     }else if(votes==3){ //4 estrelas
                         return( 
                             (<Text>
+                                {this.songGood(boolean)}
                                 <Text style={styles.resultText} >
                                 Uhul!!!!
                                 </Text>
@@ -51,6 +68,7 @@ export default class ScreenResults extends React.Component{
                     }else if(votes==1){ // 3 estrelas
                         return( 
                             (<Text>
+                                {this.songGood(boolean)}
                                 <Text style={styles.resultText} >
                                     Mais ou Menos
                                 </Text>
@@ -103,6 +121,7 @@ export default class ScreenResults extends React.Component{
                 if(votes==4){
                     return( 
                         (<Text>
+                            {this.songGood(boolean)}
                             <Text style={styles.resultText} >
                                 Arrasou!!!!!
                             </Text>
@@ -111,6 +130,7 @@ export default class ScreenResults extends React.Component{
                 }else if(votes==2){
                     return( 
                         (<Text>
+                            {this.songGood(boolean)}
                             <Text style={styles.resultText} >
                             Uhul!!!!
                             </Text>
@@ -122,6 +142,7 @@ export default class ScreenResults extends React.Component{
                 }else{ //votes==0
                     return( 
                         (<Text>
+                            {this.songGood(boolean)}
                             <Text style={styles.resultText} >
                                 Mais ou Menos
                             </Text>
@@ -174,6 +195,7 @@ export default class ScreenResults extends React.Component{
                 if(votes==3){
                     return( 
                         (<Text>
+                            {this.songGood(boolean)}
                             <Text style={styles.resultText} >
                                 Arrasou!!!!!
                             </Text>
@@ -182,6 +204,7 @@ export default class ScreenResults extends React.Component{
                 }else if(votes==1){
                     return( 
                         (<Text>
+                            {this.songGood(boolean)}
                             <Text style={styles.resultText} >
                             Uhul!!!!
                             </Text>
@@ -222,6 +245,7 @@ export default class ScreenResults extends React.Component{
                 if(votes==2){
                     return( 
                         (<Text>
+                            {this.songGood(boolean)}
                             <Text style={styles.resultText} >
                                 Arrasou!!!!!
                             </Text>
@@ -230,6 +254,7 @@ export default class ScreenResults extends React.Component{
                 }else{//votes==0
                     return( 
                         (<Text>
+                            {this.songGood(boolean)}
                             <Text style={styles.resultText} >
                                 Mais ou Menos
                             </Text>
@@ -269,6 +294,7 @@ export default class ScreenResults extends React.Component{
             if(votes==1){
                 return( 
                     (<Text>
+                        {this.songGood(boolean)}
                         <Text style={styles.resultText} >
                         Uhul!!!!
                         </Text>

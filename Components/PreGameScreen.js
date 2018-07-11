@@ -83,6 +83,16 @@ export default class PreGameScreen extends React.Component {
 			topScore:this.props.topScore, timeSing:this.props.timeSing, showtime:this.props.showtime, names:this.props.names,numPlayers:this.props.nPlayers,
 			stringColor:stringColorAux,stringRGBAColor:stringRGBAColorAux, stringColorOpacity: stringColorOpacityAux, stringColorSorted: this.props.colors,
 			})
+
+		try {
+			const { soundObject, status } = Expo.Audio.Sound.create(
+				require('../assets/sounds/Gongo.mp3'),
+				{ shouldPlay: true }
+			);
+		// Your sound is playing!
+		} catch (error) {
+		// An error occurred!
+		}
 	}
 
     render(){
