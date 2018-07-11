@@ -129,6 +129,7 @@ class TimerRenderSing extends React.Component{
 }
 class ButtonTopRenderSing extends React.Component{
 
+
     changeVote= (arrayVote,index)=>{
         
         if((arrayVote[index]<0)){
@@ -223,6 +224,7 @@ class ButtonTopRenderSing extends React.Component{
 
 }
 class ButtonBottomRenderSing extends React.Component{
+
     
     changeVote= (arrayVote,index)=>{
         

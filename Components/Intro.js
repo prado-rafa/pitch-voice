@@ -6,7 +6,6 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import Feather from '@expo/vector-icons/Feather';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-//import { logo } from './image'
 
 export default class Intro extends React.Component{
   static navigationOptions = {

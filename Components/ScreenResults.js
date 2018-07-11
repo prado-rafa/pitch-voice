@@ -14,14 +14,13 @@ export default class ScreenResults extends React.Component{
     }
 
     componentDidMount(){
-        this.props.computaVotos();
-        setTimeout( () => {this.props.backToStart(this.props.whoPressButton)} ,3000);  //qdo passar 5s sia de ScreenResults
+        this.props.computaVotos();        
+        setTimeout( () => {this.props.backToStart(this.props.whoPressButton)} ,3000);//qdo passar 3s sia de ScreenResults
     }
 
     componentWillUnmount(){
         clearTimeout();
     }
-
     // retorna se a pessoa ganhou ou perdeu
     winOrlose(boolean,votes, numPlayers){
        /* alert("Votos: "+votes+". Jogadores: "+numPlayers)*/
@@ -60,8 +59,6 @@ export default class ScreenResults extends React.Component{
                                 </Text>
                             </Text>
                         ) );
-                    }else{
-                        alert('erro1')
                     }
                 }
             else{
@@ -98,8 +95,6 @@ export default class ScreenResults extends React.Component{
                                 </Text>
                             </Text>
                         ) );
-                    }else{
-                        alert('erro2')
                     }
                 }
             }
@@ -195,8 +190,6 @@ export default class ScreenResults extends React.Component{
                             </Text>
                         </Text>
                     ) );
-                }else{
-                    alert('erro3')
                 }
             }else{
                 if(votes==-1){
@@ -221,8 +214,6 @@ export default class ScreenResults extends React.Component{
                             </Text>
                         </Text>
                     ) );
-                }else{
-                    alert('erro4')
                 }
             }
 
@@ -297,12 +288,8 @@ export default class ScreenResults extends React.Component{
                         </Text>
                     </Text>
                 ) );
-            }else{
-                alert('erro5')
             }
 
-        }else{
-            alert('erro6')
         }
     }
     stars=(votes,numPlayers)=>{
@@ -468,8 +455,6 @@ export default class ScreenResults extends React.Component{
                             <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'4%',right:'12%'}}/> 
                     </View>
                     );
-            }else{
-                alert('erro7')
             }
 
         }else if(numPlayers==4){
@@ -517,8 +502,6 @@ export default class ScreenResults extends React.Component{
                             <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'24%',left:'65%'}}/>  
                     </View>
                 );
-            }else{
-                alert('erro8')
             }
 
         }else if(numPlayers==3){
@@ -549,8 +532,6 @@ export default class ScreenResults extends React.Component{
                             <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'28%',left:'53%'}}/> 
                     </View>
                     );
-            }else{
-                alert('erro9')
             }
 
         }else if(numPlayers==2){
@@ -568,12 +549,8 @@ export default class ScreenResults extends React.Component{
                             <FontAwesome name='star' size={65} color='#828282' style={{zIndex:-1,flex:1,position:'absolute',bottom:'38%',left:'44%'}}/> 
                     </View>
                 );
-            }else{
-                alert('erro10')
             }
 
-        }else{
-            alert('erro11')
         }
     }
     
