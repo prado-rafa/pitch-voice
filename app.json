@@ -1,9 +1,9 @@
 {
   "expo": {
-   "name": "Pitch-Voice",
-   "icon": "./Components/image/logo1024.png",
-   "version": "1.0.3",
-   "slug": "pitchVoice",
+   "name": "Pitch Voice",
+   "icon": "./Components/image/logo407.png",
+   "version": "1.1.0",
+   "slug": "PitchVoice",
    "privacy": "unlisted",
    "sdkVersion": "27.0.0",
    "ios": {
